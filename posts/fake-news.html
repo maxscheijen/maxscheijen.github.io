@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Scheijen">
+<meta name="dcterms.date" content="2020-01-17">
+
+<title>Max Scheijen - Fake News Classification</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B00DPE6RY"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Max Scheijen</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/maxscheijen"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/maxscheijen"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Fake News Classification</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Max Scheijen </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 17, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<p>With the maturity of the internet, fake news has become much more common in recent years. Fake news is disinformation which is disguised as “real” news to influence public opinion. Can we use machine learning to classify news articles fake or real? Text contains a lot of information let’s investigate if we can use it!</p>
+<p>In this blog post, we construct a simple logistic regression model to classify news articles to be fake or real. We’ll be using bag-of-words and tf-idf representations to vectorize our textual data. I try to recreate and improve the Bayesian model from George McIntire detailed in <a href="https://opendatascience.com/how-to-build-a-fake-news-classification-model/">this</a> post with a logistic regression model.</p>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textstat <span class="im">as</span> tstat</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.stem <span class="im">import</span> WordNetLemmatizer</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> hstack</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> StratifiedKFold, cross_val_score</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer, CountVectorizer</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_format <span class="op">=</span> <span class="st">"svg"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="loading-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
+<p>Let’s load news data and look at the first few rows. We’ll be using only the core text of the articles to train our classifier. This will keep our model simple. You could also use the title or the title in combination with the full text or other extracted features.</p>
+<div class="cell" data-execution_count="65">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>news <span class="op">=</span> pd.read_csv(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://s3.amazonaws.com/assets.datacamp.com/blog_assets/fake_or_real_news.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  ).iloc[:, <span class="dv">1</span>:]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>news <span class="op">=</span> news[[<span class="st">"text"</span>, <span class="st">"label"</span>]]</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>news.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="65">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>text</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Daniel Greenfield, a Shillman Journalism Fello...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Google Pinterest Digg Linkedin Reddit Stumbleu...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>U.S. Secretary of State John F. Kerry said Mon...</td>
+      <td>REAL</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>— Kaydee King (@KaydeeKing) November 9, 2016 T...</td>
+      <td>FAKE</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>It's primary day in New York and front-runners...</td>
+      <td>REAL</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The data can be downloaded <a href="https://s3.amazonaws.com/assets.datacamp.com/blog_assets/fake_or_real_news.csv">here</a> and is provided by DataCamp.</p>
+<p>In the cell above I display the text column which contains the text of the article and the label columns. This las one holds information on whether or not the text is fake.</p>
+</section>
+<section id="exploratory-data-analysis" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis">Exploratory Data Analysis</h2>
+<p>Before modelling the data, let’s first take a look at the textual data! I would like to see if there is a simple difference between real and fake texts. There are several basic ways to look at our textual data. We could look at the number of words of our texts, the number of characters or the average length of words.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside"><strong>FAKE ARTICLE</strong>: Daniel Greenfield, a Shillman Journalism Fellow at the Freedom Center, is a New York writer focusing on radical Islam.</span></div></div>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside"><strong>REAL ARTICLE</strong>: U.S. Secretary of State John F. Kerry said Monday that he will stop in Paris later this week, amid criticism that no top American officials attended Sunday’s unity march against terrorism.</span></div></div>
+<p>Furthermore, it maybe could be useful to do part of speech (POS) tagging, do entity recognition or compute readability scores and identify differences between the text classes.</p>
+<p>Let’s start by printing the first sentence of a fake and real news article to see if these text parts give us clues about fake or realness.</p>
+<p>I couldn’t really classify these articles to be real or fake, at least not based on their first sentences. Before diving deeper into the exploratory data analysis, let’s look at the distribution of our target labels.</p>
+<div class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">1</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sns.countplot(y <span class="op">=</span><span class="st">"label"</span>, data<span class="op">=</span>news)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Labels per fake news class"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">""</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">""</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>sns.despine()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="fake-news_files/figure-html/cell-5-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>The figure above shows an even distribution of labels. There are as many fake as real news articles in our datasets. We set our baseline at around 50%. Anything above this score will be better than random guessing.</p>
+<section id="number-of-words" class="level3">
+<h3 class="anchored" data-anchor-id="number-of-words">Number of words</h3>
+<p>Let’s see if there’s a difference between the number of words used in real articles compared to fake news texts. We first look at some simple summary statistics to get a feel for the data. We apply a lambda function that splits every word in the texts, stores it in a list and gets the length of the list. After that, we store word count back into a new column in our original data frame.</p>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>news[<span class="st">"word_count"</span>] <span class="op">=</span> news[<span class="st">'text'</span>].<span class="bu">apply</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">lambda</span> x: <span class="bu">len</span>(x.split())</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can now compute several summary statistics on the word count grouped by there label. Let’s see if there are differences in word count between fake and real articles.</p>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>news.groupby(<span class="st">'label'</span>)[<span class="st">'word_count'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="51">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>label</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FAKE</th>
+      <td>3164.0</td>
+      <td>679.129267</td>
+      <td>958.962790</td>
+      <td>0.0</td>
+      <td>212.0</td>
+      <td>421.0</td>
+      <td>830.0</td>
+      <td>20891.0</td>
+    </tr>
+    <tr>
+      <th>REAL</th>
+      <td>3171.0</td>
+      <td>873.257647</td>
+      <td>722.483569</td>
+      <td>7.0</td>
+      <td>450.5</td>
+      <td>771.0</td>
+      <td>1123.0</td>
+      <td>7602.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The output above suggests that real news articles have a greater average and median word count, with less variation (standard deviation and percentiles) than the fake news articles. The range of word count of fake news articles is far greater ranging from 0 to more than 20.000.</p>
+<p>Let’s look at the distribution of words and whether or not there is a difference in word count between real and fake news. I will use seaborn’s <code>FaceGrid()</code> and <code>kdeplot</code> to display this distribution.</p>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(news, hue<span class="op">=</span><span class="st">"label"</span>, aspect<span class="op">=</span><span class="fl">3.5</span>, height<span class="op">=</span><span class="fl">3.5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>g.<span class="bu">map</span>(sns.kdeplot, <span class="st">"word_count"</span>, shade<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>g.fig.suptitle(<span class="st">"Word count distribution for Real and Fake News"</span>)<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>g.add_legend(title<span class="op">=</span><span class="st">""</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">""</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Word count"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="fake-news_files/figure-html/cell-8-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>The plot confirms our summary statistics inferences. Real news articles seem to have a greater word count than fake news articles. We could do statistical tests to confirm this. Further exploration could look at the number of characters or number of sentences. We, however, are going to do this but look at readability.</p>
+</section>
+<section id="readability" class="level3">
+<h3 class="anchored" data-anchor-id="readability">Readability</h3>
+<p>Are fake news articles easier to read real news articles? Let’s find out! We’ll use a readability score to quantify this. Readability tells us the ease with which the reader can understand a text. The readability depends on the contents of the texts. It measures the complexity of the vocabulary and syntax.</p>
+<p>We’ll use the <a href="https://en.wikipedia.org/wiki/Gunning_fog_index">Gunning fog index</a> to classify the readability of our news articles. This index takes into account two basic factors;</p>
+<ol type="1">
+<li>The greater the average sentence length the harder the text is to read.</li>
+<li>The greater the percentage of complex words, the harder the text is to read.</li>
+</ol>
+<p>The formula returns a score corresponding to the grade in which someone would be able to read the text. The higher the index the harder the text is to read. I’ll use the <code>textstat</code> package to get the score of every text and store it in a new column.</p>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>news[<span class="st">'gunning_fog_score'</span>] <span class="op">=</span> news[<span class="st">'text'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: tstat.gunning_fog(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s group by the target label and see if there is a difference between the readability score for real and fake news articles.</p>
+<blockquote class="blockquote">
+<p>I don’t know if textstat gives as the correct gunning fog score (the seem high), but we can use it for comparison._</p>
+</blockquote>
+<div class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>news.groupby(<span class="st">'label'</span>)[<span class="st">'gunning_fog_score'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="54">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>label</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>FAKE</th>
+      <td>3164.0</td>
+      <td>12.157209</td>
+      <td>4.283665</td>
+      <td>0.0</td>
+      <td>10.13</td>
+      <td>11.875</td>
+      <td>13.65</td>
+      <td>64.68</td>
+    </tr>
+    <tr>
+      <th>REAL</th>
+      <td>3171.0</td>
+      <td>11.539842</td>
+      <td>2.034056</td>
+      <td>3.6</td>
+      <td>10.30</td>
+      <td>11.490</td>
+      <td>12.62</td>
+      <td>27.76</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The summary statistics of the Gunning fog index suggest that real texts are somewhat harder to read. They also have less variation in their readability score. Which if we think about it makes some intuitive sense. If we plot the distribution of scores we also see this difference.</p>
+<div class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(news, hue<span class="op">=</span><span class="st">"label"</span>, aspect<span class="op">=</span><span class="fl">3.5</span>, height<span class="op">=</span><span class="fl">3.5</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>g.<span class="bu">map</span>(sns.kdeplot, <span class="st">"gunning_fog_score"</span>, shade<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>g.fig.suptitle(<span class="st">"Gunning Fog score distribution"</span>)<span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>g.add_legend(title<span class="op">=</span><span class="st">""</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">""</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Gunning Fog Score"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, <span class="dv">100</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="fake-news_files/figure-html/cell-11-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="train-validation-1st-model" class="level2">
+<h2 class="anchored" data-anchor-id="train-validation-1st-model">Train, Validation &amp; 1st Model</h2>
+<p>Before we go and model the data we split the data into a train and validation set. We create a validation dataset to validate our classifier. We’ll use 75% of the data for training the logistic and 25% for validating our model. We’ll only use the text of the article, not the title, word count or readability score. Furthermore, we use stratification to ensure that we have even distribution of target label classes in the train and validation data.</p>
+<div class="cell" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  news.drop(columns<span class="op">=</span>[<span class="st">"label"</span>]),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  news[<span class="st">"label"</span>].values,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  test_size<span class="op">=</span><span class="fl">0.25</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  random_state<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  stratify<span class="op">=</span>news[<span class="st">"label"</span>].values</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>X_train.shape, X_valid.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="56">
+<pre><code>((4751, 3), (1584, 3))</code></pre>
+</div>
+</div>
+<p>Let’s use a train a logistic regression classifier. We use stratified cross validation to validate our model.</p>
+<div class="cell" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  X_train[[<span class="st">'word_count'</span>, <span class="st">'gunning_fog_score'</span>]],</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="57">
+<pre><code>0.5933569217160548</code></pre>
+</div>
+</div>
+</section>
+<section id="feature-extraction-modelling" class="level2">
+<h2 class="anchored" data-anchor-id="feature-extraction-modelling">Feature Extraction &amp; Modelling</h2>
+<p>These simple statistics do not seem to really help us classify fake news. Accuracy is higher than random but I think we can do better. We need to find another way to represent text that does allow a model to make better classifications.</p>
+<section id="bag-of-words-model" class="level3">
+<h3 class="anchored" data-anchor-id="bag-of-words-model">Bag-of-words model</h3>
+<p>We will start by building a bag-of-words model. A bag of words model is a simple way to represent text. In a bag-of-words model, we extract word tokens from the text and compute the word frequency of these tokens. Based on these frequencies and our corpus vocabulary we build word vector. The frequency of occurrence of each word in a text is a feature we train our classifier on.</p>
+<p>Simply put, every row represents a text/article from the dataset, every column represents a term (word) of the dataset, and every cell contains the frequency count of that word in a particular text.</p>
+<p>We can construct a bag of word model with <code>CountVectorizer()</code> from <code>sklearn</code>. We fit the <code>#!python CountVectorizer()</code> on the training data. After that, we transform the train and validation data. This will create a sparse matrix that we can transform into a dense matrix using the to <code>#!python toarray()</code> function.</p>
+<p>We also don’t take stop words into account, because they often do not provide useful information.</p>
+<div class="cell" data-execution_count="58">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>count_vector <span class="op">=</span> CountVectorizer(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  analyzer<span class="op">=</span><span class="st">'word'</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  stop_words<span class="op">=</span><span class="st">'english'</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>count_vector_train <span class="op">=</span> count_vector.fit_transform(X_train[<span class="st">'text'</span>])</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>count_vector_valid <span class="op">=</span> count_vector.transform(X_valid[<span class="st">'text'</span>])</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>count_vector_train.toarray().shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="58">
+<pre><code>(4751, 60245)</code></pre>
+</div>
+</div>
+<p>We can see that based on training data this vector has 60245 features. Let’s look at these features by using <code>get_feature_names</code> on the bag-of-words vectorizer.</p>
+<div class="cell" data-execution_count="59">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>bow_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>count_vector_train.toarray(),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>count_vector.get_feature_names()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can see that the word “argued” occurs 1 time in the first document of our training data.</p>
+<p>We’ll use this bag-of-words model to train our logistic regression.</p>
+<div class="cell" data-execution_count="60">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  count_vector_train,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="60">
+<pre><code>0.9124396284829721</code></pre>
+</div>
+</div>
+<p>The logistic regression algorithm performs much better on this basic bag-of-words model with a cross-validation score of <strong>91,55%</strong>.</p>
+</section>
+<section id="term-frequency-and-inverse-data-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="term-frequency-and-inverse-data-frequency">Term Frequency and Inverse Data Frequency</h3>
+<p>Another way to represent text is by using term frequency-inverse data frequency (tf-idf). This way of representing text quantifies how relative importance a word is to a text and in our dataset.</p>
+<p><span class="math display">\[w_{i,j} = tf_{i,j} \times \log(\frac{N}{df_i})\]</span></p>
+<p>The first component (tf) calculates the word frequency <span class="math inline">\(tf_{i,j}\)</span> by counting how many times the word appears in a document <span class="math inline">\(n_{i,j}\)</span> compared to all the words in the document <span class="math inline">\(\sum_kn_{i,j}\)</span>.</p>
+<p><span class="math display">\[tf_{i,j} = \frac{n_{i,j}}{\sum_kn_{i,j}}\]</span></p>
+<p>The second component (idf) can be calculated as the logarithm of the number of texts in the dataset, divided by the total number of texts where the specific word appears. This gives weight to every word. Rare words get a high idf score, the more common words a low score.</p>
+<p>tf-idf basically measures of original a word.</p>
+<p>We can use <code>TfidfVectorizer</code> to create a tf-idf representation of our news articles by fitting and transforming the data.</p>
+<div class="cell" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tfidf_vector <span class="op">=</span> TfidfVectorizer(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  analyzer<span class="op">=</span><span class="st">"word"</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  stop_words<span class="op">=</span><span class="st">'english'</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>tfidf_train <span class="op">=</span> tfidf_vector.fit_transform(X_train[<span class="st">'text'</span>])</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>tfidf_valid <span class="op">=</span> tfidf_vector.transform(X_valid[<span class="st">'text'</span>])</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>tfidf_train.toarray().shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="62">
+<pre><code>(4751, 60245)</code></pre>
+</div>
+</div>
+<p>Let’s also extract the feature names and look at their corresponding weights.</p>
+<div class="cell" data-execution_count="64">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tfidf_df <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>tfidf_train.toarray(),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>tfidf_vector.get_feature_names()</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can see that now there are weights assigned to the features per document.</p>
+<p>Let’s use the same logistic regression algorithm on the tf-idf representation as on the bag-of-words model.</p>
+<div class="cell" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  tfidf_train,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="63">
+<pre><code>0.9105413533834588</code></pre>
+</div>
+</div>
+<p>When using tf-idf representation the logistic regression model has an accuracy of 91,03 %. This is a little less than the bag-of-words model.</p>
+</section>
+<section id="text-processing" class="level3">
+<h3 class="anchored" data-anchor-id="text-processing">Text processing</h3>
+<p>Both the bag-of-words and the tf-idf model have a lot of features (60,000). Let’s look at ways make to turn down the number of features.</p>
+<p>Let’s apply <a href="https://en.wikipedia.org/wiki/Lemmatisatio">lemmatization</a>. This process converts words into there base form. We perform lemmatization by using <code>nltk</code>’s lemmatization functionality.</p>
+<p>First, we define a <code>WordNetLemmatizer</code>. Then we define a lambda function that takes a string, loops over the words of the string (text), stores them in a list. Lastly, words are joined back together into a string.</p>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>lemma <span class="op">=</span> WordNetLemmatizer()</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X_train_lemma <span class="op">=</span> X_train[<span class="st">'text'</span>].<span class="bu">apply</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">lambda</span> x: <span class="st">' '</span>.join([lemma.lemmatize(word) <span class="cf">for</span> word <span class="kw">in</span> x.strip().split(<span class="st">' '</span>)])</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>X_valid_lemma <span class="op">=</span> X_valid[<span class="st">'text'</span>].<span class="bu">apply</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">lambda</span> x: <span class="st">' '</span>.join([lemma.lemmatize(word) <span class="cf">for</span> word <span class="kw">in</span> x.strip().split(<span class="st">' '</span>)])</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s look at the dimensions of our bag-of-words model after applying lemmatization.</p>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cv_lemma_train <span class="op">=</span> count_vector.fit_transform(X_train_lemma)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>cv_lemma_valid <span class="op">=</span> count_vector.transform(X_train_lemma)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>cv_lemma_train.toarray().shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<pre><code>(4751, 58849)</code></pre>
+</div>
+</div>
+<p>We can see we lost about 2,000 features using lemmatization and removing stop words.</p>
+<p>Let’s compare some models that we fit on the bag of words representation with lemmatization applied.</p>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  cv_lemma_train,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<pre><code>0.9139150818222026</code></pre>
+</div>
+</div>
+<p>We can see that we achieve a train accuracy score of validation score of 91.60% of the logistic regression. This model also has the lowest variance. But can we use other text representations to achieve better accuracy scores? Let’s look at tf-idf with lemmatization applied.</p>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>tfidf_lemma_train <span class="op">=</span> tfidf_vector.fit_transform(X_train_lemma)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>tfidf_lemma_valid <span class="op">=</span> tfidf_vector.transform(X_valid_lemma)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  tfidf_lemma_train,</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<pre><code>0.9122260061919505</code></pre>
+</div>
+</div>
+<p>The tf-idf model also improved slightly. Overall lemmatization decreased the number of features of our data without decreasing the accuracy of our classifier.</p>
+<p>We can also combine several representations. We can create a tf-idf representation of the characters in the articles and combine them with the tf-idf word representation. Let’s first create the character model. To keep the number of features smaller we set the max_features to 60000.</p>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>tfidf_char <span class="op">=</span> TfidfVectorizer(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    analyzer<span class="op">=</span><span class="st">'char'</span>,</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    strip_accents<span class="op">=</span><span class="st">'unicode'</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    stop_words<span class="op">=</span><span class="st">'english'</span>,</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    ngram_range<span class="op">=</span>(<span class="dv">2</span>, <span class="dv">6</span>),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    max_features<span class="op">=</span><span class="dv">60000</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>tfidf_train_char <span class="op">=</span> tfidf_char.fit_transform(X_train_lemma)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>tfidf_valid_char <span class="op">=</span> tfidf_char.transform(X_valid_lemma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We use the <code>hstack()</code> function from SciPy to horizontally stack the sparse word and character matrices.</p>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>train_features <span class="op">=</span> hstack([tfidf_lemma_train, tfidf_train_char])</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>valid_features <span class="op">=</span> hstack([tfidf_lemma_valid, tfidf_valid_char])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="final-model" class="level2">
+<h2 class="anchored" data-anchor-id="final-model">Final model</h2>
+<p>We train our final logistic regression classifier on the features that combine the words and character tf-idf - representations</p>
+<div class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">2</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  logistic_regression,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  train_features,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  y_train,</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  cv<span class="op">=</span>kfold</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>cv.mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>0.9309601946041575</code></pre>
+</div>
+</div>
+<p>We get an accuracy score of around <strong>93.18%</strong> on the validation set!</p>
+<div class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>logistic_regression.fit(train_features, y_train)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>logistic_regression.score(valid_features, y_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>0.9343434343434344</code></pre>
+</div>
+</div>
+<p>The final testing score is 93.34% on the testing.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>We used a logistic regression model to classify real and fake news articles. We used a bag-of-words and a tf-idf model to represent the article’s texts. This is a really simple way to classify articles, with good results. You could also use word embeddings, topic models and many more ways to represent text. Furthermore, you could also other classifier models, like Naive Bayes classifiers, Support Vector Machines and (Deep) Neural Nets. I also did not do any hyper parameter tuning to find the best model.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

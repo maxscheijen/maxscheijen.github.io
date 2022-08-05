@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Scheijen">
+<meta name="dcterms.date" content="2020-10-16">
+
+<title>Max Scheijen - Real-time Effective Reproductive Number</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B00DPE6RY"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
+</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Max Scheijen</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/maxscheijen"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/maxscheijen"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Real-time Effective Reproductive Number</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Max Scheijen </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 16, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>The <a href="https://en.wikipedia.org/wiki/Basic_reproduction_number#Effective_reproduction_number">effective reproduction number</a> <span class="math inline">\(R_t\)</span> is a way to quantify how quickly a virus spreads in a population. It estimates the number of people infected by a single person. <span class="math inline">\(R_t\)</span> is an indicator of how fast a virus is spreading. This post displays the <span class="math inline">\(R_t\)</span> for COVID-19 in the Netherlands.</p>
+<p>The graph below displays a real-time estimate of the <span class="math inline">\(R_t\)</span> in the Netherlands and its provinces. This estimate is based on the daily COVID-19 <a href="https://data.rivm.nl/covid-19/COVID-19_aantallen_gemeente_per_dag.csv">case counts</a> provided by the <span class="citation" data-cites="rivm2021covid19">RIVM (<a href="#ref-rivm2021covid19" role="doc-biblioref">2021</a>)</span>.</p>
+<div id="observablehq-rt_plot-4e985875">
+
+</div>
+<p>The controls allow you to select a <span style="font-weight: 600; color: orange;">province</span> and compare it to the <span style="font-weight: 600;">national</span> average. The <span style="font-weight: 600; color: gray;">bands</span> display the 90% confidence interval for the highlighted province. The smoothing helps with removing short-term fluctuations and highlighting longer-term trends or cycles by taking the average <span class="math inline">\(R_t\)</span>/cases over a specified day range. The dashed gray lines are the non-selected provinces.</p>
+<div id="observablehq-viewof-state-4e985875">
+
+</div>
+<div id="observablehq-viewof-k-4e985875">
+
+</div>
+<p><br></p>
+<p>The graph below displays the daily COVID-19 case counts. It follows the same color scheme as the <span class="math inline">\(R_t\)</span> graph. The case count for the Netherlands is an average over all the provinces. Therefore it doesn’t follow the absolute case count for the Netherlands.</p>
+<div id="observablehq-cases-4e985875">
+
+</div>
+<p>The estimation of <span class="math inline">\(R_t\)</span> is based on the smoothed daily case count. As suggest by Systrom et al.{% cite systrom2020_rtcovid %}, a gaussian filter is applied to the daily case count time-series. This reduces the noise of the stochastic nature of case counts, caused by late reporting or corrections. A window size of 7 days is arbitrarily chosen to smooth this stochastic process. This gives late-stage reporting, back-logs and corrections a week to catch up. The real-world infections are much less stochastic than the process of reporting, making smoothing necessary. The smoothing applied to the daily case count displayed in the figure below.</p>
+<p>Later on, <span class="citation" data-cites="systrom2020_rtcovid">Systrom, Vladek, and Krieger (<a href="#ref-systrom2020_rtcovid" role="doc-biblioref">2020</a>)</span> developed a more complex Bayesian model that uses the positive test rate and <a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">MCMC</a> sampling to estimate <span class="math inline">\(R_t\)</span>, as seen on <a href="https://rt.live/">rt.live</a>. The positive test rate is a more useful measure because the number of raw positive tests is influenced by how many people are tested. The more you test, the more positive cases you will find. Therefore making test positive rate more informative. Furthermore, this simple model does not take into account the onset distribution or the incubation period of the virus. More plainly stated this is the distribution of the delay between infection and confirmed positive test. The more complex Bayesian model does take this into account.</p>
+<script type="module">
+import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@4/dist/runtime.js";
+import define from "https://api.observablehq.com/d/3383bd193ca21eaf.js?v=3";
+new Runtime().module(define, name => {
+  if (name === "rt_plot") return new Inspector(document.querySelector("#observablehq-rt_plot-4e985875"));
+  if (name === "viewof k") return new Inspector(document.querySelector("#observablehq-viewof-k-4e985875"));
+  if (name === "viewof state") return new Inspector(document.querySelector("#observablehq-viewof-state-4e985875"));
+  if (name === "cases") return new Inspector(document.querySelector("#observablehq-cases-4e985875"));
+});
+</script>
+<p><em><strong>Note</strong>: All credit for developing this model goes to <span class="citation" data-cites="systrom2020_rtcovid">Systrom, Vladek, and Krieger (<a href="#ref-systrom2020_rtcovid" role="doc-biblioref">2020</a>)</span>. They did all the hard work. I simply applied their insights, research, and model to estimate the real-time <span class="math inline">\(R_t\)</span> in the Netherlands. The visualization is heavily inspired by <span class="citation" data-cites="fil_2021_road">Fil (<a href="#ref-fil_2021_road" role="doc-biblioref">2021</a>)</span> graph about mobility data in France.</em></p>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-fil_2021_road" class="csl-entry" role="doc-biblioentry">
+Fil. 2021. <span>“Road Traffic Under COVID Restrictions France.”</span> <em>Observable</em>. <a href="https://observablehq.com/@fil/france-road-traffic-covid">https://observablehq.com/@fil/france-road-traffic-covid</a>.
+</div>
+<div id="ref-rivm2021covid19" class="csl-entry" role="doc-biblioentry">
+RIVM. 2021. <span>“Covid-19 Aantallen Per Gemeente Per Publicatiedatum.”</span> <em>RIVM Data</em>. <a href="https://data.rivm.nl/meta/srv/eng/catalog.search#/metadata/5f6bc429-1596-490e-8618-1ed8fd768427">https://data.rivm.nl/meta/srv/eng/catalog.search#/metadata/5f6bc429-1596-490e-8618-1ed8fd768427</a>.
+</div>
+<div id="ref-systrom2020_rtcovid" class="csl-entry" role="doc-biblioentry">
+Systrom, Kevin, Thomas Vladek, and Mike Krieger. 2020. <span>“Reproduction Number.”</span> <em>GitHub Repository</em>. GitHub. <a href="https://github.com/rtcovidlive/covid-model">https://github.com/rtcovidlive/covid-model</a>.
+</div>
+</div>
+</section>
+<section id="appendix" class="level2">
+<h2 class="anchored" data-anchor-id="appendix">Appendix</h2>
+<p>Model code: <span class="fa fa-github"></span> <a href="https://github.com/maxscheijen/rt-live-netherlands">maxscheijen/rt-live-netherlands</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
