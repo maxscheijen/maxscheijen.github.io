@@ -11,6 +11,8 @@ website:
         href: https://github.com/maxscheijen
       - icon: twitter
         href: https://twitter.com/maxscheijen
+  favicon: favicon.ico
+  twitter-card: true
 format:
   html:
     theme: litera
