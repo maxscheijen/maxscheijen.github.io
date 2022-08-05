@@ -1,0 +1,17 @@
+project:
+  type: website
+
+website:
+  title: "Max Scheijen"
+  google-analytics: "G-3B00DPE6RY"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/maxscheijen
+      - icon: twitter
+        href: https://twitter.com/maxscheijen
+format:
+  html:
+    theme: litera
+    css: styles.css

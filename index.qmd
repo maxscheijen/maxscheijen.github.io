@@ -1,0 +1,15 @@
+---
+title: "Latest"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: table
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title]
+page-layout: article
+title-block-banner: false
+date-format: DD MMM YYYY
+---
+
+

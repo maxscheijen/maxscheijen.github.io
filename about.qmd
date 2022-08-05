@@ -1,0 +1,42 @@
+---
+title: "About"
+about:
+  template: marquee
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/maxscheijen
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/max-scheijen
+    - icon: github
+      text: Github
+      href: https://github.com/maxscheijen
+
+---
+
+## 👋 Who am I
+
+Hi, I am Max Scheijen and I currently located in 📍 Amsterdam. I was born in Heerlen a city in the south of the Netherlands. I really building data drive products.
+
+## Work
+
+- 💼 Nationale Nederlanden is a financial services provider in the Netherlands. I work as a Data Scientist in the claims department were I build data driven tools assist claim handlers and automate processes.
+- 🦍 6Gorilla’s, a healthcare data startup in the Netherlands. We focus on developing data related products using analytics and machine learning for Mental Health Care, Youth Care and Elderly Care.
+- 🏫 University of Amsterdam as a Research Assistant.
+
+## Interests
+
+- 🚀 Bringing machine learning systems into production.
+- ♻️ Designing reproducible and robust machine learning systems.
+
+## Education
+
+- 👨‍🎓 Masters in Data Science and Society from Tilburg University. In the last year of my bachelor’s, I developed a very strong interest in statistics, data science, and machine learning. By doing my masters in Data Science I was able to connect both my interests in political science and data science.
+- 👨‍🎓 Bachelor’s Degree in Political Science from the University of Amsterdam with a minor in International Relations and Privacy Studies.
+
+## This website
+
+On this personal blog, I share projects, articles, and essays regarding data science, statistics, machine learning, and data in politics and many more topics. I try to keep this blog a minimal as possible, the content is the only thing that matters.
+
+Thanks for visiting my blog!
