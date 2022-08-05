@@ -2,7 +2,7 @@
 body,
 p,
 table {
-    font-family: "Verdana", "Source Serif Pro", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman", "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    font-family: merriweather, Georgia, Times, serif !important;
 }
 
 body,
@@ -31,4 +31,20 @@ th {
 .table>:not(:first-child) {
     border-top-width: 0px;
     border-top-color: #dee2e6;
+}
+
+h1 {
+    font-size: 26px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+.navbar-title {
+    font-size: 16px;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0;
 }
