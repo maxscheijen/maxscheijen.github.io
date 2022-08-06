@@ -3,7 +3,8 @@ project:
 
 website:
   title: "Max Scheijen"
-  google-analytics: "G-3B00DPE6RY"
+  google-analytics:
+    tracking-id: "G-3B00DPE6RY"
   navbar:
     right:
       - about.qmd
@@ -12,7 +13,6 @@ website:
       - icon: twitter
         href: https://twitter.com/maxscheijen
   favicon: favicon.ico
-  twitter-card: true
 format:
   html:
     theme: litera
