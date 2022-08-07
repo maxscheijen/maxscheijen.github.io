@@ -12,7 +12,7 @@ about:
     - icon: github
       text: Github
       href: https://github.com/maxscheijen
-
+comments: false
 ---
 
 ## 👋 Who am I
