@@ -12,6 +12,9 @@ website:
       - icon: twitter
         href: https://twitter.com/maxscheijen
   favicon: favicon.ico
+comments:
+  utterances:
+    repo: maxscheijen/comments
 format:
   html:
     theme: litera

@@ -10,6 +10,7 @@ listing:
 page-layout: article
 title-block-banner: false
 date-format: DD MMM YYYY
+comments: false
 ---
 
 
