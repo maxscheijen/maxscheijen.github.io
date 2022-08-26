@@ -15,8 +15,6 @@ about:
 comments: false
 ---
 
-## 👋 Who am I
-
 Hi, I am Max Scheijen and I currently located in 📍 Amsterdam. I was born in Heerlen a city in the south of the Netherlands. I really building data drive products.
 
 ## Work

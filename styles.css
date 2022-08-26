@@ -1,54 +1,9 @@
 /* css styles */
 body,
-p,
-table {
-    font-family: merriweather, Georgia, Times, serif !important;
-}
-
-body,
 table {
     font-size: 16px !important;
 }
 
-.sourceCode {
-    font-family: Courier, monospace !important;
-    font-size: 14px;
-}
-
 .quarto-listing-table>thead {
     display: none;
-}
-
-thead,
-tbody,
-tfoot,
-tr,
-td,
-th {
-    border: 0;
-}
-
-.table>:not(:first-child) {
-    border-top-width: 0px;
-    border-top-color: #dee2e6;
-}
-
-h1 {
-    font-size: 26px;
-}
-
-h2 {
-    font-size: 24px;
-}
-
-.navbar-title {
-    font-size: 16px;
-}
-
-.table>:not(caption)>*>* {
-    padding: 0;
-}
-
-.quarto-title-banner {
-    padding-bottom: 0em;
 }

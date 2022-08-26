@@ -17,5 +17,5 @@ comments:
     repo: maxscheijen/comments
 format:
   html:
-    theme: litera
+    theme: cosmo
     css: styles.css
