@@ -1,0 +1,16 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/data-system.html",
+      "/posts/pipelines.html",
+      "/posts/news.html",
+      "/posts/rt.html",
+      "/posts/fastml.html",
+      "/posts/cv.html",
+      "/posts/universities.html",
+      "/posts/feature-engineering.html",
+      "/posts/fake-news.html"
+    ]
+  }
+]
