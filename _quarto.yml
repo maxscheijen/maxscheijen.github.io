@@ -3,7 +3,7 @@ project:
 
 website:
   title: "Max Scheijen"
-  google-analytics: "UA-154715114-1"
+  google-analytics: "G-3B00DPE6RY"
   navbar:
     right:
       - about.qmd
