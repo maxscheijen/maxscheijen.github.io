@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/invest.html",
       "/posts/pipelines.html",
       "/posts/news.html",
       "/posts/rt.html",

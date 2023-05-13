@@ -115,3 +115,19 @@ pre code {
 a {
     text-decoration: none;
 }
+
+.quarto-title-meta-heading {
+    border-left: #e9ecef 1px solid !important;
+    padding-left: 10px;
+    opacity: 100%
+}
+
+.quarto-title-meta-contents {
+    border-left: #e9ecef 1px solid !important;
+    padding-left: 10px;
+    opacity: 100%
+}
+
+blockquote {
+    border-left: 1px solid #e9ecef;
+}
