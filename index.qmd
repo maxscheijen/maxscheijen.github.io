@@ -1,16 +1,16 @@
 ---
-title: "Latest"
+title: "Max Scheijen Blog"
+subtitle: "Thoughts about data and machines and how to use them"
+description: "Find the finer things in life"
 listing:
   contents: posts
   sort: "date desc"
-  type: table
+  type: default
   sort-ui: false
   filter-ui: false
-  fields: [date, title]
-page-layout: article
-title-block-banner: false
-date-format: DD MMM YYYY
+  fields: [date, author, title, categories, description]
+page-layout: full
+title-block-banner: true
+date-format: DD MMM, YYYY
 comments: false
 ---
-
-

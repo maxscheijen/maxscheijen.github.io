@@ -4,6 +4,7 @@ project:
 website:
   title: "Max Scheijen"
   google-analytics: "G-3B00DPE6RY"
+  page-footer: "Copyright 2023, Max Scheijen"
   navbar:
     right:
       - about.qmd
@@ -17,5 +18,9 @@ comments:
     repo: maxscheijen/comments
 format:
   html:
-    theme: cosmo
+    page-layout: article
+    code-line-numbers: true
+    code-block-bg: true
+    code-copy: true
     css: styles.css
+highlight-style: ayu
