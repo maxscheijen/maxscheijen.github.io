@@ -6,6 +6,8 @@ website:
   site-url: "https://maxscheijen.com/"
   google-analytics: "G-3B00DPE6RY"
   page-footer: "Copyright 2023, Max Scheijen"
+  open-graph: true
+  twitter-card: true
   navbar:
     right:
       - about.qmd
