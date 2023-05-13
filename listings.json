@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/starcoder.html",
       "/posts/invest.html",
       "/posts/pipelines.html",
       "/posts/news.html",

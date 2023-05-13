@@ -2,46 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://maxscheijen.github.io/posts/news.html</loc>
-    <lastmod>2023-05-13T13:03:47.105Z</lastmod>
+    <lastmod>2023-05-13T18:09:29.250Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/cv.html</loc>
-    <lastmod>2023-05-13T13:03:47.536Z</lastmod>
+    <lastmod>2023-05-13T18:09:29.705Z</lastmod>
+  </url>
+  <url>
+    <loc>https://maxscheijen.github.io/posts/starcoder.html</loc>
+    <lastmod>2023-05-13T18:09:30.060Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/invest.html</loc>
-    <lastmod>2023-05-13T13:03:47.902Z</lastmod>
+    <lastmod>2023-05-13T18:09:30.459Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/fake-news.html</loc>
-    <lastmod>2023-05-13T13:03:48.898Z</lastmod>
+    <lastmod>2023-05-13T18:09:31.432Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/feature-engineering.html</loc>
-    <lastmod>2023-05-13T13:03:49.282Z</lastmod>
+    <lastmod>2023-05-13T18:09:31.843Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/universities.html</loc>
-    <lastmod>2023-05-13T13:03:49.641Z</lastmod>
+    <lastmod>2023-05-13T18:09:32.195Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/fastml.html</loc>
-    <lastmod>2023-05-13T13:03:50.013Z</lastmod>
+    <lastmod>2023-05-13T18:09:32.544Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/rt.html</loc>
-    <lastmod>2023-05-13T13:03:50.428Z</lastmod>
+    <lastmod>2023-05-13T18:09:32.944Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/posts/pipelines.html</loc>
-    <lastmod>2023-05-13T13:03:50.841Z</lastmod>
+    <lastmod>2023-05-13T18:09:33.353Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/index.html</loc>
-    <lastmod>2023-05-13T13:03:51.249Z</lastmod>
+    <lastmod>2023-05-13T18:09:33.777Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.github.io/about.html</loc>
-    <lastmod>2023-05-13T13:03:51.533Z</lastmod>
+    <lastmod>2023-05-13T18:09:34.055Z</lastmod>
   </url>
 </urlset>
