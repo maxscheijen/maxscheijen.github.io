@@ -2,7 +2,7 @@
 title: "Investing Your Money without Investing Your Time"
 subtitle: "How I invest my disposable income"
 description: "Don’t want to spend time thinking about investing but I also don't want my money to become less valuable over time"
-date: 2023-05-13
+date: 2023-05-02
 author: "Max Scheijen"
 categories:
   - investing

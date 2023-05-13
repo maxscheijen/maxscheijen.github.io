@@ -131,3 +131,8 @@ a {
 blockquote {
     border-left: 1px solid #e9ecef;
 }
+
+footer.footer .nav-footer,
+#quarto-header nav {
+    border-bottom: 1px solid #e9ecef;
+}
