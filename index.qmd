@@ -1,7 +1,7 @@
 ---
-title: "Max Scheijen Blog"
+title: "Living Through Data"
 subtitle: "Thoughts about data and machines and how to use them"
-description: "Find the finer things in life"
+description: "Articles about data science, artificial intelligence, machine learning and other topics that interest me."
 listing:
   contents: posts
   sort: "date desc"
@@ -9,7 +9,7 @@ listing:
   sort-ui: false
   filter-ui: false
   fields: [date, author, title, categories, description]
-page-layout: full
+page-layout: article
 title-block-banner: true
 date-format: DD MMM, YYYY
 comments: false
