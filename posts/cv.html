@@ -8,6 +8,7 @@
 
 <meta name="author" content="Max Scheijen">
 <meta name="dcterms.date" content="2020-03-05">
+<meta name="description" content="Building a robust corss validation strategy/framework will make your models perform the same in the real world as in development.">
 
 <title>Max Scheijen - Robust Cross Validation</title>
 <style>
@@ -137,7 +138,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -175,7 +176,17 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Robust Cross Validation</h1>
-                      </div>
+            <p class="subtitle lead">Build a robust cross validation strategy and get better models</p>
+                  <div>
+        <div class="description">
+          Building a robust corss validation strategy/framework will make your models perform the same in the real world as in development.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">modelling</div>
+                <div class="quarto-category">cross-validation</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -201,52 +212,68 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
 
 
 
 
 <p>One of the first things you learn when applying machine learning models is the notion of cross-validation. Training a model, which basically is learning the parameters of a prediction function, and evaluating the performance of a model on the same dataset is a methodological mistake.</p>
 <p>The machine learning model could learn the labels of the data and reproduce them. However, this is not really what we want. If we then deploy the machine learning model on unseen data, we run the risk of predicting not anything useful. Our model has only learned the training data.</p>
-<p>In this post, I present a robust cross-validation method for tabular data. This method, among other things, can be used in Data Science competitions.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>To demonstrate this technique, we use the <a href="https://www.kaggle.com/c/nyc-taxi-trip-duration/overview">New York City Taxi Trip Duration</a> competition hosted on <a href="https://www.kaggle.com/">Kaggle</a>. In this competition, we try to predict the trip duration.</p>
+</div>
+</div>
+</div></div><p>In this post, I present a robust cross-validation method for tabular data. This method, among other things, can be used in Data Science competitions.</p>
 <p>This post is not intended to achieve a high score in the competition in question. I demonstrate a way to implement a cross-validation method that gives the same results on validation data as on unseen test data.</p>
-<section id="k-fold-cross-validation" class="level2">
+<section id="k-fold-cross-validation" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="k-fold-cross-validation"><span class="math inline">\(k\)</span>-fold cross-validation</h2>
 <p>We load the train and test data into the cell above. I drop the <code>dropoff_datetime</code> because this feature isn’t present in the testing data.</p>
 <p>We use <span class="math inline">\(k\)</span>-fold cross-validation to implement our cross-validation method. In <span class="math inline">\(k\)</span>-fold cross-validation we estimate what our model has learned based on new data that the model has not yet seen. The <span class="math inline">\(k\)</span> in <span class="math inline">\(k\)</span>-fold cross-validation shows how many groups we divide our data into. If <span class="math inline">\(k\)</span> = 5 then we divide our data into 5 groups. We then train our algorithm on 4 groups of the data, and we validate the model on the 1 group of data that the model has not yet seen. We repeat this process until we have trained our model on each group of data once. Also, each group of data has been used to validate our model.</p>
 <p>To implement this method we use <code>sklearn</code>’s <span class="math inline">\(k\)</span>-fold cross-validation capabilities. In our case, we are dealing with a regression problem. This is why we use a simple k-fold method. However, if you are dealing with a classification problem you can use stratified <span class="math inline">\(k\)</span>-fold cross-validation. This ensures that the frequency of labels between the folds is the same. And increases ensures better consistency between validation and testing scores.</p>
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># number of folds used</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>FOLDS <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># instantiate k-fold cross-validation</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>kfold <span class="op">=</span> KFold(n_splits<span class="op">=</span>FOLDS, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># number of folds used</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>FOLDS <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># instantiate k-fold cross-validation</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>kfold <span class="op">=</span> KFold(n_splits<span class="op">=</span>FOLDS, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this case choose <span class="math inline">\(k\)</span> = 5. We have a relatively large data set, so it seems to me that 5 folds will generate a robust validation score. We are now going to divide our data into 5 groups/folds. We create a new column in which we record the fold the observation belongs to.</p>
 <p>However, before we do this, we randomize the order of the data. This way, we prevent the order in which the data is placed from becoming important, which can incorporate bias in our validation score.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data into dataframe</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/taxi.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># load data into dataframe</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/taxi.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># randomize order of dataframe</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">42</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create fold columns and store the fold</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fold, (train_idx, valid_idx) <span class="kw">in</span> <span class="bu">enumerate</span>(kfold.split(</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    X<span class="op">=</span>train, y<span class="op">=</span>df[<span class="st">'trip_duration'</span>])</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>):</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    df.loc[valid_idx, <span class="st">'kfold'</span>] <span class="op">=</span> fold</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># display rows</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell page-columns page-full" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># randomize order of dataframe</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>df <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">42</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># create fold columns and store the fold</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="cf">for</span> fold, (train_idx, valid_idx) <span class="kw">in</span> <span class="bu">enumerate</span>(kfold.split(</span>
+<span id="cb3-6"><a href="#cb3-6"></a>    X<span class="op">=</span>train, y<span class="op">=</span>df[<span class="st">'trip_duration'</span>])</span>
+<span id="cb3-7"><a href="#cb3-7"></a>):</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    df.loc[valid_idx, <span class="st">'kfold'</span>] <span class="op">=</span> fold</span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co"># display rows</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>df.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display column-page" data-execution_count="10">
 
 <div>
 
@@ -322,8 +349,8 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p>Now we have created a column in which we record the fold the observation belongs to. If we look at the size distribution of the number of folds, we see that the folds are approximately the same. This is what we want!</p>
 <p>Sometimes there can be a small difference in the number of observations (in our case!) because the number of recorded samples is not easily divisible by the number of folds.</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># size of every fold</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'kfold'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># size of every fold</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>df[<span class="st">'kfold'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>0.0    291729
 1.0    291729
@@ -334,27 +361,27 @@ Name: kfold, dtype: int64</code></pre>
 </div>
 </div>
 <p>Even though this post does not focus on creating a well-performing predictive model, I’ll do simple feature engineering to make the performance of our model a little bit better. This makes me feel a little bit better about myself! The function below extracts some simple date features from the date feature. This also gives us some more variables to work with.</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_dates(df: pd.DataFrame, date_column: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.copy()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    date_attrs <span class="op">=</span> [<span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"dayofweek"</span>, <span class="st">"day"</span>, <span class="st">"hour"</span>, <span class="st">"minute"</span>]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># get datetime index</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    df[date_column] <span class="op">=</span> pd.to_datetime(df[date_column])</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create date features</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> date_atrr <span class="kw">in</span> date_attrs:</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        df[<span class="ss">f"</span><span class="sc">{</span>date_column<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>date_atrr<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> <span class="bu">getattr</span>(df[date_column].dt, date_atrr)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.drop([date_column], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># extract date features</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> extract_dates(df, <span class="st">'pickup_datetime'</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># display</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>train.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell page-columns page-full" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">def</span> extract_dates(df: pd.DataFrame, date_column: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb6-2"><a href="#cb6-2"></a>    df <span class="op">=</span> df.copy()</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    </span>
+<span id="cb6-4"><a href="#cb6-4"></a>    date_attrs <span class="op">=</span> [<span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"dayofweek"</span>, <span class="st">"day"</span>, <span class="st">"hour"</span>, <span class="st">"minute"</span>]</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="co"># get datetime index</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>    df[date_column] <span class="op">=</span> pd.to_datetime(df[date_column])</span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="co"># create date features</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="cf">for</span> date_atrr <span class="kw">in</span> date_attrs:</span>
+<span id="cb6-11"><a href="#cb6-11"></a>        df[<span class="ss">f"</span><span class="sc">{</span>date_column<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>date_atrr<span class="sc">}</span><span class="ss">"</span>] <span class="op">=</span> <span class="bu">getattr</span>(df[date_column].dt, date_atrr)</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="cf">return</span> df.drop([date_column], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-14"><a href="#cb6-14"></a></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co"># extract date features</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>train <span class="op">=</span> extract_dates(df, <span class="st">'pickup_datetime'</span>)</span>
+<span id="cb6-17"><a href="#cb6-17"></a></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co"># display</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>train.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display column-screen" data-execution_count="14">
 
 <div>
 
@@ -449,25 +476,25 @@ Name: kfold, dtype: int64</code></pre>
 </div>
 <p>We can then take the average prediction of these five models as our final prediction.</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the mean of k predictions</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>final_predictions <span class="op">=</span> pred_df.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># display first 3 rows</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>final_predictions.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># get the mean of k predictions</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>final_predictions <span class="op">=</span> pred_df.mean(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co"># display first 3 rows</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>final_predictions.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>NameError: name 'pred_df' is not defined</code></pre>
 </div>
 </div>
 <p>We store this average prediction in our submission file and upload it to Kaggle to get our testing score. Our testing score on Kaggle is <strong>0.41885</strong>. The internal mean validation score was <strong>0.4329</strong>, which isn’t too bad of a difference.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load sample submission</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sample_sub <span class="op">=</span> pd.read_csv(<span class="st">'data/sample_submission.csv'</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># store predictions in column</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>sample_sub[<span class="st">'trip_duration'</span>] <span class="op">=</span> final_predictions</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># save predictions</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>sample_sub.to_csv(<span class="st">'submissions/submission.csv'</span>, index<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># load sample submission</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>sample_sub <span class="op">=</span> pd.read_csv(<span class="st">'data/sample_submission.csv'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># store predictions in column</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>sample_sub[<span class="st">'trip_duration'</span>] <span class="op">=</span> final_predictions</span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co"># save predictions</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>sample_sub.to_csv(<span class="st">'submissions/submission.csv'</span>, index<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="conclusion" class="level2">
@@ -578,6 +605,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <script src="https://utteranc.es/client.js" repo="maxscheijen/comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2023, Max Scheijen</div>
+  </div>
+</footer>
 
 
 

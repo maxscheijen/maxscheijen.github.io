@@ -1,9 +1,117 @@
 /* css styles */
-body,
-table {
-    font-size: 16px !important;
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap');
+
+body {
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 18px;
+    font-weight: 400;
+    color: #425466;
+}
+
+main>p {
+    line-height: 28px;
+}
+
+.quarto-title .quarto-categories {
+    display: flex;
+    column-gap: 0.4em;
+    padding-bottom: 0.5em;
+    margin-top: 1em;
+}
+
+.quarto-title-banner {
+    padding-top: 1.5em;
+    padding-bottom: 1em;
 }
 
 .quarto-listing-table>thead {
     display: none;
+}
+
+.quarto-title-banner {
+    margin-bottom: 1em;
+    color: #0A2540;
+    background: #f8f9fa;
+}
+
+p.subtitle {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+    color: #545555;
+    font-weight: 100;
+}
+
+.lead {
+    font-size: 1.15rem;
+    font-weight: 100;
+    color: #545555 !important;
+}
+
+.navbar-dark {
+    background: #fff;
+}
+
+.navbar .navbar-brand {
+    color: #0A2540;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #5c6063 !important;
+}
+
+.navbar-dark {
+    background: #fff;
+    /* border-bottom: #e8e6e6 solid 1px; */
+}
+
+.nav-link {
+    color: #0A2540 !important;
+    font-weight: 600;
+}
+
+.navbar #quarto-search.type-overlay .aa-Autocomplete svg.aa-SubmitIcon {
+    width: 26px;
+    height: 26px;
+    color: #373a3c;
+    opacity: 1;
+}
+
+h1 {
+    color: #0A2540;
+    font-weight: 600;
+    font-size: 48px;
+}
+
+h2 {
+    opacity: .9;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 34px;
+    color: #0A2540;
+}
+
+h3 {
+    font-weight: 600;
+    color: #0A2540;
+}
+
+.listing-subtitle {
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
+    font-weight: 300;
+    color: #425466;
+}
+
+.quarto-title-block .quarto-title-banner {
+    background-color: rgb(237, 243, 249);
+}
+
+pre code {
+    font-size: 0.75rem;
+}
+
+a {
+    text-decoration: none;
 }

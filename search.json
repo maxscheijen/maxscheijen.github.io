@@ -2,49 +2,49 @@
   {
     "objectID": "posts/news.html",
     "href": "posts/news.html",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "",
     "text": "In this article, I analyze Dutch news articles. I gathered the news articles by scraping them from the NOS website. The NOS is one of the organizations of the public broadcasting system in the Netherlands and established in the Media Act. Its task is to provide the media supply for the national public media service in the field of news, sports, and events. The NOS is also one of the biggest online news websites in the Netherlands.\nAs of the publishing of this post, the dataset contains 218,609 news articles spanning more than 10 years (the first article in the archive is published on 2020-01-01). In addition to the article content, the dataset contains the article title, the category, and the publishing grade. The NOS also publishes live blogs. I do not consider these news articles. Therefore they are excluded from the dataset.\nBefore analyzing the news articles, the raw data needs to be cleaned. The texts contain a lot of white spaces and some weird characters. I use regular expressions and some Python string methods to remove extra white spaces and these wrong characters. After cleaning the content of an article will look something like you see in the summary box.\nMost of the analysis focuses on the differences between article features based on the category they are classified as."
   },
   {
     "objectID": "posts/news.html#article-counts",
     "href": "posts/news.html#article-counts",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "Article Counts",
     "text": "Article Counts\nThe first thing to look at is the article count over time between 2010 and 2020. To get a less stochastic article count, I decided to group them by months over time. From 2010 to the middle of 2016, the monthly article count increased from around 1000 to a little more than 2000. After 2016 we see a downwards trend in the number of monthly articles published to 1100 in 2020.\n\n\n\n\n\nMore interesting is probably to look at the change of monthly article count when we split the articles based on category. If we look at the absolute count over time, we see the same trend as the overall article count. This is most likely caused by the “Binnenland” (domestic) and the “Buitenland” (foreign) categories, which display the same trends.\n\n\n\n\n\nTherefore I choose to normalize the counts based on category. The second graph shows the share of a news category in the total number of articles in a specific month. For example, there is a large bump in the domestic news share (and drop in foreign news) in the first quarter of 2020 caused by the initial Coronavirus outbreak. In contrast, most of 2011, the foreign news articles were most prevalent, probably caused by the start of the Arabic Spring, the capture of Osama Binladen, and the terrorist attacks in Norway."
   },
   {
     "objectID": "posts/news.html#word-count",
     "href": "posts/news.html#word-count",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "Word Count",
     "text": "Word Count\nThe word count of an article can be an indicator of the quality of the news article. Blumenstock et al. Blumenstock (2008) show that longer Wikipedia articles are more likely of better quality. Longer articles are more often featured than shorter Wikipedia articles. They state that word count is a robust method of article quality.\nLet us first look at the overall word count of all the articles published by the NOS. As expected, the word count of the article is heavily right-skewed (when used for modelling probably better to use the log). Also, the word count of the title is more normally distributed, which is expected.\n\n\n\n\n\nTech and Culture & Media have the highest median word count. This makes sense to me. These articles are often less time-dependent. Meaning that their publishing is less dependent on the daily news cycle. They are still relevant at a later moment than political news. This suggests that writers have more time to write these articles, can incorporate more detail, leading to longer pieces. The “remarkable” and “regional news” category have the lowest median news count. This is expected most of these articles report small news events, leading to shorter pieces."
   },
   {
     "objectID": "posts/news.html#readability",
     "href": "posts/news.html#readability",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "Readability",
     "text": "Readability\nAnother important of a news article is how easy it is to read. Readability measures how hard it is to read a text. There are several methods to calculate readability. These methods are not that reliable, but they give some insight into the readability of a written text. In this analysis, I use the Flesch reading-ease test to calculate readability. Douma Douma (1960) slightly tweaked the values in the Flesch reading-ease test formula such that the measures can also be used for Dutch texts.\n\nFlesch-Douma\nThe Flesch-Douma formula Douma (1960) equates readability to the following formula:\n\\[ readability = 206.835 - 0.93 (\\frac{total words}{total sentences}) - 77.0 (\\frac{total syllables}{total words})\\]\n\n\n\n\n\n\n\n\nScore\nSchool level\nNotes\n\n\n\n\n100–90\n5th grade\nVery easy to read. Easily understood by an average 11-year-old student.\n\n\n90–80\n6th grade\nEasy to read. Conversational English for consumers.\n\n\n80-70\n7th grade\nFairly easy to read.\n\n\n70-60\n8th & 9th grade\nPlain English. Easily understood by 13- to 15-year-old students.\n\n\n60-50\n10th to 12th grade\nFairly difficult to read.\n\n\n50-30\nCollege\nDifficult to read.\n\n\n30-10\nCollege graduate\nVery difficult to read. Best understood by university graduates.\n\n\n10-0\nProfessional\nExtremely difficult to read. Best understood by university graduates.\n\n\n\nThe articles categorized as Foreign, Politics, Tech, and Economy are the hardest to read with a readability score below 60, which is about 10th to 12th-grade-level reading. So somewhat hard to read. Categories “remarkable news”, “regional news” and “culture & media” are easier to read with a score above 60. However, the overall median scores are not that different across categories."
   },
   {
     "objectID": "posts/news.html#sentiment-polarity-and-subjectivity",
     "href": "posts/news.html#sentiment-polarity-and-subjectivity",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "Sentiment, Polarity, and Subjectivity",
     "text": "Sentiment, Polarity, and Subjectivity\nLet us look at the sentiment of the texts. Are they positive or negative? Furthermore, we can also analyze the texts for subjectivity. When looking at all the articles together, we see that most of the news articles are neutral in their polarity. Most of the articles hover somewhere in the middle between subjective and objective in their subjectivity measure.\n\n\n\n\n\n\n\n\n\n\nEven if we parse the articles by news category we do not see many differences in the distributions of polarity and subjectivity scores."
   },
   {
     "objectID": "posts/news.html#informative-words",
     "href": "posts/news.html#informative-words",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "Informative words",
     "text": "Informative words\nWe can use TF-IDF, short for term frequency-inverse document frequency, to extract the most informative words out of every article. TF-IDF is a numerical statistic that is intended to reflect how important a word is to a document in a collection or corpus. In this case, I removed stop words, because most of the time they don’t contain any useful information. Also, I ignore terms that appear in less than 0.5% of the documents. Let’s see if what the most informative terms are in the news articles in every category.\n\n\n\n\n\nThe TF-IDF result is pretty interesting. For example, we can see that the most informative terms (translated to English) in articles categorized as politics are: chamber, cabinet, minister, political parties (VVD, PvdA, CDA, D66), member of parliament, and secretary of state. All words that are associated with politics. The most informative terms in the economic news articles are also associated with the economy. For example, percent, Euro, company, billion, banks, and money. In the Royal Family category, we see that the words King, Queen, Prince, Princess, Willem (the king’s first name) are all highly informative."
   },
   {
     "objectID": "posts/news.html#references",
     "href": "posts/news.html#references",
-    "title": "News articles",
+    "title": "Dutch News Articles",
     "section": "References",
     "text": "References\n\n\nBlumenstock, Joshua E. 2008. “Size Matters: Word Count as a Measure of Quality on Wikipedia.” In Proceedings of the 17th International Conference on World Wide Web, 1095–96. WWW ’08. New York, NY, USA: Association for Computing Machinery. https://doi.org/10.1145/1367497.1367673.\n\n\nDouma, W. H. 1960. “De Leesbaarheid van Landbouwbladen : Een Onderzoek Naar En Een Toepassing van Leesbaarheidsformules.” Bulletin / Afdeling Sociologie En Sociografie van de Landbouwhogeschool Wageningen."
   },
@@ -53,7 +53,7 @@
     "href": "posts/cv.html",
     "title": "Robust Cross Validation",
     "section": "",
-    "text": "One of the first things you learn when applying machine learning models is the notion of cross-validation. Training a model, which basically is learning the parameters of a prediction function, and evaluating the performance of a model on the same dataset is a methodological mistake.\nThe machine learning model could learn the labels of the data and reproduce them. However, this is not really what we want. If we then deploy the machine learning model on unseen data, we run the risk of predicting not anything useful. Our model has only learned the training data.\nIn this post, I present a robust cross-validation method for tabular data. This method, among other things, can be used in Data Science competitions.\nTo demonstrate this technique, we use the New York City Taxi Trip Duration competition hosted on Kaggle. In this competition, we try to predict the trip duration.\nThis post is not intended to achieve a high score in the competition in question. I demonstrate a way to implement a cross-validation method that gives the same results on validation data as on unseen test data."
+    "text": "One of the first things you learn when applying machine learning models is the notion of cross-validation. Training a model, which basically is learning the parameters of a prediction function, and evaluating the performance of a model on the same dataset is a methodological mistake.\nThe machine learning model could learn the labels of the data and reproduce them. However, this is not really what we want. If we then deploy the machine learning model on unseen data, we run the risk of predicting not anything useful. Our model has only learned the training data.\nIn this post, I present a robust cross-validation method for tabular data. This method, among other things, can be used in Data Science competitions.\nThis post is not intended to achieve a high score in the competition in question. I demonstrate a way to implement a cross-validation method that gives the same results on validation data as on unseen test data."
   },
   {
     "objectID": "posts/cv.html#k-fold-cross-validation",
@@ -298,7 +298,7 @@
     "href": "posts/pipelines.html",
     "title": "Simple Machine Learning Pipelines",
     "section": "",
-    "text": "In my opinion, pipelines in scikit-learn are one of the most useful things in the library. They allow you to sequentially apply a list of transformers and a final estimator to your data. Furthermore, they can be used in cross-validation. This ensures that data transformations within the cross-validation loop are only fitted on the training data. This prevents data leakage and better generalization on the test dataset or in production.\nPipelines can also be used in a grid or random search for the best hyper-parameters. However, this is not limited to model parameters. We can also search for the best data transformations hyper-parameters (imputation with the median or the mean) in conjunction with the model hyper-parameters.\nHowever, in this post, I look at the fundamentals of the pipeline. We focus on implementing scikit-learn transformers and custom transformers into a scikit-learn pipeline. How do we apply different transformations to different data types or features? After implementing this, we can save the entire data pipeline (data transformations and the estimator) into a single artifact. This is great when we want to use the model in production because we need to deal with one file.\nWe use a house pricing dataset from kaggle for demonstrating the pipelines."
+    "text": "In my opinion, pipelines in scikit-learn are one of the most useful things in the library. They allow you to sequentially apply a list of transformers and a final estimator to your data. Furthermore, they can be used in cross-validation. This ensures that data transformations within the cross-validation loop are only fitted on the training data. This prevents data leakage and better generalization on the test dataset or in production.\nPipelines can also be used in a grid or random search for the best hyper-parameters. However, this is not limited to model parameters. We can also search for the best data transformations hyper-parameters (imputation with the median or the mean) in conjunction with the model hyper-parameters.\nHowever, in this post, I look at the fundamentals of the pipeline. We focus on implementing scikit-learn transformers and custom transformers into a scikit-learn pipeline. How do we apply different transformations to different data types or features? After implementing this, we can save the entire data pipeline (data transformations and the estimator) into a single artifact. This is great when we want to use the model in production because we need to deal with one file."
   },
   {
     "objectID": "posts/pipelines.html#pipelines",
@@ -331,9 +331,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Latest",
+    "title": "Max Scheijen Blog",
     "section": "",
-    "text": "Date\n\n\nTitle\n\n\n\n\n\n\n01 Dec 2020\n\n\nSimple Machine Learning Pipelines\n\n\n\n\n03 Nov 2020\n\n\nNews articles\n\n\n\n\n16 Oct 2020\n\n\nReal-time Effective Reproductive Number\n\n\n\n\n18 Mar 2020\n\n\nFast Machine Learning\n\n\n\n\n05 Mar 2020\n\n\nRobust Cross Validation\n\n\n\n\n19 Feb 2020\n\n\nUniversity Enrolment Analysis\n\n\n\n\n17 Feb 2020\n\n\nFeature Engineering\n\n\n\n\n17 Jan 2020\n\n\nFake News Classification\n\n\n\n\n\n\nNo matching items"
+    "text": "Custom Transformers for sckit-learn pipelines\n\n\n\n\nprocessing\n\n\nscikit-learn\n\n\n\n\nBuild custom transformers that can be used as an step in you scikit-learn machine learning or data transformation pipelines.\n\n\n\n\n\n\n01 Dec, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nAnalyzing changes in Dutch news articles through time\n\n\n\n\nanalyses\n\n\ngraphs\n\n\n\n\nUsing a scraped dataset of news articles to detect and analyze dutch news trends and topics through time.\n\n\n\n\n\n\n03 Nov, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nEstimating in real-time the Dutch effective repoductive number\n\n\n\n\nanalysis\n\n\ncovid\n\n\n\n\nUsing Bayesian statistics to estimate the real-time effective repoductive number allow us to predict future covid case count in the Netherlands.\n\n\n\n\n\n\n16 Oct, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nUsing framework for building POC models\n\n\n\n\nmodelling\n\n\nlightgbm\n\n\n\n\nBuild quick model good performing model to estimate if time effort building some advanced model is worth it.\n\n\n\n\n\n\n18 Mar, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nBuild a robust cross validation strategy and get better models\n\n\n\n\nmodelling\n\n\ncross-validation\n\n\n\n\nBuilding a robust corss validation strategy/framework will make your models perform the same in the real world as in development.\n\n\n\n\n\n\n05 Mar, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nAnalysis of University Enrolment in the Netherlands\n\n\n\n\nanalysis\n\n\n\n\nAn analysis of Unversity Enrolment in the Netherlands over time\n\n\n\n\n\n\n19 Feb, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nSome simple feature engineering practices\n\n\n\n\nfeature-engineering\n\n\n\n\nCorrect feature engineering can improve the performance of your machine learning models.\n\n\n\n\n\n\n17 Feb, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\n\n\n\nClassify wether a news article is fake or not\n\n\n\n\nnlp\n\n\nmodelling\n\n\n\n\nBuild a classification model to determine wether or not a news article is false or not.\n\n\n\n\n\n\n17 Jan, 2020\n\n\nMax Scheijen\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",

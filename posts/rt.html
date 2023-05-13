@@ -8,6 +8,7 @@
 
 <meta name="author" content="Max Scheijen">
 <meta name="dcterms.date" content="2020-10-16">
+<meta name="description" content="Using Bayesian statistics to estimate the real-time effective repoductive number allow us to predict future covid case count in the Netherlands.">
 
 <title>Max Scheijen - Real-time Effective Reproductive Number</title>
 <style>
@@ -128,7 +129,17 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Real-time Effective Reproductive Number</h1>
-                      </div>
+            <p class="subtitle lead">Estimating in real-time the Dutch effective repoductive number</p>
+                  <div>
+        <div class="description">
+          Using Bayesian statistics to estimate the real-time effective repoductive number allow us to predict future covid case count in the Netherlands.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">analysis</div>
+                <div class="quarto-category">covid</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -156,15 +167,17 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
 
 
 
 
 <p>The <a href="https://en.wikipedia.org/wiki/Basic_reproduction_number#Effective_reproduction_number">effective reproduction number</a> <span class="math inline">\(R_t\)</span> is a way to quantify how quickly a virus spreads in a population. It estimates the number of people infected by a single person. <span class="math inline">\(R_t\)</span> is an indicator of how fast a virus is spreading. This post displays the <span class="math inline">\(R_t\)</span> for COVID-19 in the Netherlands.</p>
 <p>The graph below displays a real-time estimate of the <span class="math inline">\(R_t\)</span> in the Netherlands and its provinces. This estimate is based on the daily COVID-19 <a href="https://data.rivm.nl/covid-19/COVID-19_aantallen_gemeente_per_dag.csv">case counts</a> provided by the <span class="citation" data-cites="rivm2021covid19">RIVM (<a href="#ref-rivm2021covid19" role="doc-biblioref">2021</a>)</span>.</p>
+<div class="column-page">
 <div id="observablehq-rt_plot-4e985875">
 
+</div>
 </div>
 <p>The controls allow you to select a <span style="font-weight: 600; color: orange;">province</span> and compare it to the <span style="font-weight: 600;">national</span> average. The <span style="font-weight: 600; color: gray;">bands</span> display the 90% confidence interval for the highlighted province. The smoothing helps with removing short-term fluctuations and highlighting longer-term trends or cycles by taking the average <span class="math inline">\(R_t\)</span>/cases over a specified day range. The dashed gray lines are the non-selected provinces.</p>
 <div id="observablehq-viewof-state-4e985875">
@@ -175,8 +188,10 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 </div>
 <p><br></p>
 <p>The graph below displays the daily COVID-19 case counts. It follows the same color scheme as the <span class="math inline">\(R_t\)</span> graph. The case count for the Netherlands is an average over all the provinces. Therefore it doesn’t follow the absolute case count for the Netherlands.</p>
+<div class="column-page">
 <div id="observablehq-cases-4e985875">
 
+</div>
 </div>
 <p>The estimation of <span class="math inline">\(R_t\)</span> is based on the smoothed daily case count. As suggest by Systrom et al.{% cite systrom2020_rtcovid %}, a gaussian filter is applied to the daily case count time-series. This reduces the noise of the stochastic nature of case counts, caused by late reporting or corrections. A window size of 7 days is arbitrarily chosen to smooth this stochastic process. This gives late-stage reporting, back-logs and corrections a week to catch up. The real-world infections are much less stochastic than the process of reporting, making smoothing necessary. The smoothing applied to the daily case count displayed in the figure below.</p>
 <p>Later on, <span class="citation" data-cites="systrom2020_rtcovid">Systrom, Vladek, and Krieger (<a href="#ref-systrom2020_rtcovid" role="doc-biblioref">2020</a>)</span> developed a more complex Bayesian model that uses the positive test rate and <a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">MCMC</a> sampling to estimate <span class="math inline">\(R_t\)</span>, as seen on <a href="https://rt.live/">rt.live</a>. The positive test rate is a more useful measure because the number of raw positive tests is influenced by how many people are tested. The more you test, the more positive cases you will find. Therefore making test positive rate more informative. Furthermore, this simple model does not take into account the onset distribution or the incubation period of the virus. More plainly stated this is the distribution of the delay between infection and confirmed positive test. The more complex Bayesian model does take this into account.</p>
@@ -313,6 +328,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <script src="https://utteranc.es/client.js" repo="maxscheijen/comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2023, Max Scheijen</div>
+  </div>
+</footer>
 
 
 

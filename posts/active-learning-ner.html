@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Scheijen">
+<meta name="dcterms.date" content="2023-03-10">
+<meta name="description" content="Use active learning to speed up the data annotation process using a custom named entity recognition model.">
+
+<title>Max Scheijen - Active Learning Named Entity Recognition</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-3B00DPE6RY"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Max Scheijen</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/maxscheijen"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/maxscheijen"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Active Learning Named Entity Recognition</h1>
+            <p class="subtitle lead">Data annotation using Active Learning</p>
+                  <div>
+        <div class="description">
+          Use active learning to speed up the data annotation process using a custom named entity recognition model.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">nlp</div>
+                <div class="quarto-category">labeling</div>
+                <div class="quarto-category">spacy</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Max Scheijen </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 10, 2023</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<p>This article explores a strategy that utilizes active learning to accelerate the process of annotating text data with named entities. Active learning is a machine learning field that aims to reduce the overall amount of labeled data needed by selectively choosing data samples that offer significant understanding into the problem being tackled. This approach enables you to concentrate on labeling those data points that are most valuable for the task.</p>
+<div class="page-columns page-full"><p></p><div class="no-row-height column-margin column-container"><span class="aside">In this instance, I utilize the <a href="https://github.com/explosion/projects/tree/v3/tutorials/ner_food_ingredients">ingredient dataset</a> made available by Explosion.</span></div></div>
+<p>This article does not demonstrate active learning to select lower confidence model because selectiong these samples in an named entity recognition context is little more difficult. Instead, I utilize the model’s named entity predictions to <strong>pre-annotate</strong> entities in the data, which can then be reviewed and edited by the annotator, speeding up the annotation process.</p>
+<div class="callout callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li><strong><a href="https://labelstud.io/">Label Studio</a></strong> is used for annotating data. It can be leveraged to prepare raw data or improve existing training data to get more accurate ML models.”</li>
+<li><strong><a href="https://spacy.io/">spaCy</a></strong> is used to train a custom <strong>named entity recognition</strong> model, enableing us to generate named entity predictions on unlabeled data and add pre-annotations.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Let’s get started with annotating some entities.</p>
+<section id="annotating-data" class="level2">
+<h2 class="anchored" data-anchor-id="annotating-data">Annotating Data</h2>
+<p>First <a href="https://labelstud.io/guide/install.html">install</a> Label Studio and the <a href="https://labelstud.io/guide/sdk.html">Label Studio SDK</a> which allows to to interact with the API using a Python interface.</p>
+<p>To begin, set up the connection to the Label Studio API by obtaining your API key from your user profile in Label Studio. In your script, include the following code, substituting your own values for <code>LABEL_STUDIO_URL</code> and <code>LABEL_STUDIO_API_KEY</code> which can be found under your account setting in the Label Studio interface.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>LABEL_STUDIO_URL <span class="op">=</span> <span class="st">'http://localhost:8080'</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>LABEL_STUDIO_API_KEY <span class="op">=</span> <span class="st">'638e606905d48b784e3fa7740405007e0e1e8fb1'</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>PROJECT_ID <span class="op">=</span> <span class="dv">9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Setup an connection to the API using the Label Studio SDK Client.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> label_studio_sdk <span class="im">import</span> Client</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>client <span class="op">=</span> Client(url<span class="op">=</span>LABEL_STUDIO_URL, api_key<span class="op">=</span>LABEL_STUDIO_API_KEY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Setup named entity recognition using the Label Studio UI and annotate some texts.</p>
+<p>Select the project your working on based on your projects id (seen the path in label studio url). Use the the <code>get_labeled_task()</code> method to retrieve all tasks that have been completed/annotated.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>project <span class="op">=</span> client.get_project(PROJECT_ID)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>labeled_tasks <span class="op">=</span> project.get_labeled_tasks()</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="bu">print</span>(<span class="ss">f"Found </span><span class="sc">{</span><span class="bu">len</span>(labeled_tasks)<span class="sc">}</span><span class="ss"> labeled tasks."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Found 188 labeled tasks.</code></pre>
+</div>
+</div>
+</section>
+<section id="create-a-custom-ner-model-using-spacy" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-custom-ner-model-using-spacy">Create a Custom NER model using spaCy</h2>
+<p>After we annotated some texts let’s train our first custom spaCy model. To train a custom named entity recognition model, a specific data structure/format is required by spaCy.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>[</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>      <span class="st">"text"</span>: <span class="st">"We need basil to add to the mushrooms"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4"></a>      <span class="st">"entities"</span>: [</span>
+<span id="cb5-5"><a href="#cb5-5"></a>        (<span class="dv">8</span>, <span class="dv">12</span>, <span class="st">"INGRED"</span>),</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        (<span class="dv">28</span>, <span class="dv">36</span>, <span class="st">"INGRED"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>      ]</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    }</span>
+<span id="cb5-9"><a href="#cb5-9"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We need to transform the labeled tasks from Label Studio to this to this spaCy format.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">from</span> tqdm.notebook <span class="im">import</span> tqdm</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="kw">def</span> create_training_data(labeled_tasks: <span class="bu">dict</span>, column: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">dict</span>]:</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="co">"""Transform label studio annotations to spaCy format"""</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a>    training_data: <span class="bu">list</span>[<span class="bu">str</span>] <span class="op">=</span> []</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    </span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="co"># Iterate over the labeled tasks</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="cf">for</span> task <span class="kw">in</span> tqdm(labeled_tasks, desc<span class="op">=</span><span class="st">"Tasks"</span>):</span>
+<span id="cb6-11"><a href="#cb6-11"></a>        task_dict <span class="op">=</span> {}</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        </span>
+<span id="cb6-13"><a href="#cb6-13"></a>        <span class="co"># Get text from task structure</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>        task_dict[<span class="st">"text"</span>] <span class="op">=</span> task[<span class="st">"data"</span>][column]</span>
+<span id="cb6-15"><a href="#cb6-15"></a>        task_dict[<span class="st">"entities"</span>] <span class="op">=</span> []</span>
+<span id="cb6-16"><a href="#cb6-16"></a>        </span>
+<span id="cb6-17"><a href="#cb6-17"></a>        <span class="co"># Iterate over annotations (results)</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>        <span class="cf">for</span> annotations <span class="kw">in</span> task[<span class="st">"annotations"</span>]:</span>
+<span id="cb6-19"><a href="#cb6-19"></a>            <span class="cf">for</span> annotation <span class="kw">in</span> annotations[<span class="st">"result"</span>]:</span>
+<span id="cb6-20"><a href="#cb6-20"></a>                values <span class="op">=</span> annotation[<span class="st">"value"</span>]</span>
+<span id="cb6-21"><a href="#cb6-21"></a>                </span>
+<span id="cb6-22"><a href="#cb6-22"></a>                <span class="co"># Extract start, end and label from labeled entities</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>                start <span class="op">=</span> values[<span class="st">"start"</span>]</span>
+<span id="cb6-24"><a href="#cb6-24"></a>                end <span class="op">=</span> values[<span class="st">"end"</span>]</span>
+<span id="cb6-25"><a href="#cb6-25"></a>                label <span class="op">=</span> values[<span class="st">"labels"</span>][<span class="dv">0</span>]</span>
+<span id="cb6-26"><a href="#cb6-26"></a>                </span>
+<span id="cb6-27"><a href="#cb6-27"></a>                task_dict[<span class="st">"entities"</span>].append((start, end, label))</span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a>        training_data.append(task_dict)</span>
+<span id="cb6-30"><a href="#cb6-30"></a></span>
+<span id="cb6-31"><a href="#cb6-31"></a>    <span class="cf">return</span> training_data</span>
+<span id="cb6-32"><a href="#cb6-32"></a></span>
+<span id="cb6-33"><a href="#cb6-33"></a></span>
+<span id="cb6-34"><a href="#cb6-34"></a>training_data <span class="op">=</span> create_training_data(labeled_tasks, <span class="st">"text"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"edac8c17422e4c82b5cdf96528021200","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+<p>A single training sample will look like this:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>training_data[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>{'text': "Where do you get the mock duck? I've only recently tried it in a restaurant and loved it. Hoisin we use for sandwich condiment mixed with sriracha. You could make those pancakes with another faux-meat. Some of those grain sausages are really good and you can slice them. The brand I buy sometimes is Field Roast. Also hoisin stir fried veggies with peanut is delicious.",
+ 'entities': [(26, 30, 'INGRED'),
+  (90, 96, 'INGRED'),
+  (138, 146, 'INGRED'),
+  (191, 200, 'INGRED'),
+  (222, 230, 'INGRED'),
+  (318, 324, 'INGRED'),
+  (349, 355, 'INGRED')]}</code></pre>
+</div>
+</div>
+<p>To create annotated data for training, spaCy utilizes the <code>DocBin</code> class. In some cases, entity spans overlap, meaning that the indices of certain entities intersect. To address this, spaCy offers a utility method called <code>filter_spans</code>.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="im">import</span> spacy</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="im">from</span> spacy.tokens <span class="im">import</span> DocBin, Span</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="im">from</span> spacy.util <span class="im">import</span> filter_spans</span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># Initialize a blank spacy model</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co"># Initialize a DocBin object</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>doc_bin <span class="op">=</span> DocBin()</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co"># Iterate of training example</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="cf">for</span> example <span class="kw">in</span> tqdm(training_data):</span>
+<span id="cb9-14"><a href="#cb9-14"></a>    </span>
+<span id="cb9-15"><a href="#cb9-15"></a>    <span class="co"># Get text &amp; entities from training data</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a>    text <span class="op">=</span> example[<span class="st">"text"</span>]</span>
+<span id="cb9-17"><a href="#cb9-17"></a>    labels <span class="op">=</span> example[<span class="st">"entities"</span>]</span>
+<span id="cb9-18"><a href="#cb9-18"></a>    </span>
+<span id="cb9-19"><a href="#cb9-19"></a>    <span class="co"># Turn a text into a Doc object.</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a>    doc <span class="op">=</span> nlp.make_doc(text)</span>
+<span id="cb9-21"><a href="#cb9-21"></a>    </span>
+<span id="cb9-22"><a href="#cb9-22"></a>    ents: <span class="bu">list</span>[Span] <span class="op">=</span> []</span>
+<span id="cb9-23"><a href="#cb9-23"></a>    </span>
+<span id="cb9-24"><a href="#cb9-24"></a>    <span class="co"># Loop over entities tuple</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a>    <span class="cf">for</span> start, end, label <span class="kw">in</span> labels:</span>
+<span id="cb9-26"><a href="#cb9-26"></a>        </span>
+<span id="cb9-27"><a href="#cb9-27"></a>        <span class="co"># Create span object using start &amp; end index</span></span>
+<span id="cb9-28"><a href="#cb9-28"></a>        span <span class="op">=</span> doc.char_span(start, end, label<span class="op">=</span>label, alignment_mode<span class="op">=</span><span class="st">"contract"</span>)</span>
+<span id="cb9-29"><a href="#cb9-29"></a>        </span>
+<span id="cb9-30"><a href="#cb9-30"></a>        <span class="cf">if</span> span <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb9-31"><a href="#cb9-31"></a>            <span class="cf">continue</span></span>
+<span id="cb9-32"><a href="#cb9-32"></a>        </span>
+<span id="cb9-33"><a href="#cb9-33"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-34"><a href="#cb9-34"></a>            ents.append(span)</span>
+<span id="cb9-35"><a href="#cb9-35"></a></span>
+<span id="cb9-36"><a href="#cb9-36"></a>    <span class="co"># Remove duplicates or overlaps</span></span>
+<span id="cb9-37"><a href="#cb9-37"></a>    doc.ents <span class="op">=</span> filter_spans(ents)</span>
+<span id="cb9-38"><a href="#cb9-38"></a>    </span>
+<span id="cb9-39"><a href="#cb9-39"></a>    <span class="co"># Add document to doc bin</span></span>
+<span id="cb9-40"><a href="#cb9-40"></a>    doc_bin.add(doc)</span>
+<span id="cb9-41"><a href="#cb9-41"></a></span>
+<span id="cb9-42"><a href="#cb9-42"></a><span class="co"># Save train dataset to disk</span></span>
+<span id="cb9-43"><a href="#cb9-43"></a>doc_bin.to_disk(<span class="st">"train.spacy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"7bdb4d6f7a04402c97c4b8b9c84b6e94","version_major":2,"version_minor":0}
+</script>
+</div>
+</div>
+<p>For your specific use case, you may create a configuration file manually or generate a basic configuration using spaCy’s training <a href="https://spacy.io/usage/training#quickstart">quickstart page</a>.</p>
+<p>To simplify the process, we will utilize a basic configuration file from the quickstart page as our starting point. However, feel free to tweak is config to your liking.</p>
+<p>Once you have saved the initial configuration to a file named “base_config.cfg”, you can employ the “init fill-config” command to complete the missing default values.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="op">!</span>python <span class="op">-</span>m spacy init fill<span class="op">-</span>config <span class="op">/</span>Users<span class="op">/</span>maxscheijen<span class="op">/</span>Developer<span class="op">/</span>online<span class="op">-</span>learning<span class="op">/</span>base_config.cfg config.cfg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>✔ Auto-filled config with all values
+✔ Saved config
+config.cfg
+You can now add your data and train your pipeline:
+python -m spacy train config.cfg --paths.train ./train.spacy --paths.dev ./dev.spacy</code></pre>
+</div>
+</div>
+<p>We now have everything required to train our model. However, as we did not create validation/development dataset seperate from our training dataset, we will utilize the training dataset for validation purposes, which is ofcourse not an ideal approach.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="op">!</span>python <span class="op">-</span>m spacy train config.cfg <span class="op">--</span>output .<span class="op">/</span> <span class="op">--</span>paths.train .<span class="op">/</span>train.spacy <span class="op">--</span>paths.dev .<span class="op">/</span>train.spacy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ℹ Saving to output directory: .
+ℹ Using CPU
+
+=========================== Initializing pipeline ===========================
+[2023-04-11 12:13:26,841] [INFO] Set up nlp object from config
+[2023-04-11 12:13:26,854] [INFO] Pipeline: ['tok2vec', 'ner']
+[2023-04-11 12:13:26,858] [INFO] Created vocabulary
+[2023-04-11 12:13:29,755] [INFO] Added vectors: en_core_web_lg
+[2023-04-11 12:13:35,515] [INFO] Finished initializing nlp object
+[2023-04-11 12:13:36,507] [INFO] Initialized pipeline components: ['tok2vec', 'ner']
+✔ Initialized pipeline
+
+============================= Training pipeline =============================
+ℹ Pipeline: ['tok2vec', 'ner']
+ℹ Initial learn rate: 0.001
+E    #       LOSS TOK2VEC  LOSS NER  ENTS_F  ENTS_P  ENTS_R  SCORE 
+---  ------  ------------  --------  ------  ------  ------  ------
+  0       0          0.00     49.67    0.28    1.03    0.16    0.00
+  2     200         16.40   1727.22   69.98   72.17   67.92    0.70
+  4     400         34.90    736.29   86.95   90.16   83.96    0.87
+  7     600         59.90    526.35   93.63   94.65   92.64    0.94
+ 10     800        120.10    390.45   97.12   97.52   96.73    0.97
+ 13    1000        123.22    353.39   97.76   99.16   96.40    0.98
+ 18    1200        103.32    192.81   96.90   96.59   97.22    0.97
+ 23    1400        101.94    175.29   99.26   99.34   99.18    0.99
+ 29    1600         73.52     97.00   99.92   99.84  100.00    1.00
+ 37    1800        103.61     97.35   99.84   99.84   99.84    1.00
+ 47    2000         75.71     63.83   99.92   99.84  100.00    1.00
+ 59    2200        100.87     72.91  100.00  100.00  100.00    1.00
+ 73    2400         16.24      9.76  100.00  100.00  100.00    1.00
+ 89    2600        145.50     58.02   99.84   99.84   99.84    1.00
+106    2800        189.22    121.86  100.00  100.00  100.00    1.00
+122    3000         93.76     41.26  100.00  100.00  100.00    1.00
+138    3200          0.62      0.36  100.00  100.00  100.00    1.00
+154    3400          0.00      0.00  100.00  100.00  100.00    1.00
+170    3600          0.00      0.00  100.00  100.00  100.00    1.00
+187    3800          0.00      0.00  100.00  100.00  100.00    1.00
+✔ Saved pipeline to output directory
+model-last</code></pre>
+</div>
+</div>
+<p>We will now load the best-performing model and test it on a given piece of text.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="im">from</span> spacy <span class="im">import</span> displacy</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>nlp_ner <span class="op">=</span> spacy.load(<span class="st">"model-best"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4"></a></span>
+<span id="cb14-5"><a href="#cb14-5"></a>doc_example <span class="op">=</span> nlp_ner(<span class="st">"Use some more garlic on the dish. Also grab some mushrooms"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6"></a>displacy.render(doc_example, style<span class="op">=</span><span class="st">"ent"</span>, jupyter<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<span class="tex2jax_ignore"><div class="entities" style="line-height: 2.5; direction: ltr">Use some more 
+<mark class="entity" style="background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;">
+    garlic
+    <span style="font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem">INGRED</span>
+</mark>
+ on the dish. Also grab some 
+<mark class="entity" style="background: #ddd; padding: 0.45em 0.6em; margin: 0 0.25em; line-height: 1; border-radius: 0.35em;">
+    mushrooms
+    <span style="font-size: 0.8em; font-weight: bold; line-height: 1; border-radius: 0.35em; vertical-align: middle; margin-left: 0.5rem">INGRED</span>
+</mark>
+</div></span>
+</div>
+</div>
+</section>
+<section id="add-pre-annotated-entities-to-label-studio" class="level2">
+<h2 class="anchored" data-anchor-id="add-pre-annotated-entities-to-label-studio">Add pre-annotated entities to Label Studio</h2>
+<p>Once the annotated tasks have been gathered, the unlabeled tasks should be collected to allow the machine learning model to generate predictions. We’ll probaly have a large number of unlabeled samples. Therefore it can be benifical to get a random sample of unlabeld tasks to perform perdictions on.</p>
+<p>As previously mentioned, in a more traditional setting, one could generate predictions for all unlabeled tasks and isolate the tasks where the model exhibits the most uncertainty. Subsequently, these uncertain predictions could be sent back to Label Studio for human evaluation. By adopting this approach, active learning can expedite the labeling process as only the most challenging tasks would require labeling and the easiers tasks can be labeled automatically. See the label studio <a href="https://github.com/heartexlabs/label-studio-sdk/blob/506fece22b463ef36c7cdc54c41eda214d6f0992/examples/active_learning/active_learning.ipynb">example notebook</a> for this.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="im">import</span> random</span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># Extract all id's for unlabeled tasks</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>unlabeled_tasks_ids <span class="op">=</span> project.get_unlabeled_tasks_ids()</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co"># Random selection of 50 id's</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>batch_ids <span class="op">=</span> random.sample(unlabeled_tasks_ids, <span class="dv">50</span>)</span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># Get 50 random unlabeled tasks</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>unlabeled_tasks <span class="op">=</span> project.get_tasks(selected_ids<span class="op">=</span>batch_ids)</span>
+<span id="cb15-11"><a href="#cb15-11"></a></span>
+<span id="cb15-12"><a href="#cb15-12"></a>unlabeled_tasks[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>{'id': 24690,
+ 'predictions': [],
+ 'annotations': [],
+ 'drafts': [],
+ 'annotators': [],
+ 'inner_id': 50,
+ 'cancelled_annotations': 0,
+ 'total_annotations': 0,
+ 'total_predictions': 0,
+ 'completed_at': None,
+ 'annotations_results': '',
+ 'predictions_results': '',
+ 'predictions_score': None,
+ 'file_upload': '493ee2d8-ingredients.csv',
+ 'storage_filename': None,
+ 'annotations_ids': '',
+ 'predictions_model_versions': '',
+ 'avg_lead_time': None,
+ 'updated_by': [],
+ 'data': {'text': "As a violinist I'm going to skip on that thank you very much."},
+ 'meta': {},
+ 'created_at': '2023-04-07T15:05:50.788852Z',
+ 'updated_at': '2023-04-07T15:05:50.788861Z',
+ 'is_labeled': False,
+ 'overlap': 1,
+ 'comment_count': 0,
+ 'unresolved_comment_count': 0,
+ 'last_comment_updated_at': None,
+ 'project': 9,
+ 'comment_authors': []}</code></pre>
+</div>
+</div>
+<section id="sending-predictions-to-label-studio" class="level3">
+<h3 class="anchored" data-anchor-id="sending-predictions-to-label-studio">Sending Predictions to Label Studio</h3>
+<p>Upon obtaining some predictions, it is necessary to send these predictions to the labeling interface. However, Label Studio has a specific format requirement for predictions, which is generally uniform across different labeling tasks, but may differ in some cases, such as object detection, NER, or image classification.</p>
+<p>The expected format for Label Studio NER predictions is as follows:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a>{</span>
+<span id="cb17-2"><a href="#cb17-2"></a>    <span class="st">'from_name'</span>: <span class="st">'label'</span>,</span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="st">'to_name'</span>: <span class="st">'text'</span>,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="st">'type'</span>: <span class="st">'labels'</span>,</span>
+<span id="cb17-5"><a href="#cb17-5"></a>    <span class="st">'value'</span>: {</span>
+<span id="cb17-6"><a href="#cb17-6"></a>        <span class="st">'start'</span>: <span class="dv">0</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>        <span class="st">'end'</span>: <span class="dv">6</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>        <span class="st">'text'</span>: <span class="st">'This is a sample text'</span>,</span>
+<span id="cb17-9"><a href="#cb17-9"></a>        <span class="st">'labels'</span>: [<span class="st">'PERSON'</span>]</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    }</span>
+<span id="cb17-11"><a href="#cb17-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Specify a model version to identify the most recent set of predictions, in this example, determined by the quantity of data utilized to retrain the model. However, any unique and arbitrary name can be used for this purpose. Although setting the model version is an optional step, it can be beneficial in an Active Learning scenario, allowing for control over which model is displayed in the subsequent iteration.</p>
+<p>I chose to use a datetime stamp and the number of labeled tasks.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a>now <span class="op">=</span> datetime.now()</span>
+<span id="cb18-4"><a href="#cb18-4"></a>dt_string <span class="op">=</span> now.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st"> %H:%M"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a>model_version <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>dt_string<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span><span class="bu">len</span>(labeled_tasks)<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a>model_version</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>'2023-04-11 14:38_188'</code></pre>
+</div>
+</div>
+<p>Structure the predictions/pre-annotations in the required format and incorporate them into each unlabeled task.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a><span class="cf">for</span> i, unlabeled_task <span class="kw">in</span> <span class="bu">enumerate</span>(tqdm(unlabeled_tasks)):</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    </span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="co"># Extract text of unlabeld task</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>    text <span class="op">=</span> unlabeled_task[<span class="st">"data"</span>][<span class="st">"text"</span>]</span>
+<span id="cb20-5"><a href="#cb20-5"></a>    </span>
+<span id="cb20-6"><a href="#cb20-6"></a>    <span class="co"># Create Document based on unlabeld task text</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>    doc <span class="op">=</span> nlp_ner(text)</span>
+<span id="cb20-8"><a href="#cb20-8"></a>    </span>
+<span id="cb20-9"><a href="#cb20-9"></a>    <span class="co"># Check if entities are found</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>    <span class="cf">if</span> <span class="bu">len</span>(doc.ents) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb20-11"><a href="#cb20-11"></a>        <span class="cf">continue</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>    </span>
+<span id="cb20-13"><a href="#cb20-13"></a>    <span class="co"># If entities are found send to label studio</span></span>
+<span id="cb20-14"><a href="#cb20-14"></a>    <span class="cf">else</span>:</span>
+<span id="cb20-15"><a href="#cb20-15"></a>        results: <span class="bu">list</span>[<span class="bu">dict</span>] <span class="op">=</span> []</span>
+<span id="cb20-16"><a href="#cb20-16"></a></span>
+<span id="cb20-17"><a href="#cb20-17"></a>        <span class="cf">for</span> ent <span class="kw">in</span> doc.ents:</span>
+<span id="cb20-18"><a href="#cb20-18"></a>            <span class="co"># Excepected label studio prediction format</span></span>
+<span id="cb20-19"><a href="#cb20-19"></a>            result <span class="op">=</span> {</span>
+<span id="cb20-20"><a href="#cb20-20"></a>                <span class="st">'from_name'</span>: <span class="st">'label'</span>,</span>
+<span id="cb20-21"><a href="#cb20-21"></a>                <span class="st">'to_name'</span>: <span class="st">'text'</span>,</span>
+<span id="cb20-22"><a href="#cb20-22"></a>                <span class="st">'type'</span>: <span class="st">'labels'</span>,</span>
+<span id="cb20-23"><a href="#cb20-23"></a>                <span class="st">'value'</span>: {</span>
+<span id="cb20-24"><a href="#cb20-24"></a>                    <span class="st">'start'</span>: ent.start_char,</span>
+<span id="cb20-25"><a href="#cb20-25"></a>                    <span class="st">'end'</span>: ent.end_char,</span>
+<span id="cb20-26"><a href="#cb20-26"></a>                    <span class="st">'text'</span>: <span class="bu">str</span>(ent),</span>
+<span id="cb20-27"><a href="#cb20-27"></a>                    <span class="st">'labels'</span>: [ent.label_]</span>
+<span id="cb20-28"><a href="#cb20-28"></a>                }</span>
+<span id="cb20-29"><a href="#cb20-29"></a>            }</span>
+<span id="cb20-30"><a href="#cb20-30"></a>            </span>
+<span id="cb20-31"><a href="#cb20-31"></a>            <span class="co"># Store ent predictions in list</span></span>
+<span id="cb20-32"><a href="#cb20-32"></a>            results.append(result)</span>
+<span id="cb20-33"><a href="#cb20-33"></a>        </span>
+<span id="cb20-34"><a href="#cb20-34"></a>        <span class="co"># Create a prediction for a unlabeld task</span></span>
+<span id="cb20-35"><a href="#cb20-35"></a>        project.create_prediction(</span>
+<span id="cb20-36"><a href="#cb20-36"></a>            task_id<span class="op">=</span>unlabeled_task[<span class="st">'id'</span>],</span>
+<span id="cb20-37"><a href="#cb20-37"></a>            result<span class="op">=</span>results,</span>
+<span id="cb20-38"><a href="#cb20-38"></a>            model_version<span class="op">=</span>model_version</span>
+<span id="cb20-39"><a href="#cb20-39"></a>        )</span>
+<span id="cb20-40"><a href="#cb20-40"></a></span>
+<span id="cb20-41"><a href="#cb20-41"></a><span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> tasks have been preannotated/tagged with model predictions'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"f795a7508e8c40398c15932f1e34bba6","version_major":2,"version_minor":0}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>49 tasks have been preannotated/tagged with model predictions</code></pre>
+</div>
+</div>
+<p>Finally, modify the Label Studio settings to utilize the recently generated model version for showcasing pre-annotated tasks to annotators. The annotators can use filters in the data view the label studio interface to filter on model version to get the latest predictions.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>project.set_model_version(model_version)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By repeating this process several times, you will notice an improvement in the quality of pre-annotations, which will ultimately decrease the time required for each annotation task.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>And that concludes the process! With the Label Studio SDK and custom spaCy models, constructing an active learning loop for named entity recognition becomes a hassle-free and reproducible task. Additionally, Label Studio Webhooks can be utilized for event-driven active learning, which is a more advanced approach to further enhance the process.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="maxscheijen/comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">Copyright 2023, Max Scheijen</div>
+  </div>
+</footer>
+
+
+
+</body></html>
