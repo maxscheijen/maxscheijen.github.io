@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Max Scheijen"
+  site-url: "https://maxscheijen.com/"
   google-analytics: "G-3B00DPE6RY"
   page-footer: "Copyright 2023, Max Scheijen"
   navbar:
