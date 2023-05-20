@@ -2,54 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://maxscheijen.com/posts/news.html</loc>
-    <lastmod>2023-05-17T19:58:03.080Z</lastmod>
+    <lastmod>2023-05-20T16:20:27.701Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/cv.html</loc>
-    <lastmod>2023-05-17T19:58:03.844Z</lastmod>
+    <lastmod>2023-05-20T16:20:28.403Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/starcoder.html</loc>
-    <lastmod>2023-05-17T19:58:04.257Z</lastmod>
+    <lastmod>2023-05-20T16:20:28.826Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/invest.html</loc>
-    <lastmod>2023-05-17T19:58:04.733Z</lastmod>
+    <lastmod>2023-05-20T16:20:29.287Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/fake-news.html</loc>
-    <lastmod>2023-05-17T19:58:06.193Z</lastmod>
+    <lastmod>2023-05-20T16:20:30.800Z</lastmod>
+  </url>
+  <url>
+    <loc>https://maxscheijen.com/posts/personal-assistant.html</loc>
+    <lastmod>2023-05-20T16:20:31.312Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/feature-engineering.html</loc>
-    <lastmod>2023-05-17T19:58:06.849Z</lastmod>
+    <lastmod>2023-05-20T16:20:31.984Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/universities.html</loc>
-    <lastmod>2023-05-17T19:58:07.359Z</lastmod>
+    <lastmod>2023-05-20T16:20:32.489Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/fastml.html</loc>
-    <lastmod>2023-05-17T19:58:07.859Z</lastmod>
+    <lastmod>2023-05-20T16:20:32.964Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/backend-architecture.html</loc>
-    <lastmod>2023-05-17T19:58:08.292Z</lastmod>
+    <lastmod>2023-05-20T16:20:33.398Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/rt.html</loc>
-    <lastmod>2023-05-17T19:58:08.758Z</lastmod>
+    <lastmod>2023-05-20T16:20:33.861Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/posts/pipelines.html</loc>
-    <lastmod>2023-05-17T19:58:09.361Z</lastmod>
+    <lastmod>2023-05-20T16:20:34.466Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/index.html</loc>
-    <lastmod>2023-05-17T19:58:10.420Z</lastmod>
+    <lastmod>2023-05-20T16:20:35.585Z</lastmod>
   </url>
   <url>
     <loc>https://maxscheijen.com/about.html</loc>
-    <lastmod>2023-05-17T19:58:10.807Z</lastmod>
+    <lastmod>2023-05-20T16:20:35.943Z</lastmod>
   </url>
 </urlset>
