@@ -222,32 +222,35 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p>The project I build here is inspired by <a href="https://www.linkedin.com/in/aleksagordic/">Aleksa Gordić</a> and his <a href="https://www.hubermantranscripts.com/">Huberman Transcript</a> project.</p>
 </div></div><p>To do all of this we need to build the components in the diagram displayed above. This includes:</p>
 <ol type="1">
-<li><a href="../posts/personal-assistant.html#gathering-data">Gathering the data</a></li>
-<li><a href="../posts/personal-assistant.html#transcription">Transcribing podcast episode audio files</a></li>
-<li><a href="../posts/personal-assistant.html#vector-database-of-transcriptions">Building a vector database of transcriptions.</a></li>
+<li><a href="#gathering-podcast-audio-data">Gathering the data</a></li>
+<li><a href="#transcription-of-podcast-episodes">Transcribing podcast episode audio files</a></li>
+<li><a href="#vector-database-of-transcriptions">Building a vector database of transcriptions.</a></li>
 <li><a href="#answering-questions-based-upon-most-relevant-documents">Using LLM to get answer to question based and relevant documents.</a></li>
 </ol>
-<section id="gathering-data" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="gathering-data">Gathering Data</h2>
+<section id="gathering-podcast-audio-data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="gathering-podcast-audio-data">Gathering Podcast Audio Data</h2>
 <p>Let’s start with downloading all podcast episodes of <a href="https://soundcloud.com/trueanonpod">TrueAnon</a> as audio files.</p>
 <p>I did is by parsing the podcasts <a href="https://feeds.soundcloud.com/users/soundcloud:users:672423809/sounds.rss">RSS feed</a> and extracting the title and the url to the audio recording of every podcast episode and storing them into a dataframe.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_episodes_df(url: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Request RRS feed</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse using BeautifulSoup</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(response.content, <span class="st">"xml"</span>)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_episodes_df(url: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Request RRS feed</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract raw link to audio files</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    audio_files <span class="op">=</span> [link[<span class="st">"url"</span>] <span class="cf">for</span> link <span class="kw">in</span> soup.find_all(<span class="st">"enclosure"</span>)]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Parse using BeautifulSoup</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BeautifulSoup(response.content, <span class="st">"xml"</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find the episode titles</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    titles <span class="op">=</span> [title.text <span class="cf">for</span> title <span class="kw">in</span> soup.find_all(<span class="st">"title"</span>)][<span class="dv">2</span>:]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract raw link to audio files</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    audio_files <span class="op">=</span> [link[<span class="st">"url"</span>] <span class="cf">for</span> link <span class="kw">in</span> soup.find_all(<span class="st">"enclosure"</span>)]</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build data frame of episode titles and audio links</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame({<span class="st">"title"</span>: titles, <span class="st">"url"</span>: audio_files}).iloc[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find the episode titles</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    titles <span class="op">=</span> [title.text <span class="cf">for</span> title <span class="kw">in</span> soup.find_all(<span class="st">"title"</span>)][<span class="dv">2</span>:]</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build data frame of episode titles and audio links</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame({<span class="st">"title"</span>: titles, <span class="st">"url"</span>: audio_files}).iloc[::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
 <p>Now that we have all the episode titles and audio file urls we make a requests to fetch all the audio files and save them to disk or a storage account using the episode name.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
@@ -269,7 +272,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Write file to directory</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(output_path, <span class="st">"wb"</span>) <span class="im">as</span> fp:</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        fp.write(response.content)</span></code></pre></div>
-<p>Getting all the audio files.</p>
+<p>The function can use the above function to loop over all the audio file urls and persist them to disk.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"..."</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> episode_number <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df)):</span>
@@ -280,9 +283,10 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Persist audio files</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    download_podcast(url, title, output_path <span class="op">=</span> <span class="ss">f"audio/"</span>)</span></code></pre></div>
+<p>We now have a directory containing all podcast episode audio files.</p>
 </section>
-<section id="transcription" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="transcription">Transcription</h2>
+<section id="transcription-of-podcast-episodes" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="transcription-of-podcast-episodes">Transcription of Podcast Episodes</h2>
 <p>Before we can build or vector database we need transcriptions.</p>
 <p>One of the best ways to extract text from audio files is to use an automatic transcription tool. OpenAI <a href="https://github.com/openai/whisper">whisper</a> is a model that converts spoken words into text. This model is pretty accurate and can transcribe audio relatively fast (especially when using a GPU).</p>
 
@@ -324,20 +328,19 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p><strong>Chunk</strong> - Language models face limitations due to the text volume they can process at once, making it essential to divide them into smaller sections.</p>
 </div></div><p>I load the transcriptions into a <a href="https://python.langchain.com/en/latest/">langchain</a> document using the <code>TextLoader</code>. After which I use the <code>RecursiveCharacterTextSplitter</code> to split the documents into chunks.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.document_loaders <span class="im">import</span> TextLoader</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all the transcription text files</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>transcription_text_paths <span class="op">=</span> glob(<span class="st">"transcriptions/*.txt"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Load text files using the TextLoader</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>documents <span class="op">=</span> [TextLoader(text).load()[<span class="dv">0</span>] <span class="cf">for</span> text <span class="kw">in</span> transcription_text_paths]</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create text splitter to split documents into chunks</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>text_splitter <span class="op">=</span> RecursiveCharacterTextSplitter(chunk_size<span class="op">=</span><span class="dv">1000</span>, chunk_overlap<span class="op">=</span><span class="dv">100</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Split documents into chunks</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> text_splitter.split_documents(documents)</span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.document_loaders <span class="im">import</span> TextLoader</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all the transcription text files</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>transcription_text_paths <span class="op">=</span> glob(<span class="st">"transcriptions/*.txt"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load text files using the TextLoader</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>documents <span class="op">=</span> [TextLoader(text).load()[<span class="dv">0</span>] <span class="cf">for</span> text <span class="kw">in</span> transcription_text_paths]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create text splitter to split documents into chunks</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>text_splitter <span class="op">=</span> RecursiveCharacterTextSplitter(chunk_size<span class="op">=</span><span class="dv">1000</span>, chunk_overlap<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Split documents into chunks</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> text_splitter.split_documents(documents)</span></code></pre></div>
 <p>To create a vector database, you will need to convert your written documents into numerical vectors.</p>
 <p>In this project I used <code>HuggingFaceEmbeddings</code> from <a href="https://python.langchain.com/en/latest/">langchain</a> (wrapper for <a href="https://huggingface.co/models">HuggingFace Embeddings/Models</a>) to create embeddings for the episode transcriptions storing them into a <code>FAISS</code> vector database.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
@@ -360,31 +363,33 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>vectorstore.similarity_search(query)</span></code></pre></div>
 <p>These functionality is baked into the <code>FAISS</code> wrapper in langchain. So we can run a query against the vector database and get the most relevant documents based on the question.</p>
 </section>
-<section id="answering-questions-based-upon-most-relevant-documents" class="level2 page-columns page-full">
+<section id="answering-questions-based-upon-most-relevant-documents" class="level2">
 <h2 class="anchored" data-anchor-id="answering-questions-based-upon-most-relevant-documents">Answering Questions based upon most Relevant Documents</h2>
-<p>Now that you have the most relevant documents based on the question. You can add these documents into your prompt and send it to your LLM model. langchain provides Q&amp;A chain in which you can use a vector database for this called <code>VectorDBQA</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<p>Now that you have the most relevant documents based on the question. You can add these documents into your prompt and send it to your LLM model.</p>
+<p>langchain provides Q&amp;A chain in which you can use a vector database for this called <code>VectorDBQA</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> os <span class="im">import</span> environ</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"OPENAI_API_KEY"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># LLM used to answer the question</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(max_tokens<span class="op">=</span><span class="dv">100</span>, temperature<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Langchain chain or Q&amp;A with vector database</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>qa <span class="op">=</span> VectorDBQA.from_chain_type(l</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    lm<span class="op">=</span>llm,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    chain_type<span class="op">=</span><span class="st">"stuff"</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    vectorstore<span class="op">=</span>vectorstore,</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    return_source_documents<span class="op">=</span><span class="va">True</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>This Q&amp;A chain allows use to ask questions.</p>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set OpenAI API key</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>environ[<span class="st">"OPENAI_API_KEY"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># LLM used to answer the question</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOpenAI(max_tokens<span class="op">=</span><span class="dv">100</span>, temperature<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Langchain chain or Q&amp;A with vector database</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>qa <span class="op">=</span> VectorDBQA.from_chain_type(l</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    lm<span class="op">=</span>llm,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    chain_type<span class="op">=</span><span class="st">"stuff"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    vectorstore<span class="op">=</span>vectorstore,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    return_source_documents<span class="op">=</span><span class="va">True</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>This question and answering chain allows use to ask questions based on the information in our documents (transcriptions). Allowing us to send the most relevant context and our question into a prompt to the OpenAI API.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"How did Jeffrey Epstein get his money?"</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> qa({<span class="st">"query"</span>: query})</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">"result"</span>])</span></code></pre></div>
-
-<div class="no-row-height column-margin column-container"><div class="">
-<p><strong>Answer</strong> - There is a lot of mystery surrounding how Jeffrey Epstein made his money. He seemed to become a billionaire just by managing another billionaire’s money, but the finances are so opaque that no one really knows for sure.</p>
-</div></div><p>The results object also provides the source documents upon which this answer is based.</p>
+<pre class="shell"><code>&gt; There is a lot of mystery surrounding how Jeffrey Epstein made his money. He seemed to become a
+&gt; billionaire just by managing another billionaire’s money, but the finances are so opaque that
+&gt; no one really knows for sure.</code></pre>
+<p>In addition to the answer to the question the results object also provides us with the source documents upon which this answer is based.</p>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
