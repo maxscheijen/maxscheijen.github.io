@@ -7,6 +7,7 @@ author: "Max Scheijen"
 categories:
   - backend
   - architecture
+draft: true
 ---
 
 In recent years, **microservices** and **serverless** architectures have gained popularity due to their scalability and flexibility. Microservices have become a popular choice for building large-scale applications with complex requirements, such as machine learning platforms, as they allow for modular development and easier maintenance.
