@@ -231,7 +231,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="gathering-data">Gathering Data</h2>
 <p>Let’s start with downloading all podcast episodes of <a href="https://soundcloud.com/trueanonpod">TrueAnon</a> as audio files.</p>
 <p>I did is by parsing the podcasts <a href="https://feeds.soundcloud.com/users/soundcloud:users:672423809/sounds.rss">RSS feed</a> and extracting the title and the url to the audio recording of every podcast episode and storing them into a dataframe.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_episodes_df(url: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_all_episodes_df(url: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Request RRS feed</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -247,12 +247,12 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Build data frame of episode titles and audio links</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame({<span class="st">"title"</span>: titles, <span class="st">"url"</span>: audio_files}).iloc[::<span class="op">-</span><span class="dv">1</span>]</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
 <p>Now that we have all the episode titles and audio file urls we make a requests to fetch all the audio files and save them to disk or a storage account using the episode name.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>You can write some logic to skip the episodes you already downloaded.</p>
-</div></div><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_podcast(url: <span class="bu">str</span>, name: <span class="bu">str</span>, output_path: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+</div></div><div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_podcast(url: <span class="bu">str</span>, name: <span class="bu">str</span>, output_path: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># request to audio file</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -268,9 +268,9 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Write file to directory</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(output_path, <span class="st">"wb"</span>) <span class="im">as</span> fp:</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        fp.write(response.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        fp.write(response.content)</span></code></pre></div>
 <p>Getting all the audio files.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"..."</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"..."</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> episode_number <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df)):</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -279,7 +279,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> df.iloc[episode_number][<span class="st">"title"</span>]</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Persist audio files</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    download_podcast(url, title, output_path <span class="op">=</span> <span class="ss">f"audio/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    download_podcast(url, title, output_path <span class="op">=</span> <span class="ss">f"audio/"</span>)</span></code></pre></div>
 </section>
 <section id="transcription" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="transcription">Transcription</h2>
@@ -288,7 +288,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Experiment with model sizes. Sometimes smaller model are good enough.</p>
-</div></div><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> whisper</span>
+</div></div><div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> whisper</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> whisper.model <span class="im">import</span> Whisper</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> whisper.load_model(<span class="st">"tiny"</span>)</span>
@@ -309,11 +309,11 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save transcription to disk</span></span>
 <span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f"transcriptions/</span><span class="sc">{</span>audio_file_name<span class="sc">.</span>split(<span class="st">'.mp3'</span>)[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">.txt"</span>, <span class="st">"w"</span>) <span class="im">as</span> fp:</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        fp.write(result[<span class="st">"text"</span>].strip())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        fp.write(result[<span class="st">"text"</span>].strip())</span></code></pre></div>
 <p>Transcribing a large amount of audio files can take a long time.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transcribe every episode</span></span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transcribe every episode</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> audio_file <span class="kw">in</span> audio_files:</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    transcribe_podcast(model, audio_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    transcribe_podcast(model, audio_file)</span></code></pre></div>
 <p>Once you have transcribed your videos, you will have a large set of written documents that can be used for further analysis.</p>
 </section>
 <section id="vector-database-of-transcriptions" class="level2 page-columns page-full">
@@ -323,7 +323,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <div class="no-row-height column-margin column-container"><div class="">
 <p><strong>Chunk</strong> - Language models face limitations due to the text volume they can process at once, making it essential to divide them into smaller sections.</p>
 </div></div><p>I load the transcriptions into a <a href="https://python.langchain.com/en/latest/">langchain</a> document using the <code>TextLoader</code>. After which I use the <code>RecursiveCharacterTextSplitter</code> to split the documents into chunks.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> glob <span class="im">import</span> glob</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.document_loaders <span class="im">import</span> TextLoader</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -337,10 +337,10 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>text_splitter <span class="op">=</span> RecursiveCharacterTextSplitter(chunk_size<span class="op">=</span><span class="dv">1000</span>, chunk_overlap<span class="op">=</span><span class="dv">100</span>)</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Split documents into chunks</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> text_splitter.split_documents(documents)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> text_splitter.split_documents(documents)</span></code></pre></div>
 <p>To create a vector database, you will need to convert your written documents into numerical vectors.</p>
 <p>In this project I used <code>HuggingFaceEmbeddings</code> from <a href="https://python.langchain.com/en/latest/">langchain</a> (wrapper for <a href="https://huggingface.co/models">HuggingFace Embeddings/Models</a>) to create embeddings for the episode transcriptions storing them into a <code>FAISS</code> vector database.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.embeddings <span class="im">import</span> HuggingFaceEmbeddings</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.vectorstores <span class="im">import</span> FAISS</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use HuggingFaceEmbeddings vectorize our documents</span></span>
@@ -348,7 +348,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use FAISS to build a vector database and save to disk</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>vectorstore <span class="op">=</span> FAISS.from_documents(docs, embeddings)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>vectorstore.save_local(<span class="st">"vectorstore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>vectorstore.save_local(<span class="st">"vectorstore"</span>)</span></code></pre></div>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Building a initial vector database can take a long time depending on the amount of documents. However, you add/merge a new documents to your existing database.</p>
@@ -356,14 +356,14 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>To do this, you will need to convert your question into a vector. Once you have your question vector, you can compare it to the vectors in the database and find the documents that are most similar using similarity measures, such as cosine similarity.</p>
-</div></div><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"How did Jeffrey Epstein get his money?"</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>vectorstore.similarity_search(query)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div><div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"How did Jeffrey Epstein get his money?"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>vectorstore.similarity_search(query)</span></code></pre></div>
 <p>These functionality is baked into the <code>FAISS</code> wrapper in langchain. So we can run a query against the vector database and get the most relevant documents based on the question.</p>
 </section>
 <section id="answering-questions-based-upon-most-relevant-documents" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="answering-questions-based-upon-most-relevant-documents">Answering Questions based upon most Relevant Documents</h2>
 <p>Now that you have the most relevant documents based on the question. You can add these documents into your prompt and send it to your LLM model. langchain provides Q&amp;A chain in which you can use a vector database for this called <code>VectorDBQA</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"OPENAI_API_KEY"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -376,11 +376,11 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    chain_type<span class="op">=</span><span class="st">"stuff"</span>,</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    vectorstore<span class="op">=</span>vectorstore,</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    return_source_documents<span class="op">=</span><span class="va">True</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>This Q&amp;A chain allows use to ask questions.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"How did Jeffrey Epstein get his money?"</span></span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">"How did Jeffrey Epstein get his money?"</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> qa({<span class="st">"query"</span>: query})</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">"result"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">"result"</span>])</span></code></pre></div>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><strong>Answer</strong> - There is a lot of mystery surrounding how Jeffrey Epstein made his money. He seemed to become a billionaire just by managing another billionaire’s money, but the finances are so opaque that no one really knows for sure.</p>
@@ -422,58 +422,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
   function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,

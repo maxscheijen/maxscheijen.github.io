@@ -207,27 +207,27 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p>So let’s get started! I will be using data from a Data Science competition to asses the model’s performance. The contest is called <a href="https://www.drivendata.org/competitions/57/nepal-earthquake/">Richter’s Predictor: Modelling Earthquake Damage</a> hosted by <a href="https://www.drivendata.org">DrivenData</a>. The goal is to predict the damage to buildings caused by an earthquake. The amount of damage is divided into 3 categories: (1) low, (2) medium, (3) almost complete destruction.</p>
 <p>In the cell below, we load the train values, train labels, test values, and the sample submission file and display the first couple of rows.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> warnings</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="va">None</span>)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>train_labels <span class="op">=</span> pd.read_csv(<span class="st">"data/train_labels.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>train_values <span class="op">=</span> pd.read_csv(<span class="st">"data/train_values.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a>test_values <span class="op">=</span> pd.read_csv(<span class="st">"data/test.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb1-12"><a href="#cb1-12"></a>sample_sub <span class="op">=</span> pd.read_csv(<span class="st">"data/submission_format.csv"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a>train_values.head(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="va">None</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>train_labels <span class="op">=</span> pd.read_csv(<span class="st">"data/train_labels.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>train_values <span class="op">=</span> pd.read_csv(<span class="st">"data/train_values.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>test_values <span class="op">=</span> pd.read_csv(<span class="st">"data/test.csv"</span>).drop(<span class="st">'building_id'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>sample_sub <span class="op">=</span> pd.read_csv(<span class="st">"data/submission_format.csv"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>train_values.head(<span class="dv">2</span>)</span></code></pre></div>
 </div>
 <section id="distribution-of-classes" class="level2">
 <h2 class="anchored" data-anchor-id="distribution-of-classes">Distribution of classes</h2>
 <p>One of the first things you should when dealing with classification is to look at the distribution of classes. For this, I use pandas value_count capabilities to get the frequency distribution of the target labels. Not all target categories are equally present.</p>
 <p>Label 2 is the majority class, with 56% of the observations. This percentage will be our baseline score. We need to outperform this score for our model to add something valuable. Otherwise, we would be better of always predicting label 2.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>train_labels.damage_grade.value_counts(normalize<span class="op">=</span><span class="va">True</span>).sort_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>train_labels.damage_grade.value_counts(normalize<span class="op">=</span><span class="va">True</span>).sort_index()</span></code></pre></div>
 </div>
 </section>
 <section id="preprocessing" class="level2">
@@ -238,7 +238,7 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p>Often machine learning models don’t allow for missing values in our data. We should identify these values and treat them. In our specific case, we are lucky because we don’t have any missing values. However, if we would encounter them, these values need to be replaced.</p>
 <p>A good starting point is replacing missing numerical values with the mean or median, and replacing missing categorical values with the most frequent (mode) value. Note that your method of imputing missing values can have an impact on the performance of your model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>train_values.isna().<span class="bu">sum</span>().<span class="bu">sum</span>(), test_values.isna().<span class="bu">sum</span>().<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>train_values.isna().<span class="bu">sum</span>().<span class="bu">sum</span>(), test_values.isna().<span class="bu">sum</span>().<span class="bu">sum</span>()</span></code></pre></div>
 </div>
 </section>
 <section id="categorical-features" class="level3">
@@ -247,23 +247,23 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <p>This can be achieved by first concatenating the test data at the end of the train data. Secondly, we encode the categorical features, after which we split the data back into a train and test set. We now have a constant representation of these variables between our train and test set.</p>
 <p>Label encoding is a good starting point. This method encodes features with a value between 0 and n_classes-1. This technique works best with ordinal features because it implies ordering. However, because this post is about getting a quick model done, we apply it to all categorical features. We use some assert statements to test if the shape of the original train and test set are the same as the encoded ones.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a>all_data <span class="op">=</span> pd.concat([train_values, test_values])</span>
-<span id="cb4-4"><a href="#cb4-4"></a>categorical_features <span class="op">=</span> all_data.select_dtypes(<span class="st">'object'</span>).columns</span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>label_encoder <span class="op">=</span> LabelEncoder()</span>
-<span id="cb4-7"><a href="#cb4-7"></a>all_data[categorical_features] <span class="op">=</span> all_data[categorical_features].<span class="bu">apply</span>(</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    label_encoder.fit_transform</span>
-<span id="cb4-9"><a href="#cb4-9"></a>)</span>
-<span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>train_enc <span class="op">=</span> all_data[:<span class="bu">len</span>(train_values)]</span>
-<span id="cb4-12"><a href="#cb4-12"></a>test_enc <span class="op">=</span> all_data[<span class="bu">len</span>(train_values):]</span>
-<span id="cb4-13"><a href="#cb4-13"></a></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="cf">assert</span> train_enc.shape <span class="op">==</span> train_values.shape </span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="cf">assert</span> test_enc.shape <span class="op">==</span> test_values.shape</span>
-<span id="cb4-16"><a href="#cb4-16"></a></span>
-<span id="cb4-17"><a href="#cb4-17"></a>train_enc.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> pd.concat([train_values, test_values])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>categorical_features <span class="op">=</span> all_data.select_dtypes(<span class="st">'object'</span>).columns</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>label_encoder <span class="op">=</span> LabelEncoder()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>all_data[categorical_features] <span class="op">=</span> all_data[categorical_features].<span class="bu">apply</span>(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    label_encoder.fit_transform</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>train_enc <span class="op">=</span> all_data[:<span class="bu">len</span>(train_values)]</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>test_enc <span class="op">=</span> all_data[<span class="bu">len</span>(train_values):]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> train_enc.shape <span class="op">==</span> train_values.shape </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> test_enc.shape <span class="op">==</span> test_values.shape</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>train_enc.head(<span class="dv">3</span>)</span></code></pre></div>
 </div>
 </section>
 </section>
@@ -271,14 +271,14 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="cross-validation">Cross-validation</h2>
 <p>Before training our model, we should create a validation dataset. This lets us internally test our model, before predicting the test data. We’re dealing with a classification problem, with an uneven class distribution. Therefore we should us stratification when splitting our data into a train and validation sets. This ensures that we have the same class distribution in our train and validation set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>X <span class="op">=</span> train_enc</span>
-<span id="cb5-4"><a href="#cb5-4"></a>y <span class="op">=</span> train_labels</span>
-<span id="cb5-5"><a href="#cb5-5"></a></span>
-<span id="cb5-6"><a href="#cb5-6"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
-<span id="cb5-7"><a href="#cb5-7"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> train_enc</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> train_labels</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X_train, X_valid, y_train, y_valid <span class="op">=</span> train_test_split(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, stratify<span class="op">=</span>y, random_state<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 </section>
 <section id="modelling-the-data" class="level2">
@@ -293,43 +293,43 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 </ul>
 <p>A basic LightGBM model can be trained in the same way as you fit a scikit-learn machine learning model. We start with 200 estimators, max depth of 50 with 900 leaves. This model only takes about a minute to train.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="op">%%</span>time</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="im">from</span> lightgbm <span class="im">import</span> LGBMClassifier</span>
-<span id="cb6-3"><a href="#cb6-3"></a>model <span class="op">=</span> LGBMClassifier(</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    random_state<span class="op">=</span><span class="dv">1</span>, n_estimators<span class="op">=</span><span class="dv">200</span>, max_depth<span class="op">=</span><span class="dv">50</span>, num_leaves<span class="op">=</span><span class="dv">900</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>)</span>
-<span id="cb6-6"><a href="#cb6-6"></a>model.fit(X_train, y_train)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>predictions <span class="op">=</span> model.predict(X_valid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lightgbm <span class="im">import</span> LGBMClassifier</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LGBMClassifier(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">1</span>, n_estimators<span class="op">=</span><span class="dv">200</span>, max_depth<span class="op">=</span><span class="dv">50</span>, num_leaves<span class="op">=</span><span class="dv">900</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_valid)</span></code></pre></div>
 </div>
 </section>
 <section id="evaluating-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="evaluating-the-model">Evaluating the model</h2>
 <p>To evaluate the performance of our model, we use the <strong>micro averaged f1 score</strong>, the same as in the contest. Our model gives us an f1-micro averaged score of <strong>0.7422</strong>, which is quite good. Especially when you keep in mind that we did so little processing and feature engineering.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
-<span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a>score_model <span class="op">=</span> f1_score(y_valid, predictions, average<span class="op">=</span><span class="st">'micro'</span>)</span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="bu">round</span>(score_model, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> f1_score</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>score_model <span class="op">=</span> f1_score(y_valid, predictions, average<span class="op">=</span><span class="st">'micro'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(score_model, <span class="dv">4</span>)</span></code></pre></div>
 </div>
 <p>The model does outperform the naive majority class which gets a micro f1-score of <strong>0.5689</strong>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>naive_pred <span class="op">=</span> np.zeros((<span class="bu">len</span>(y_valid))) <span class="op">+</span> <span class="dv">2</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>score_naive <span class="op">=</span> f1_score(y_valid, naive_pred, average<span class="op">=</span><span class="st">'micro'</span>)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="bu">round</span>(score_naive, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>naive_pred <span class="op">=</span> np.zeros((<span class="bu">len</span>(y_valid))) <span class="op">+</span> <span class="dv">2</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>score_naive <span class="op">=</span> f1_score(y_valid, naive_pred, average<span class="op">=</span><span class="st">'micro'</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(score_naive, <span class="dv">4</span>)</span></code></pre></div>
 </div>
 </section>
 <section id="training-the-full-model-and-predicting-on-test-data" class="level2">
 <h2 class="anchored" data-anchor-id="training-the-full-model-and-predicting-on-test-data">Training the full model and predicting on test data</h2>
 <p>We can now train on the full dataset, which also lets us train on the validation set. After this, we can make predictions on the test dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="op">%%</span>time</span>
-<span id="cb9-2"><a href="#cb9-2"></a>model.fit(X, y)</span>
-<span id="cb9-3"><a href="#cb9-3"></a>test_predictions <span class="op">=</span> model.predict(test_enc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>time</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model.fit(X, y)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>test_predictions <span class="op">=</span> model.predict(test_enc)</span></code></pre></div>
 </div>
 <p>We store the test dataset predictions in the damage_grade columns of the sample submission file and save it as a CSV.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>sample_sub[<span class="st">'damage_grade'</span>] <span class="op">=</span> test_predictions</span>
-<span id="cb10-2"><a href="#cb10-2"></a>sample_sub.to_csv(<span class="st">"prediction.csv"</span>, index<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sample_sub[<span class="st">'damage_grade'</span>] <span class="op">=</span> test_predictions</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sample_sub.to_csv(<span class="st">"prediction.csv"</span>, index<span class="op">=</span><span class="va">None</span>)</span></code></pre></div>
 </div>
 </section>
 <section id="conclusion" class="level2">
@@ -367,58 +367,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
   function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,

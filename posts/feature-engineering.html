@@ -218,22 +218,22 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="one-hot-encoding">One-Hot Encoding</h2>
 <p>One-hot encoding or dummy encoding is a technique where we encode a categorical by indicating if the category is present for each observation. This technique is most used on nominal categorical data. Generally, we can encode the different labels by <span class="math inline">\(k\)</span>-1 binary features. Where <span class="math inline">\(k\)</span> is the number of categories present in the variable. For example, the variable biological sex has two different variables (female and male) and therefore has a <span class="math inline">\(k\)</span> value of 2.</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># load data processing library</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># load and display data</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>sex <span class="op">=</span> pd.DataFrame({<span class="st">"sex"</span>: [<span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"female"</span>]})</span>
-<span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># create copy of data</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>sex_ohe_1 <span class="op">=</span> sex.copy()</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># use get_dummies and drop_first=True for k-1 one-hot encoding</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>sex_ohe_1[<span class="st">'male'</span>] <span class="op">=</span> pd.get_dummies(</span>
-<span id="cb1-12"><a href="#cb1-12"></a>    sex_ohe_1, columns<span class="op">=</span>[<span class="st">'sex'</span>], drop_first<span class="op">=</span><span class="va">True</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>)</span>
-<span id="cb1-14"><a href="#cb1-14"></a></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co"># display encoding</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a>sex_ohe_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data processing library</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load and display data</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sex <span class="op">=</span> pd.DataFrame({<span class="st">"sex"</span>: [<span class="st">"male"</span>, <span class="st">"female"</span>, <span class="st">"male"</span>, <span class="st">"female"</span>]})</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create copy of data</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sex_ohe_1 <span class="op">=</span> sex.copy()</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># use get_dummies and drop_first=True for k-1 one-hot encoding</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sex_ohe_1[<span class="st">'male'</span>] <span class="op">=</span> pd.get_dummies(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    sex_ohe_1, columns<span class="op">=</span>[<span class="st">'sex'</span>], drop_first<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># display encoding</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>sex_ohe_1</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
@@ -275,15 +275,15 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 </div>
 <p>The advantage of one-hot encoding with <span class="math inline">\(k\)</span>-1 features is that we can represent the whole dataset with one less dimension. However, we can also use <span class="math inline">\(k\)</span> binary features to represent a categorical variable. If we want to asses the importance of every single feature it is better to use as my groups as labels. Often tree-based models perform better on data that is encoded in <span class="math inline">\(k\)</span> features. If we use the same example as above the encoding look like the following:</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># create copy of data</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>sex_ohe_2 <span class="op">=</span> sex.copy()</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># use get_dummies and drop_first=False for k one-hot encoding</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>sex_ohe_2[[<span class="st">'female'</span>, <span class="st">'male'</span>]] <span class="op">=</span> pd.get_dummies(</span>
-<span id="cb2-6"><a href="#cb2-6"></a>    sex_ohe_2, columns<span class="op">=</span>[<span class="st">'sex'</span>]</span>
-<span id="cb2-7"><a href="#cb2-7"></a>)</span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a>sex_ohe_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create copy of data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sex_ohe_2 <span class="op">=</span> sex.copy()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use get_dummies and drop_first=False for k one-hot encoding</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>sex_ohe_2[[<span class="st">'female'</span>, <span class="st">'male'</span>]] <span class="op">=</span> pd.get_dummies(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    sex_ohe_2, columns<span class="op">=</span>[<span class="st">'sex'</span>]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>sex_ohe_2</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
@@ -338,21 +338,21 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="label-encoding">Label Encoding</h2>
 <p>Label encoding is one of the most used methods to encode ordinal categorical features. However, it can also be used with a nominal variable. We replace the labels in a feature with integer starting at 0 to <span class="math inline">\(n\)</span>. Where <span class="math inline">\(n\)</span> is the number of labels in the feature.</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># load LabelEncoder</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co"># load cars data</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>cars <span class="op">=</span> pd.DataFrame({<span class="st">"car_brand"</span>: [<span class="st">"BMW"</span>, <span class="st">"GM"</span>, <span class="st">"Ford"</span>, <span class="st">"Ford"</span>, <span class="st">"BMW"</span>, <span class="st">"Toyota"</span>]})</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># create copy of data</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>cars_le <span class="op">=</span> cars[[<span class="st">'car_brand'</span>]].copy()</span>
-<span id="cb3-9"><a href="#cb3-9"></a></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co"># apply label encoder to car_brand feature</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>cars_le[<span class="st">'car_encoded'</span>] <span class="op">=</span> cars_le[[<span class="st">'car_brand'</span>]].<span class="bu">apply</span>(</span>
-<span id="cb3-12"><a href="#cb3-12"></a>    LabelEncoder().fit_transform</span>
-<span id="cb3-13"><a href="#cb3-13"></a>)</span>
-<span id="cb3-14"><a href="#cb3-14"></a></span>
-<span id="cb3-15"><a href="#cb3-15"></a>cars_le</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load LabelEncoder</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> LabelEncoder</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># load cars data</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>cars <span class="op">=</span> pd.DataFrame({<span class="st">"car_brand"</span>: [<span class="st">"BMW"</span>, <span class="st">"GM"</span>, <span class="st">"Ford"</span>, <span class="st">"Ford"</span>, <span class="st">"BMW"</span>, <span class="st">"Toyota"</span>]})</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># create copy of data</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>cars_le <span class="op">=</span> cars[[<span class="st">'car_brand'</span>]].copy()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># apply label encoder to car_brand feature</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>cars_le[<span class="st">'car_encoded'</span>] <span class="op">=</span> cars_le[[<span class="st">'car_brand'</span>]].<span class="bu">apply</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    LabelEncoder().fit_transform</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>cars_le</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 
@@ -410,18 +410,18 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="frequency-encoding">Frequency Encoding</h2>
 <p>When using frequency encoding we replace the label in a categorical feature with the percentage of that particular label in the variable. This method assumes that the number of observations shown by each category is predictive of our target. Frequency encoding is often used in data science competitions.</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># create copy of data</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>cars_fe <span class="op">=</span> cars[[<span class="st">'car_brand'</span>]].copy()</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="co"># get frequency of the car_brands</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>counts <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].value_counts().to_dict()</span>
-<span id="cb4-6"><a href="#cb4-6"></a></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># apply frequency and divide by number of observations for frequency</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>cars_fe[<span class="st">'freq_enc'</span>] <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].<span class="bu">map</span>(counts) <span class="op">/</span> <span class="bu">len</span>(cars_fe)</span>
-<span id="cb4-9"><a href="#cb4-9"></a></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># apply frequency for count</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>cars_fe[<span class="st">'count_enc'</span>] <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].<span class="bu">map</span>(counts)</span>
-<span id="cb4-12"><a href="#cb4-12"></a>cars_fe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create copy of data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cars_fe <span class="op">=</span> cars[[<span class="st">'car_brand'</span>]].copy()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># get frequency of the car_brands</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].value_counts().to_dict()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># apply frequency and divide by number of observations for frequency</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>cars_fe[<span class="st">'freq_enc'</span>] <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].<span class="bu">map</span>(counts) <span class="op">/</span> <span class="bu">len</span>(cars_fe)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># apply frequency for count</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>cars_fe[<span class="st">'count_enc'</span>] <span class="op">=</span> cars_fe[<span class="st">'car_brand'</span>].<span class="bu">map</span>(counts)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>cars_fe</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -488,20 +488,20 @@ gtag('config', 'G-3B00DPE6RY', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="target-encoding">Target Encoding</h2>
 <p>The target encoding technique uses the mean of the target feature to replace the categorical variable. By doing so we take into account the number of labels with the target feature. This way we can decrease cardinally in the variable.</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># create copy of data</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>cars_te <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="st">"car_brand"</span>: [<span class="st">"BMW"</span>, <span class="st">"GM"</span>, <span class="st">"Ford"</span>, <span class="st">"Ford"</span>, <span class="st">"BMW"</span>, <span class="st">"Toyota"</span>],</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="st">"target"</span>: [<span class="dv">45_000</span>, <span class="dv">25_000</span>, <span class="dv">15_000</span>, <span class="dv">20_000</span>, <span class="dv">40_000</span>, <span class="dv">10_000</span>]</span>
-<span id="cb5-5"><a href="#cb5-5"></a>})</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co"># groupby categorical_variable and get mean of target variable</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>target <span class="op">=</span> cars_te.groupby(<span class="st">'car_brand'</span>)[<span class="st">'target'</span>].mean()</span>
-<span id="cb5-9"><a href="#cb5-9"></a></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co"># map target mean variable for category</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>cars_te[<span class="st">'target_enc'</span>] <span class="op">=</span> cars_te[<span class="st">'car_brand'</span>].<span class="bu">map</span>(target)</span>
-<span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co"># display encoding</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>cars_te</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create copy of data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cars_te <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"car_brand"</span>: [<span class="st">"BMW"</span>, <span class="st">"GM"</span>, <span class="st">"Ford"</span>, <span class="st">"Ford"</span>, <span class="st">"BMW"</span>, <span class="st">"Toyota"</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"target"</span>: [<span class="dv">45_000</span>, <span class="dv">25_000</span>, <span class="dv">15_000</span>, <span class="dv">20_000</span>, <span class="dv">40_000</span>, <span class="dv">10_000</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># groupby categorical_variable and get mean of target variable</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>target <span class="op">=</span> cars_te.groupby(<span class="st">'car_brand'</span>)[<span class="st">'target'</span>].mean()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># map target mean variable for category</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>cars_te[<span class="st">'target_enc'</span>] <span class="op">=</span> cars_te[<span class="st">'car_brand'</span>].<span class="bu">map</span>(target)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># display encoding</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>cars_te</span></code></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 
@@ -602,58 +602,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
   function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
