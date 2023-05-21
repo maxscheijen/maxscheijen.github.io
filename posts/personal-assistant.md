@@ -28,18 +28,21 @@ The project I build here is inspired by [Aleksa Gordić](https://www.linkedin.co
 
 To do all of this we need to build the components in the diagram displayed above. This includes:
 
-1. [Gathering the data](personal-assistant.md#gathering-data)
-2. [Transcribing podcast episode audio files](personal-assistant.md#transcription)
-3. [Building a vector database of transcriptions.](personal-assistant.md#vector-database-of-transcriptions)
+1. [Gathering the data](#gathering-podcast-audio-data)
+2. [Transcribing podcast episode audio files](#transcription-of-podcast-episodes)
+3. [Building a vector database of transcriptions.](#vector-database-of-transcriptions)
 4. [Using LLM to get answer to question based and relevant documents.](#answering-questions-based-upon-most-relevant-documents)
 
-## Gathering Data
+## Gathering Podcast Audio Data
 
 Let's start with downloading all podcast episodes of [TrueAnon](https://soundcloud.com/trueanonpod) as audio files.
 
 I did is by parsing the podcasts [RSS feed](https://feeds.soundcloud.com/users/soundcloud:users:672423809/sounds.rss) and extracting the title and the url to the audio recording of every podcast episode and storing them into a dataframe.
 
 ```python
+import pandas as pd
+
+
 def get_all_episodes_df(url: str) -> pd.DataFrame:
     # Request RRS feed
     response = requests.get(url)
@@ -85,7 +88,7 @@ def download_podcast(url: str, name: str, output_path: str = "") -> None:
         fp.write(response.content)
 ```
 
-Getting all the audio files.
+The function can use the above function to loop over all the audio file urls and persist them to disk.
 
 ```python
 df = pd.read_csv("...")
@@ -100,7 +103,9 @@ for episode_number in range(len(df)):
     download_podcast(url, title, output_path = f"audio/")
 ```
 
-## Transcription
+We now have a directory containing all podcast episode audio files.
+
+## Transcription of Podcast Episodes
 
 Before we can build or vector database we need transcriptions.
 
@@ -158,7 +163,6 @@ I load the transcriptions into a [langchain](https://python.langchain.com/en/lat
 
 ```python
 from glob import glob
-
 from langchain.document_loaders import TextLoader
 
 # Get all the transcription text files
@@ -209,12 +213,15 @@ These functionality is baked into the `FAISS` wrapper in langchain. So we can ru
 
 ## Answering Questions based upon most Relevant Documents
 
-Now that you have the most relevant documents based on the question. You can add these documents into your prompt and send it to your LLM model. langchain provides Q&A chain in which you can use a vector database for this called `VectorDBQA`.
+Now that you have the most relevant documents based on the question. You can add these documents into your prompt and send it to your LLM model.
+
+langchain provides Q&A chain in which you can use a vector database for this called `VectorDBQA`.
 
 ```python
-import os
+from os import environ
 
-os.environ["OPENAI_API_KEY"] = "..."
+# Set OpenAI API key
+environ["OPENAI_API_KEY"] = "..."
 
 # LLM used to answer the question
 llm = ChatOpenAI(max_tokens=100, temperature=0)
@@ -228,7 +235,7 @@ qa = VectorDBQA.from_chain_type(l
 )
 ```
 
-This Q&A chain allows use to ask questions.
+This question and answering chain allows use to ask questions based on the information in our documents (transcriptions). Allowing us to send the most relevant context and our question into a prompt to the OpenAI API.
 
 ```python
 query = "How did Jeffrey Epstein get his money?"
@@ -236,11 +243,13 @@ result = qa({"query": query})
 print(result["result"])
 ```
 
-::: {.column-margin}
-**Answer** - There is a lot of mystery surrounding how Jeffrey Epstein made his money. He seemed to become a billionaire just by managing another billionaire's money, but the finances are so opaque that no one really knows for sure.
-:::
+```shell
+> There is a lot of mystery surrounding how Jeffrey Epstein made his money. He seemed to become a
+> billionaire just by managing another billionaire’s money, but the finances are so opaque that
+> no one really knows for sure.
+```
 
-The results object also provides the source documents upon which this answer is based.
+In addition to the answer to the question the results object also provides us with the source documents upon which this answer is based.
 
 ## Conclusion
 
