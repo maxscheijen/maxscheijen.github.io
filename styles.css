@@ -136,3 +136,11 @@ footer.footer .nav-footer,
 #quarto-header nav {
     border-bottom: 1px solid #e9ecef;
 }
+
+div.sourceCode {
+    padding: 1em;
+}
+
+code {
+    font-size: small;
+}

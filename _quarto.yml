@@ -22,9 +22,10 @@ comments:
 format:
   html:
     page-layout: article
-    code-line-numbers: true
-    code-block-bg: true
-    code-copy: true
+    code-block-bg: false
+    code-copy: false
+    callout-appearance: simple
+    callout-icon: false
     css: styles.css
 highlight-style: ayu
 resources:
