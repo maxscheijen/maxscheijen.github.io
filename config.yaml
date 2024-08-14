@@ -1,4 +1,4 @@
-baseURL: https://maxscheijen.github.io/
+baseURL: "https://maxscheijen.github.io/"
 languageCode: en-us
 title: Max Scheijen 
 paginate: 20
