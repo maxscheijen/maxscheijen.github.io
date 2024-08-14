@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tool on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/tool/</link>
+    <description>Recent content in Tool on Max Scheijen</description>
+    <generator>Hugo -- 0.132.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/tool/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Finding files using the terminal</title>
+      <link>https://maxscheijen.github.io/posts/search-files-terminal/</link>
+      <pubDate>Wed, 14 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/search-files-terminal/</guid>
+      <description>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.
+One of the easiest ways to find files on your system based on their name is using fd.
+fd [PATTERN] This will return all the relevant files with your current directory. It wil also ignore the patterns from .gitignore by default.
+Another nice tool to find files is fzf which is fuzzy finder.</description>
+    </item>
+  </channel>
+</rss>

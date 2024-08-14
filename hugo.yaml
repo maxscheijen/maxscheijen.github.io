@@ -1,0 +1,47 @@
+baseURL: https://maxscheijen.github.io/
+languageCode: en-us
+title: Max Scheijen 
+paginate: 20
+theme: ["PaperMod"]
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: ExampleSite
+  description: "Max Scheijen - Blog"
+  keywords: [Blog, Portfolio, Data Science, Machine Learning, AI, Python, Programming]
+  author: Max Scheijen 
+  # author: ["Me", "You"] # multiple authors
+  # images: ["<link or path of image for opengraph, twitter-cards>"]
+  DateFormat: "January 2, 2006"
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+
+  ShowReadingTime: false 
+  ShowShareButtons: false 
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: false 
+  ShowCodeCopyButtons: false
+  ShowWordCount: false
+  disableSpecial1stPost: false 
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: false
+  tocopen: false
+
+  homeInfoParams:
+    Title: "Hi there \U0001F44B"
+    Content: "Welcome to my website. I'm Max, a Data Scientist and Machine Learning Engineer from Amsterdam. On this page I share my interests, thoughts and learnings."
+
+  assets:
+    favicon: "/favicon.ico"
+    favicon16x16: "/favicon-16x16.png"
+    favicon32x32: "/favicon-32x32.png"
+
+menu:
+  main:
+    - identifier: tags 
+      name: tags 
+      url: /tags/
+      weight: 10
