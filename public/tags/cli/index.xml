@@ -6,8 +6,18 @@
     <description>Recent content in Cli on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 14 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/cli/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Run Custom Scripts From Anywhere</title>
+      <link>https://maxscheijen.github.io/posts/run-custom-script-anywhere/</link>
+      <pubDate>Thu, 15 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/run-custom-script-anywhere/</guid>
+      <description>Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.
+I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of Mischa van den Burg I started taking in interest in more thorough note taking.
+My first script would be for easier note taking.
+So I took his blog script tweaked it a little, and wanted to make it executable from anywhere in my terminal.</description>
+    </item>
     <item>
       <title>Finding files using the terminal</title>
       <link>https://maxscheijen.github.io/posts/search-files-terminal/</link>
