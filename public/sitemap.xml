@@ -2,22 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://maxscheijen.github.io/tags/cli/</loc>
-    <lastmod>2024-08-15T00:00:00+00:00</lastmod>
+    <loc>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</loc>
+    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/</loc>
-    <lastmod>2024-08-15T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/</loc>
+    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/</loc>
+    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/vim/</loc>
+    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/cli/</loc>
     <lastmod>2024-08-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/productivity/</loc>
     <lastmod>2024-08-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/run-custom-scripts-anywhere/</loc>
-    <lastmod>2024-08-15T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/tags/</loc>
     <lastmod>2024-08-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/tool/</loc>

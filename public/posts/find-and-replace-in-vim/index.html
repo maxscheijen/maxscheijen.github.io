@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Find and Replace in Vim | Max Scheijen</title>
+<meta name="keywords" content="vim">
+<meta name="description" content="One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
+I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
+One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/find-and-replace-in-vim/">
+<meta name="google-site-verification" content="G-HK7V1ZKCPD">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/find-and-replace-in-vim/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="Find and Replace in Vim" />
+<meta property="og:description" content="One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
+I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
+One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://maxscheijen.github.io/posts/find-and-replace-in-vim/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-08-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-08-16T00:00:00+00:00" /><meta property="og:site_name" content="ExampleSite" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Find and Replace in Vim"/>
+<meta name="twitter:description" content="One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
+I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
+One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Find and Replace in Vim",
+      "item": "https://maxscheijen.github.io/posts/find-and-replace-in-vim/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Find and Replace in Vim",
+  "name": "Find and Replace in Vim",
+  "description": "One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).\nI started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.\nOne thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.",
+  "keywords": [
+    "vim"
+  ],
+  "articleBody": "One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).\nI started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.\nOne thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or atleast the basics of find and replace.\nPattern In vim you can use :substitute (:s) to find and replace text.\nIt follows the following pattern:\n:[range]s/{pattern}/{string}/[flags][count] The command searches each line in [range] for {pattern} and replaces it with {string}. Count is the number of times to repeat this action\nWhen no [range] or [count] is provided, the replace only happens on the current line.\nBasics These are the command I’m currently using.\nWhen I want to replace the first occurrence of “foo” with “bar” on current line.\n:s/foo/bar Replace every occurrence of “foo” with bar on current line.\n:s/foo/bar/g One thing I do often is replace every occurence of a pattern. The % charachter will allow you to do this for the entire file.\n:%s/foo/bar/g If confirmation for subsitution is important add i to the end of the command.\n:s/foo/bar/gc The :s command searches for string matches. If you want to match whole words and not part of words, put replace between \\\u003c\\\u003e\n:s/\\/bar/:w By adding a i add the end, if you want to ignore character case.\n:s/foo/bar/gi Links https://linuxize.com/post/vim-find-replace/\n",
+  "wordCount" : "264",
+  "inLanguage": "en",
+  "datePublished": "2024-08-16T00:00:00Z",
+  "dateModified": "2024-08-16T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/find-and-replace-in-vim/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="tags">
+                    <span>tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Find and Replace in Vim
+    </h1>
+    <div class="post-meta"><span title='2024-08-16 00:00:00 +0000 UTC'>August 16, 2024</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).</p>
+<p>I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.</p>
+<p>One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or atleast the basics of find and replace.</p>
+<h2 id="pattern">Pattern<a hidden class="anchor" aria-hidden="true" href="#pattern">#</a></h2>
+<p>In vim you can use <code>:substitute</code> (<code>:s</code>) to find and replace text.</p>
+<p>It follows the following pattern:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:[<span style="color:#a6e22e">range</span>]<span style="color:#a6e22e">s</span><span style="color:#e6db74">/{pattern}/</span>{<span style="color:#a6e22e">string</span>}/[<span style="color:#a6e22e">flags</span>][<span style="color:#a6e22e">count</span>]
+</span></span></code></pre></div><p>The command searches each line in <code>[range]</code> for <code>{pattern}</code> and replaces it with <code>{string}</code>. Count is the number of times to repeat this action</p>
+<p>When no <code>[range]</code> or <code>[count]</code> is provided, the replace only happens on the current line.</p>
+<h2 id="basics">Basics<a hidden class="anchor" aria-hidden="true" href="#basics">#</a></h2>
+<p>These are the command I&rsquo;m currently using.</p>
+<p>When I want to replace the first occurrence of “foo” with “bar” on current line.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>
+</span></span></code></pre></div><p>Replace every occurrence of “foo” with bar on current line.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
+</span></span></code></pre></div><p>One thing I do often is replace every occurence of a pattern. The <code>%</code> charachter will allow you to do this for the entire file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:%<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
+</span></span></code></pre></div><p>If confirmation for subsitution is important add <code>i</code> to the end of the command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gc</span>
+</span></span></code></pre></div><p>The <code>:s</code> command searches for string matches. If you want to match whole words and not part of words, put replace between <code>\&lt;\&gt;</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/\&lt;foor\&gt;/</span><span style="color:#a6e22e">bar</span>/:<span style="color:#a6e22e">w</span>
+</span></span></code></pre></div><p>By adding a <code>i</code> add the end, if you want to ignore character case.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gi</span>
+</span></span></code></pre></div><h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<p><a href="https://linuxize.com/post/vim-find-replace/">https://linuxize.com/post/vim-find-replace/</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/vim/">Vim</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://maxscheijen.github.io/posts/run-custom-scripts-anywhere/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Run Custom Scripts From Anywhere</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

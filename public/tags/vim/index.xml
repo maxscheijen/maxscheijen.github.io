@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Vim on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/vim/</link>
+    <description>Recent content in Vim on Max Scheijen</description>
+    <generator>Hugo -- 0.132.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 16 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Find and Replace in Vim</title>
+      <link>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</link>
+      <pubDate>Fri, 16 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</guid>
+      <description>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
+I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
+One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.</description>
+    </item>
+  </channel>
+</rss>
