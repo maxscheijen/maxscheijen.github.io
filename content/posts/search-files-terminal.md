@@ -11,7 +11,7 @@ Finding notes or files on your system can be hard. Where did you put that file? 
 
 One of the easiest ways to find files on your system based on their name is using `fd`.
 
-```shell
+```bash
 fd [PATTERN]
 ```
 
@@ -19,7 +19,7 @@ This will return all the relevant files with your current directory. It wil also
 
 Another nice tool to find files is `fzf` which is fuzzy finder.
 
-```shell
+```bash
 fzf
 ```
 
@@ -30,7 +30,7 @@ Will open-up an search prompt in the current directory. If you use the neovim pl
 
 However if you also want to search the content of your files ripgrep is probabuly the right tool `rg` is probably the right tool.
 
-```shell
+```bash
 rg [PATTERN]
 ```
 
