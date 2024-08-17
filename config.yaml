@@ -51,4 +51,14 @@ menu:
     - identifier: archive 
       name: Archive 
       url: /archive/
-      weight: 10
+      weight: 20
+    - identifier: search 
+      name: Search 
+      url: /search/
+      weight: 30
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON # necessary for search
