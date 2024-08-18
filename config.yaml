@@ -34,6 +34,14 @@ params:
     Title: "Hi there \U0001F44B"
     Content: "Welcome to my website. I'm Max, a Data Scientist and Machine Learning Engineer from Amsterdam. On this page I share my interests, thoughts and learnings."
 
+  socialIcons:
+    - name: github
+      url: "https://github.com/maxscheijen"
+    - name: x
+      url: "https://x.com/maxscheijen"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/max-scheijen/"
+
   assets:
     favicon: "/favicon.ico"
     favicon16x16: "/favicon-16x16.png"
