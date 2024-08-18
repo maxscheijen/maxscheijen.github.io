@@ -16,6 +16,29 @@
       <description>For the last year I&amp;rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a Plex Media Server, Home Assistant, web servers and some Docker images.
 Until now my Homelab was only accessible from my local network.
 I was hesitant in making my Homelab remotely accesable (port forwarding , setting up my own VPN). Eventhough I do alot of programming and software engeering related things, I&amp;rsquo;m not too comfortable working with networking side of things.</description>
+      <content:encoded><![CDATA[<p>For the last year I&rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a <a href="https://plex.tv/">Plex Media Server</a>, <a href="https://home-assistant.io">Home Assistant</a>, web servers and some Docker images.</p>
+<p>Until now my Homelab was only accessible from my local network.</p>
+<p>I was hesitant in making my Homelab remotely accesable (port forwarding , setting up my own VPN). Eventhough I do alot of programming and software engeering related things, I&rsquo;m not too comfortable working with networking side of things.</p>
+<p>I don&rsquo;t want someone unauthorized having access to my Homelab&hellip;</p>
+<p>But I still, it would be nice to have access to it when I&rsquo;m not on my local network. This is when I came across <a href="https://tailscale.com">Tailscale</a>.</p>
+<h2 id="tailscale">Tailscale</h2>
+<p>The Tailscale VPN allows me to access my Homelab, and the applications running on it, from anywhere in the world.</p>
+<p>So on my Raspberry Pi I ran the following.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get install apt-transport-https
+</span></span></code></pre></div><p>Then we need to add the Tailscale singin key.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg &gt; /dev/null
+</span></span><span style="display:flex;"><span>curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bullseye.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+</span></span></code></pre></div><p>Install Tailscale.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt install tailscale
+</span></span></code></pre></div><p>You can then run the following command to start Tailwind and authenticate.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo tailscale up
+</span></span></code></pre></div><p>In the <a href="https://login.tailscale.com/admin/machines">Tailscale Dashboard</a> you can see all your machines and there ip addresses.</p>
+<p>Now add other machines to the same account, and as long as you&rsquo;re connected to the Tailscale VPN can access your machines remotely.</p>
+<h2 id="links">Links</h2>
+<p><a href="https://tailscale.com/learn/how-to-ssh-into-a-raspberry-pi">https://tailscale.com/learn/how-to-ssh-into-a-raspberry-pi</a></p>
+<p>[[homelab]] [[vpn]]</p>
+]]></content:encoded>
     </item>
     <item>
       <title>Find and Replace in Vim</title>
@@ -25,6 +48,32 @@ I was hesitant in making my Homelab remotely accesable (port forwarding , settin
       <description>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
 I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
 One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.</description>
+      <content:encoded><![CDATA[<p>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).</p>
+<p>I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.</p>
+<p>One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or atleast the basics of find and replace.</p>
+<h2 id="pattern">Pattern</h2>
+<p>In vim you can use <code>:substitute</code> (<code>:s</code>) to find and replace text.</p>
+<p>It follows the following pattern:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:[<span style="color:#a6e22e">range</span>]<span style="color:#a6e22e">s</span><span style="color:#e6db74">/{pattern}/</span>{<span style="color:#a6e22e">string</span>}/[<span style="color:#a6e22e">flags</span>][<span style="color:#a6e22e">count</span>]
+</span></span></code></pre></div><p>The command searches each line in <code>[range]</code> for <code>{pattern}</code> and replaces it with <code>{string}</code>. Count is the number of times to repeat this action</p>
+<p>When no <code>[range]</code> or <code>[count]</code> is provided, the replace only happens on the current line.</p>
+<h2 id="basics">Basics</h2>
+<p>These are the command I&rsquo;m currently using.</p>
+<p>When I want to replace the first occurrence of “foo” with “bar” on current line.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>
+</span></span></code></pre></div><p>Replace every occurrence of “foo” with bar on current line.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
+</span></span></code></pre></div><p>One thing I do often is replace every occurence of a pattern. The <code>%</code> charachter will allow you to do this for the entire file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:%<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
+</span></span></code></pre></div><p>If confirmation for subsitution is important add <code>i</code> to the end of the command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gc</span>
+</span></span></code></pre></div><p>The <code>:s</code> command searches for string matches. If you want to match whole words and not part of words, put replace between <code>\&lt;\&gt;</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/\&lt;foor\&gt;/</span><span style="color:#a6e22e">bar</span>/:<span style="color:#a6e22e">w</span>
+</span></span></code></pre></div><p>By adding a <code>i</code> add the end, if you want to ignore character case.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gi</span>
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<p><a href="https://linuxize.com/post/vim-find-replace/">https://linuxize.com/post/vim-find-replace/</a></p>
+]]></content:encoded>
     </item>
     <item>
       <title>Run Custom Scripts From Anywhere</title>
@@ -35,6 +84,54 @@ One thing I wanted to learn this week is find and replace. This is an operation 
 I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of Mischa van den Burg I started taking in interest in more thorough note taking.
 My first script would be for easier note taking.
 So I took his blog script tweaked it a little, and wanted to make it executable from anywhere in my terminal.</description>
+      <content:encoded><![CDATA[<p>Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.</p>
+<p>I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of <a href="https://mischavandenburg.com/">Mischa van den Burg</a> I started taking in interest in more thorough note taking.</p>
+<p>My first script would be for easier note taking.</p>
+<p>So I took his <a href="https://github.com/mischavandenburg/dotfiles/blob/main/scripts/blog">blog script</a> tweaked it a little, and wanted to make it executable from anywhere in my terminal.</p>
+<p><code>~/.dotfiles/scripts/note</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the filename</span>
+</span></span><span style="display:flex;"><span>read -p <span style="color:#e6db74">&#34;Enter a filename: &#34;</span> filename
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the current date</span>
+</span></span><span style="display:flex;"><span>date<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +<span style="color:#e6db74">&#34;%Y-%m-%d&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set the second brain directory</span>
+</span></span><span style="display:flex;"><span>directory<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$SECONDBRAIN<span style="color:#e6db74">/0-inbox/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create markdown name based on filename</span>
+</span></span><span style="display:flex;"><span>touch <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add formatting </span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;---&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;title: &#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;date: </span>$date<span style="color:#e6db74">&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;tags:&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;  -&#34;</span> &gt;&gt;<span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;---&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;## Links&#34;</span> &gt;&gt;  <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Open up in neovim</span>
+</span></span><span style="display:flex;"><span>nvim <span style="color:#e6db74">&#39;+ normal 2GzzA&#39;</span> <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span></code></pre></div><p>I ensured that every script in <code>~/.dotfiles/scripts/</code> was executable by running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x ~/.dotfiles/scripts/*
+</span></span></code></pre></div><p>After this I added the scripts directory to the PATH by adding the folling line to my <code>~/.zshrc</code> file</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.dotfiles/scripts:</span>$PATH<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Reload my <code>~/.zshrc</code> by running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>exec <span style="color:#e6db74">${</span>SHELL<span style="color:#e6db74">}</span> -l
+</span></span></code></pre></div><p>And now I&rsquo;m able to run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>note
+</span></span></code></pre></div><p>creating a note with formatting in a specific directory.</p>
+<h2 id="links">Links</h2>
+<p><a href="https://github.com/mischavandenburg/dotfiles/tree/main/scripts">https://github.com/mischavandenburg/dotfiles/tree/main/scripts</a></p>
+]]></content:encoded>
     </item>
     <item>
       <title>Finding files using the terminal</title>
@@ -45,6 +142,25 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
 One of the easiest ways to find files on your system based on their name is using fd.
 fd [PATTERN] This will return all the relevant files with your current directory. It wil also ignore the patterns from .gitignore by default.
 Another nice tool to find files is fzf which is fuzzy finder.</description>
+      <content:encoded><![CDATA[<p>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.</p>
+<p>One of the easiest ways to find files on your system based on their name is using <code>fd</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fd <span style="color:#f92672">[</span>PATTERN<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>This will return all the relevant files with your current directory. It wil also ignore the patterns from <code>.gitignore</code> by default.</p>
+<p>Another nice tool to find files is <code>fzf</code> which is fuzzy finder.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fzf
+</span></span></code></pre></div><p>Will open-up an search prompt in the current directory. If you use the neovim plugin telescope <code>find_files</code> funcionality it should look familiar.</p>
+<h2 id="search-in-file-content">Search in file content</h2>
+<p>However if you also want to search the content of your files ripgrep is probabuly the right tool <code>rg</code> is probably the right tool.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rg <span style="color:#f92672">[</span>PATTERN<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>These to types of file search will probably find you the correct file or content 90% of the time.</p>
+<p>Atleast if you know what you&rsquo;re looking for.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/sharkdp/fd">https://github.com/sharkdp/fd</a></li>
+<li><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></li>
+<li><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></li>
+</ul>
+]]></content:encoded>
     </item>
   </channel>
 </rss>

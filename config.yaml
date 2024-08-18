@@ -22,6 +22,7 @@ params:
   ShowBreadCrumbs: false 
   ShowCodeCopyButtons: false
   ShowWordCount: false
+  ShowFullTextinRSS: true
   disableSpecial1stPost: false 
   disableScrollToTop: false
   comments: false

@@ -17,6 +17,54 @@
 I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of Mischa van den Burg I started taking in interest in more thorough note taking.
 My first script would be for easier note taking.
 So I took his blog script tweaked it a little, and wanted to make it executable from anywhere in my terminal.</description>
+      <content:encoded><![CDATA[<p>Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.</p>
+<p>I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of <a href="https://mischavandenburg.com/">Mischa van den Burg</a> I started taking in interest in more thorough note taking.</p>
+<p>My first script would be for easier note taking.</p>
+<p>So I took his <a href="https://github.com/mischavandenburg/dotfiles/blob/main/scripts/blog">blog script</a> tweaked it a little, and wanted to make it executable from anywhere in my terminal.</p>
+<p><code>~/.dotfiles/scripts/note</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the filename</span>
+</span></span><span style="display:flex;"><span>read -p <span style="color:#e6db74">&#34;Enter a filename: &#34;</span> filename
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the current date</span>
+</span></span><span style="display:flex;"><span>date<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>date +<span style="color:#e6db74">&#34;%Y-%m-%d&#34;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Set the second brain directory</span>
+</span></span><span style="display:flex;"><span>directory<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$SECONDBRAIN<span style="color:#e6db74">/0-inbox/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Create markdown name based on filename</span>
+</span></span><span style="display:flex;"><span>touch <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add formatting </span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;---&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;title: &#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;date: </span>$date<span style="color:#e6db74">&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;tags:&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -e <span style="color:#e6db74">&#34;  -&#34;</span> &gt;&gt;<span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;---&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;## Links&#34;</span> &gt;&gt;  <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>echo -en <span style="color:#e6db74">&#34;\n&#34;</span> &gt;&gt; <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Open up in neovim</span>
+</span></span><span style="display:flex;"><span>nvim <span style="color:#e6db74">&#39;+ normal 2GzzA&#39;</span> <span style="color:#e6db74">&#34;</span>$directory<span style="color:#e6db74">/</span>$filename<span style="color:#e6db74">.md&#34;</span>
+</span></span></code></pre></div><p>I ensured that every script in <code>~/.dotfiles/scripts/</code> was executable by running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x ~/.dotfiles/scripts/*
+</span></span></code></pre></div><p>After this I added the scripts directory to the PATH by adding the folling line to my <code>~/.zshrc</code> file</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.dotfiles/scripts:</span>$PATH<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Reload my <code>~/.zshrc</code> by running</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>exec <span style="color:#e6db74">${</span>SHELL<span style="color:#e6db74">}</span> -l
+</span></span></code></pre></div><p>And now I&rsquo;m able to run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>note
+</span></span></code></pre></div><p>creating a note with formatting in a specific directory.</p>
+<h2 id="links">Links</h2>
+<p><a href="https://github.com/mischavandenburg/dotfiles/tree/main/scripts">https://github.com/mischavandenburg/dotfiles/tree/main/scripts</a></p>
+]]></content:encoded>
     </item>
     <item>
       <title>Finding files using the terminal</title>
@@ -27,6 +75,25 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
 One of the easiest ways to find files on your system based on their name is using fd.
 fd [PATTERN] This will return all the relevant files with your current directory. It wil also ignore the patterns from .gitignore by default.
 Another nice tool to find files is fzf which is fuzzy finder.</description>
+      <content:encoded><![CDATA[<p>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.</p>
+<p>One of the easiest ways to find files on your system based on their name is using <code>fd</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fd <span style="color:#f92672">[</span>PATTERN<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>This will return all the relevant files with your current directory. It wil also ignore the patterns from <code>.gitignore</code> by default.</p>
+<p>Another nice tool to find files is <code>fzf</code> which is fuzzy finder.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fzf
+</span></span></code></pre></div><p>Will open-up an search prompt in the current directory. If you use the neovim plugin telescope <code>find_files</code> funcionality it should look familiar.</p>
+<h2 id="search-in-file-content">Search in file content</h2>
+<p>However if you also want to search the content of your files ripgrep is probabuly the right tool <code>rg</code> is probably the right tool.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rg <span style="color:#f92672">[</span>PATTERN<span style="color:#f92672">]</span>
+</span></span></code></pre></div><p>These to types of file search will probably find you the correct file or content 90% of the time.</p>
+<p>Atleast if you know what you&rsquo;re looking for.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/sharkdp/fd">https://github.com/sharkdp/fd</a></li>
+<li><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></li>
+<li><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></li>
+</ul>
+]]></content:encoded>
     </item>
   </channel>
 </rss>
