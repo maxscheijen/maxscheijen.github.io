@@ -6,8 +6,17 @@
     <description>Recent content on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 16 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 18 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Remote Access to Homelab using Tailscale</title>
+      <link>https://maxscheijen.github.io/posts/remote-access-homelab-tailscale/</link>
+      <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/remote-access-homelab-tailscale/</guid>
+      <description>For the last year I&amp;rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a Plex Media Server, Home Assistant, web servers and some Docker images.
+Until now my Homelab was only accessible from my local network.
+I was hesitant in making my Homelab remotely accesable (port forwarding , setting up my own VPN). Eventhough I do alot of programming and software engeering related things, I&amp;rsquo;m not too comfortable working with networking side of things.</description>
+    </item>
     <item>
       <title>Find and Replace in Vim</title>
       <link>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</link>
