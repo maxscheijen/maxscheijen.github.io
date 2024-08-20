@@ -10,17 +10,16 @@ params:
   description: "Max Scheijen - Blog"
   keywords: [Blog, Portfolio, Data Science, Machine Learning, AI, Python, Programming]
   author: Max Scheijen 
-  # author: ["Me", "You"] # multiple authors
   # images: ["<link or path of image for opengraph, twitter-cards>"]
   DateFormat: "January 2, 2006"
-  defaultTheme: auto # dark, light
+  defaultTheme: auto
   disableThemeToggle: false
 
   ShowReadingTime: false 
   ShowShareButtons: false 
   ShowPostNavLinks: true
   ShowBreadCrumbs: false 
-  ShowCodeCopyButtons: false
+  ShowCodeCopyButtons: true 
   ShowWordCount: false
   ShowFullTextinRSS: true
   disableSpecial1stPost: false 
