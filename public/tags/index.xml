@@ -6,8 +6,22 @@
     <description>Recent content in Tags on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python</title>
+      <link>https://maxscheijen.github.io/tags/python/</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vim</title>
+      <link>https://maxscheijen.github.io/tags/vim/</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/vim/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Homelab</title>
       <link>https://maxscheijen.github.io/tags/homelab/</link>
@@ -20,13 +34,6 @@
       <link>https://maxscheijen.github.io/tags/vpn/</link>
       <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/tags/vpn/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Vim</title>
-      <link>https://maxscheijen.github.io/tags/vim/</link>
-      <pubDate>Fri, 16 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/vim/</guid>
       <description></description>
     </item>
     <item>

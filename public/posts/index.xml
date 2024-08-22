@@ -6,8 +6,43 @@
     <description>Recent content in Posts on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 18 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 22 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python to Change VIM Lines</title>
+      <link>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</link>
+      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</guid>
+      <description>The programming language I&amp;rsquo;m most familiar with is python. I also started to learn vim recently. How can I combine the two?
+I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.
+Script So I wrote a basic python script that can lower case a string.
+~/.dotfiles/scripts/lower
+#!/usr/bin/python3 import sys def to_lower() -&amp;gt; str: return sys.</description>
+      <content:encoded><![CDATA[<p>The programming language I&rsquo;m most familiar with is <a href="https://python.org">python</a>. I also started to learn vim recently. How can I combine the two?</p>
+<p>I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.</p>
+<h2 id="script">Script</h2>
+<p>So I wrote a basic python script that can lower case a string.</p>
+<p><code>~/.dotfiles/scripts/lower</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_lower</span>() <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> sys<span style="color:#f92672">.</span>stdin<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>lower()<span style="color:#f92672">.</span>rstrip()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    print(to_lower())
+</span></span></code></pre></div><p>I then made the file executable</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>chmod +x ~/.dotfiles/scripts/lowercase
+</span></span></code></pre></div><p>and added the script to my path. I for example added the <code>~/.dotfiles/scripts</code> directory to my path (in <code>~/.zshrc</code>), allowing me to call the executables name from my shell.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.dotfiles/scripts:</span>$PATH<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>I can now hit <code>!!</code> in vim, and type the name of my script <code>lower</code> and hit enter.</p>
+<p>The line below my cursor is now lower cased.</p>
+<h2 id="links">Links</h2>
+<p>[[vim]] [[python]]</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Remote Access to Homelab using Tailscale</title>
       <link>https://maxscheijen.github.io/posts/remote-access-homelab-tailscale/</link>
