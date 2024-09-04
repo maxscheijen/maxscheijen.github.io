@@ -6,13 +6,84 @@
     <description>Recent content in Posts on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Python to Change VIM Lines</title>
-      <link>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</link>
+      <title>Git Bisect to Find Bugs</title>
+      <link>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</link>
+      <pubDate>Wed, 04 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</guid>
+      <description>Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.
+You searched through the commit and their messages. But you can&amp;rsquo;t find which commit introduced the bug. Damm what are we going to do&amp;hellip;
+This when you can use git bisect, and there are only two things you need
+the commits are ordered by time you need to know a commit where the issues was not present.</description>
+      <content:encoded><![CDATA[<p>Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.</p>
+<p>You searched through the commit and their messages. But you can&rsquo;t find which commit introduced the bug. Damm what are we going to do&hellip;</p>
+<p>This when you can use <code>git bisect</code>, and there are only two things you need</p>
+<ol>
+<li>the commits are ordered by time</li>
+<li>you need to know a commit where the issues was not present.</li>
+</ol>
+<p>Bisect uses <strong>binary search</strong> to narrow down the search field, to find which commit introduced the bug.</p>
+<h2 id="example">Example</h2>
+<p>Lets say that you know that commit <code>A</code> doesn&rsquo;t contain the bug (all tests pass). But in last commit <code>E</code> the tests are not passing.</p>
+<p>However, we don&rsquo;t know in which commit between <code>A</code> and <code>E</code> the bug was introduced.</p>
+<pre tabindex="0"><code>---------------------------------
+|                               |
+A ---------- unknown ---------- E
+</code></pre><p>To narrow down our search, we&rsquo;re going to select the middle commit between <code>A</code> and <code>E</code>, commit <code>C</code>.</p>
+<pre tabindex="0"><code>---------------------------------
+|                               |
+A -- unknown -- C -- unknown -- E
+</code></pre><p>We run our tests against commit <code>C</code>. If this commit turns out to be passing than we know the faulty commit was introduced between <code>C</code> and <code>E</code> and the commits between <code>A</code> and <code>C</code> are good.</p>
+<pre tabindex="0"><code>----------------------------------
+|                                |
+A --- good --- C --- unknown --- E
+</code></pre><p>However if the bug is still present in <code>C</code> and our tests fail, than we know for sure that the commits between <code>C</code> and <code>E</code> arent good.</p>
+<pre tabindex="0"><code>---------------------------------
+|                               |
+A --- unknown --- C --- bad --- E
+</code></pre><p>When then repeat this process until we find the commit where are the bug was introduced.</p>
+<h2 id="basics-of-git-bisect">Basics of <code>git bisect</code></h2>
+<p>Git provides tools to perform this search. So you don&rsquo;t have to know the middle commit.</p>
+<ol>
+<li>Start bisect</li>
+</ol>
+<pre tabindex="0"><code>git start
+</code></pre><ol start="2">
+<li>Set the known bad commit, when no commit provided it uses the current one.</li>
+</ol>
+<pre tabindex="0"><code>git bisect bad 
+</code></pre><ol start="3">
+<li>Set the known good commit, in this case at a tag.</li>
+</ol>
+<pre tabindex="0"><code>git bisect good v1.0.0
+</code></pre><ol start="4">
+<li>Then we test our code.</li>
+</ol>
+<pre tabindex="0"><code>python -m pytest
+</code></pre><ol start="5">
+<li>Depending on test turnout.</li>
+</ol>
+<pre tabindex="0"><code>git bisect &lt;good | bad&gt;
+</code></pre><ol start="6">
+<li>Back to step 4 until we find the bug.</li>
+</ol>
+<h2 id="automatic-bisect">Automatic <code>bisect</code></h2>
+<p>Repeat step 1 till 3 as before and then run.</p>
+<pre tabindex="0"><code>git bisect run &lt;cmd&gt;
+</code></pre><p>Where <code>&lt;cmd&gt;</code> is the (test) command you want to run.</p>
+<pre tabindex="0"><code>git bisect run python -m pytest 
+</code></pre><h2 id="links">Links</h2>
+<p><a href="https://git-scm.com/docs/git-bisect">https://git-scm.com/docs/git-bisect</a></p>
+<p>[[git]]</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Python to Change VIM</title>
+      <link>https://maxscheijen.github.io/posts/python-to-change-vim/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</guid>
+      <guid>https://maxscheijen.github.io/posts/python-to-change-vim/</guid>
       <description>The programming language I&amp;rsquo;m most familiar with is python. I also started to learn vim recently. How can I combine the two?
 I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.
 Script So I wrote a basic python script that can lower case a string.

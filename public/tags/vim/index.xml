@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 22 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Python to Change VIM Lines</title>
-      <link>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</link>
+      <title>Python to Change VIM</title>
+      <link>https://maxscheijen.github.io/posts/python-to-change-vim/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</guid>
+      <guid>https://maxscheijen.github.io/posts/python-to-change-vim/</guid>
       <description>The programming language I&amp;rsquo;m most familiar with is python. I also started to learn vim recently. How can I combine the two?
 I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.
 Script So I wrote a basic python script that can lower case a string.

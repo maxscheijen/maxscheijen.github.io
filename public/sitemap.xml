@@ -2,19 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://maxscheijen.github.io/tags/git/</loc>
+    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</loc>
+    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://maxscheijen.github.io/</loc>
-    <lastmod>2024-08-22T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/</loc>
-    <lastmod>2024-08-22T00:00:00+00:00</lastmod>
+    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/</loc>
+    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/python/</loc>
     <lastmod>2024-08-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://maxscheijen.github.io/posts/python-to-change-vim-lines/</loc>
-    <lastmod>2024-08-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/tags/</loc>
+    <loc>https://maxscheijen.github.io/posts/python-to-change-vim/</loc>
     <lastmod>2024-08-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/vim/</loc>
