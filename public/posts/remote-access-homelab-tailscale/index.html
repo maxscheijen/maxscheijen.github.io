@@ -60,6 +60,23 @@ I was hesitant in making my Homelab remotely accesable (port forwarding , settin
     </style>
 </noscript>
   
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script>
+    
+  
 
 <meta property="og:title" content="Remote Access to Homelab using Tailscale" />
 <meta property="og:description" content="For the last year I&rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a Plex Media Server, Home Assistant, web servers and some Docker images.

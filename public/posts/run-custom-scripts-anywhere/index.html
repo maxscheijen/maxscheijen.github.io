@@ -61,6 +61,23 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
     </style>
 </noscript>
   
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script>
+    
+  
 
 <meta property="og:title" content="Run Custom Scripts From Anywhere" />
 <meta property="og:description" content="Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.

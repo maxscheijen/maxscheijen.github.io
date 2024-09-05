@@ -4,6 +4,10 @@ title: Max Scheijen
 paginate: 20
 theme: ["PaperMod"]
 
+services:
+  googleAnalytics:
+    id: "G-DC0740CRYY"
+
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: ExampleSite
