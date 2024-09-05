@@ -49,7 +49,7 @@ params:
   apple_touch_icon: "/apple-touch-icon.png"
   analytics:
     google:
-      SiteVerificationTag: "G-HK7V1ZKCPD"
+      SiteVerificationTag: "G-DC0740CRYY"
 
   fuseOpts:
     isCaseSensitive: false
