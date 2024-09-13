@@ -6,8 +6,255 @@
     <description>Recent content in Posts on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VPS 101 - Setup &amp; Security</title>
+      <link>https://maxscheijen.github.io/posts/vps-101-setup-and-security/</link>
+      <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/vps-101-setup-and-security/</guid>
+      <description>Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
+This is the first part of my journey into hosting a Linux server.
+Setup &amp;amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&amp;rsquo;m fine with that.</description>
+      <content:encoded><![CDATA[<p>Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).</p>
+<p>This is the first part of my journey into hosting a Linux server.</p>
+<ol>
+<li><strong><a href="/posts/vps-101-setup-and-security">Setup &amp; Security</a></strong></li>
+</ol>
+<p>To experiment with hosting my own Linux VPS, I opted for the cheapest <a href="https://www.digitalocean.com/products/droplets">DigitalOcean Droplet</a>, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.</p>
+<h2 id="connect-to-vps-with-ssh">Connect to VPS with SSH.</h2>
+<p>Your VPS provider will either guide you through setting up or automatically configure an SSH key or password, a (root) user, and an IP address, enabling you to connect to your VPS via SSH.</p>
+<p>You can use this setup to establish your initial connection to the VPS. In my case the <code>&lt;user&gt;</code> was <code>root</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;user&gt;@&lt;ip&gt;
+</span></span></code></pre></div><h2 id="updates">Updates</h2>
+<p>The first step is to update the packages on your VPS, as they may be outdated and could pose security vulnerabilities.</p>
+<p>To update packages on an Ubuntu machine, run the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt upgrade -y
+</span></span></code></pre></div><p>All packages should now be up to date. If any packages remain outdated, you may need to update them manually using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install &lt;package-name&gt;
+</span></span></code></pre></div><p>After updating the packages, you may need to reboot the machine. Use the following command to check if a reboot is required:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ls /var/run/reboot-required
+</span></span></code></pre></div><p>if this file exists, a reboot is required, restart your VPS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>reboot
+</span></span></code></pre></div><h3 id="automatic-updates">Automatic Updates</h3>
+<p>To ensure packages are automatically kept up to date, install the unattended-upgrades package.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># install unattended upgrades</span>
+</span></span><span style="display:flex;"><span>sudo apt install unattended-upgrades
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># start unattended upgrades</span>
+</span></span><span style="display:flex;"><span>sudo dpkg-reconfigure unattended-upgrades
+</span></span></code></pre></div><blockquote>
+<p>You will likely be prompted to enable automatic package upgrades. If the prompt does not appear, you can configure it manually.</p>
+<p>To configure unattended-upgrades, open the following file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/apt.conf.d/50unattended-upgrades
+</span></span></code></pre></div><p>and un-comment the following line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>distro_id<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">${</span>distro_codename<span style="color:#e6db74">}</span><span style="color:#e6db74">-updates&#34;</span>
+</span></span></code></pre></div></blockquote>
+<p>To check if unattended-upgrades is running, use the systemctl command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo systemctl status unattended-upgrades
+</span></span></code></pre></div><h2 id="root-and-users">Root and Users</h2>
+<p>Your VPS provider will set you up with a user (likely root) and a password. It&rsquo;s good practice to change this password if it was generated by the provider.</p>
+<p>To change the root password, use the passwd command while logged in as root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>passwd
+</span></span></code></pre></div><p>It’s also good practice not to use the <code>root</code> user for everyday tasks. Instead, create a non-root user using the <code>adduser</code> command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>adduser &lt;username&gt;
+</span></span></code></pre></div><p>You’ll be prompted to enter a password and some additional information for the new user.</p>
+<p>To grant this user <code>sudo</code> (superuser) privileges, add them to the <code>sudo</code> group.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>usermod -aG sudo &lt;username&gt;
+</span></span></code></pre></div><p>To verify if the user has been successfully added to the sudo group:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>groups &lt;username&gt;
+</span></span></code></pre></div><p>This command should confirm that <code>&lt;username&gt;</code> is part of the <code>sudo</code> group:</p>
+<pre tabindex="0"><code>&lt;username&gt; : &lt;username&gt; sudo users
+</code></pre><p>You can now <code>exit</code> and attempt to log in as <code>&lt;username&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;username&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p>You will be prompted to enter the password you just provided.</p>
+<h2 id="login-with-ssh">Login with SSH</h2>
+<p>Passwords can be less secure, so its recommend to use a SSH key for logging into your server.</p>
+<p>First, generate an SSH key on your local machine if you don’t already have one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh-keygen -t ed25519 -C <span style="color:#e6db74">&#34;&lt;your_email@example.com&gt;&#34;</span>
+</span></span></code></pre></div><p>Look for the <code>.pub</code> file in your <code>~/.ssh/ directory</code>, such as <code>~/.ssh/id_ed25519.pub</code>. This public key needs to be copied and added to your VPS.</p>
+<p>On your VPS, create the <code>~/.ssh/</code> directory if it doesn’t already exist:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir -p ~/.ssh
+</span></span></code></pre></div><p>Create an <code>~/.ssh/authorized_keys</code> file and add the <strong>public key (.pub)</strong> you generated on your local machine to this file. Save the changes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh-copy-id &lt;username&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p><code>exit</code> the ssh session on your vps and try to login again.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;user&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p>If everything is configured correctly, you should not be prompted for a password.</p>
+<h2 id="disable-passwords-and-root-login">Disable Passwords and Root Login</h2>
+<p>For improved security, it’s best to disable both password authentication and root login.</p>
+<h3 id="disable-password-authentication">Disable Password Authentication</h3>
+<p>Open the <code>sshd_config</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/ssh/sshd_config
+</span></span></code></pre></div><p>Ensure the following settings are present or otherwise change them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PubkeyAuthentication yes
+</span></span><span style="display:flex;"><span>PasswordAuthentication no
+</span></span></code></pre></div><blockquote>
+<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p>
+</blockquote>
+<p>Restart the SSH service for the changes to take effect:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
+</span></span></code></pre></div><p>To verify that password authentication is disabled, try logging in as the root user:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh root@&lt;ip&gt;
+</span></span></code></pre></div><p>You should receive a permission denied error if the configuration is correct.</p>
+<h3 id="disable-root-login">Disable Root Login</h3>
+<p>Open the same <code>sshd_config</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/ssh/sshd_config
+</span></span></code></pre></div><p>Locate and update the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PermitRootLogin no
+</span></span></code></pre></div><p>Restart the SSH service again:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
+</span></span></code></pre></div><h2 id="network-and-firewall">Network and Firewall</h2>
+<p>The firewall’s purpose is to only allow the ports on your VPS that you actually use. Commonly used ports include:</p>
+<ul>
+<li><code>22</code> for SSH</li>
+<li><code>80</code> for HTTP</li>
+<li><code>443</code> for HTTPS</li>
+</ul>
+<p>Some VPS providers allow you to manage ports through their dashboard or UI. However, you can also use <a href="https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html"><code>ufw</code></a> (Uncomplicated Firewall), which is simple to use and typically installed by default on Ubuntu.</p>
+<p>Run the following commands to configure <code>ufw</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Disable all incoming connections by default</span>
+</span></span><span style="display:flex;"><span>sudo ufw default deny incoming
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Allow all outgoing connections by default</span>
+</span></span><span style="display:flex;"><span>sudo ufw default allow outgoing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IMPORTANT: Allow incoming connections for SSH before enabling the firewall</span>
+</span></span><span style="display:flex;"><span>sudo ufw allow OpenSSH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check the current rules to ensure they are correct</span>
+</span></span><span style="display:flex;"><span>sudo ufw show added
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable the firewall</span>
+</span></span><span style="display:flex;"><span>sudo ufw enable
+</span></span></code></pre></div><p>With these settings, all ports will be blocked except port <code>22</code> for SSH.</p>
+<blockquote>
+<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p>
+</blockquote>
+<h2 id="links">Links</h2>
+<p>[[vps]] [[ssh]] [[linux]] [[security]]</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Python Development Setup</title>
+      <link>https://maxscheijen.github.io/posts/python-development-seutup/</link>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/python-development-seutup/</guid>
+      <description>Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.
+Managing Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.
+You can install it using curl.
+curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:</description>
+      <content:encoded><![CDATA[<p>Recently, I started to center my python development around <a href="https://docs.astral.sh/uv"><code>uv</code></a> and other tooling  developed by <a href="https://astral.sh/">astral.sh</a>. It allows me to manage python enviroments, linting and formatting.</p>
+<h2 id="managing-python-packages-using-uv">Managing Python Packages using <code>uv</code></h2>
+<p><code>uv</code> is an extremely fast Python package and and recently also became a full on package manager.</p>
+<p>You can install it using <code>curl</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -LsSf https://astral.sh/uv/install.sh | sh
+</span></span></code></pre></div><p>You can then create a new a new Python project, or use an existing one by running the <code>uv init</code> command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv init &lt;project-name&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or if already in project</span>
+</span></span><span style="display:flex;"><span>uv init
+</span></span></code></pre></div><p>This will create the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .python-version  <span style="color:#75715e"># project&#39;s default python version</span>
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>└── pyproject.toml   <span style="color:#75715e"># metadata about the project</span>
+</span></span></code></pre></div><p>Run <code>uv add</code> to add dependencies. This will create an virtual enviroment (<code>.venv</code>), if you didn&rsquo;t already have one and it then installs the dependencies. The installed dependency will be present in the <code>pyproject.toml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add &lt;dependency&gt;
+</span></span></code></pre></div><p>Your project will have the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .venv               <span style="color:#75715e"># project&#39;s virtual environment</span>
+</span></span><span style="display:flex;"><span>├── .python-version
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>├── pyproject.toml 
+</span></span><span style="display:flex;"><span>└── uv.lock             <span style="color:#75715e"># lockfile containing exact info about projects dependencies</span>
+</span></span></code></pre></div><h2 id="development">Development</h2>
+<p>I like to have several things in my python development setup. A good linter and formatter. Some kind of tool that allows me to test my code.</p>
+<p>And finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.</p>
+<h3 id="linting--formatting-using-ruff">Linting &amp; formatting using <code>ruff</code></h3>
+<p>I used to use black, flake8 and isort for my linting and code formatting. However since <code>ruff</code> was released I haven&rsquo;t looked back.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev ruff
+</span></span></code></pre></div><p>Using ruff after black, isort and flake8 is delightfull. <code>ruff</code> is a super fast linter (fixing issues and organizing imports) and code formatter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ruff linting</span>
+</span></span><span style="display:flex;"><span>uv run ruff check --fix --select I
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ruff formatting</span>
+</span></span><span style="display:flex;"><span>uv run ruff format
+</span></span></code></pre></div><h3 id="pre-commit-hooks"><code>pre-commit</code> hooks</h3>
+<p>pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pre-commit
+</span></span></code></pre></div><p>With the following <code>.pre-commit.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">repos</span>:
+</span></span><span style="display:flex;"><span>-   <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/pre-commit/pre-commit-hooks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v4.6.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">trailing-whitespace</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">end-of-file-fixer</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-toml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-json</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-yaml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-xml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-ast</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-docstring-first</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-executables-have-shebangs</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-added-large-files</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-case-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-merge-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-symlinks</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">detect-private-key</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#66d9ef">no</span>-<span style="color:#ae81ff">commit-to-branch</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/astral-sh/ruff-pre-commit</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v0.6.4</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">args</span>: [ --<span style="color:#ae81ff">fix, --select, I ]</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff-format</span>
+</span></span></code></pre></div><h3 id="testing-using-pytest">Testing using <code>pytest</code></h3>
+<p>I don&rsquo;t always write tests, but if I do, I&rsquo;ll most likely use pytest, and a pytest coverage plugin.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pytest pytest-cov
+</span></span></code></pre></div><p>To run those test (with test coverage) against my python files I run the following.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run pytest &lt;test-dir&gt; --cov &lt;source-dir&gt;
+</span></span></code></pre></div><h2 id="ci-with-github-actions">CI with Github actions</h2>
+<p>I also like to run linting, formatting and tests in CI. Below is a Github Action at <code>.github/workflows/ci.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Checkout repo</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup uv</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install uv</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">astral-sh/setup-uv@v2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup python and install dependencies</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv sync --all-extras --dev</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run linting and formatting</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run ruff</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff check --fix --select I --output-format=github .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff format</span>            
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run pytest for tests</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run tests</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv run python -m pytest</span>
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<ul>
+<li><a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></li>
+<li><a href="https://docs.astral.sh/ruff/">https://docs.astral.sh/ruff/</a></li>
+</ul>
+<p>[[python]] [[tool]]</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Git Bisect to Find Bugs</title>
       <link>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</link>
@@ -179,6 +426,7 @@ One thing I wanted to learn this week is find and replace. This is an operation 
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gi</span>
 </span></span></code></pre></div><h2 id="links">Links</h2>
 <p><a href="https://linuxize.com/post/vim-find-replace/">https://linuxize.com/post/vim-find-replace/</a></p>
+<p>[[vim]]</p>
 ]]></content:encoded>
     </item>
     <item>
@@ -237,6 +485,7 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
 </span></span></code></pre></div><p>creating a note with formatting in a specific directory.</p>
 <h2 id="links">Links</h2>
 <p><a href="https://github.com/mischavandenburg/dotfiles/tree/main/scripts">https://github.com/mischavandenburg/dotfiles/tree/main/scripts</a></p>
+<p>[[cli]] [[unix]] [[bash]]</p>
 ]]></content:encoded>
     </item>
     <item>
@@ -266,6 +515,7 @@ Another nice tool to find files is fzf which is fuzzy finder.</description>
 <li><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></li>
 <li><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></li>
 </ul>
+<p>[[tool]] [[cli]] [[unix]]</p>
 ]]></content:encoded>
     </item>
   </channel>

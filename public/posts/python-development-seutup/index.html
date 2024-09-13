@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Python Development Setup | Max Scheijen</title>
+<meta name="keywords" content="python, tool">
+<meta name="description" content="Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.
+Managing Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.
+You can install it using curl.
+curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/python-development-seutup/">
+<meta name="google-site-verification" content="G-DC0740CRYY">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/python-development-seutup/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script>
+    
+  
+
+<meta property="og:title" content="Python Development Setup" />
+<meta property="og:description" content="Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.
+Managing Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.
+You can install it using curl.
+curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://maxscheijen.github.io/posts/python-development-seutup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-09-07T00:00:00+00:00" /><meta property="og:site_name" content="ExampleSite" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Python Development Setup"/>
+<meta name="twitter:description" content="Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.
+Managing Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.
+You can install it using curl.
+curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Python Development Setup",
+      "item": "https://maxscheijen.github.io/posts/python-development-seutup/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Python Development Setup",
+  "name": "Python Development Setup",
+  "description": "Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.\nManaging Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.\nYou can install it using curl.\ncurl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:",
+  "keywords": [
+    "python", "tool"
+  ],
+  "articleBody": "Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.\nManaging Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.\nYou can install it using curl.\ncurl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:\nuv init # or if already in project uv init This will create the following structure:\n. ├── .python-version # project's default python version ├── README.md ├── hello.py └── pyproject.toml # metadata about the project Run uv add to add dependencies. This will create an virtual enviroment (.venv), if you didn’t already have one and it then installs the dependencies. The installed dependency will be present in the pyproject.toml.\nuv add Your project will have the following structure:\n. ├── .venv # project's virtual environment ├── .python-version ├── README.md ├── hello.py ├── pyproject.toml └── uv.lock # lockfile containing exact info about projects dependencies Development I like to have several things in my python development setup. A good linter and formatter. Some kind of tool that allows me to test my code.\nAnd finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.\nLinting \u0026 formatting using ruff I used to use black, flake8 and isort for my linting and code formatting. However since ruff was released I haven’t looked back.\nuv add --dev ruff Using ruff after black, isort and flake8 is delightfull. ruff is a super fast linter (fixing issues and organizing imports) and code formatter.\n# ruff linting uv run ruff check --fix --select I # ruff formatting uv run ruff format pre-commit hooks pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.\nuv add --dev pre-commit With the following .pre-commit.yaml.\nrepos: - repo: https://github.com/pre-commit/pre-commit-hooks rev: v4.6.0 hooks: - id: trailing-whitespace - id: end-of-file-fixer - id: check-toml - id: check-json - id: check-yaml - id: check-xml - id: check-ast - id: check-docstring-first - id: check-executables-have-shebangs - id: check-added-large-files - id: check-case-conflict - id: check-merge-conflict - id: check-symlinks - id: detect-private-key - id: no-commit-to-branch - repo: https://github.com/astral-sh/ruff-pre-commit rev: v0.6.4 hooks: - id: ruff args: [ --fix, --select, I ] - id: ruff-format Testing using pytest I don’t always write tests, but if I do, I’ll most likely use pytest, and a pytest coverage plugin.\nuv add --dev pytest pytest-cov To run those test (with test coverage) against my python files I run the following.\nuv run pytest --cov CI with Github actions I also like to run linting, formatting and tests in CI. Below is a Github Action at .github/workflows/ci.yaml.\nname: CI on: push: branches: [ main ] jobs: build: runs-on: ubuntu-latest steps: # Checkout repo - uses: actions/checkout@v4 # Setup uv - name: Install uv uses: astral-sh/setup-uv@v2 # Setup python and install dependencies - name: Install dependencies run: uv sync --all-extras --dev # Run linting and formatting - name: Run ruff run: | uv run ruff check --fix --select I --output-format=github . uv run ruff format # Run pytest for tests - name: Run tests run: uv run python -m pytest Links https://docs.astral.sh/uv/ https://docs.astral.sh/ruff/ [[python]] [[tool]]\n",
+  "wordCount" : "554",
+  "inLanguage": "en",
+  "datePublished": "2024-09-07T00:00:00Z",
+  "dateModified": "2024-09-07T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/python-development-seutup/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Python Development Setup
+    </h1>
+    <div class="post-meta"><span title='2024-09-07 00:00:00 +0000 UTC'>September 7, 2024</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>Recently, I started to center my python development around <a href="https://docs.astral.sh/uv"><code>uv</code></a> and other tooling  developed by <a href="https://astral.sh/">astral.sh</a>. It allows me to manage python enviroments, linting and formatting.</p>
+<h2 id="managing-python-packages-using-uv">Managing Python Packages using <code>uv</code><a hidden class="anchor" aria-hidden="true" href="#managing-python-packages-using-uv">#</a></h2>
+<p><code>uv</code> is an extremely fast Python package and and recently also became a full on package manager.</p>
+<p>You can install it using <code>curl</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -LsSf https://astral.sh/uv/install.sh | sh
+</span></span></code></pre></div><p>You can then create a new a new Python project, or use an existing one by running the <code>uv init</code> command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv init &lt;project-name&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or if already in project</span>
+</span></span><span style="display:flex;"><span>uv init
+</span></span></code></pre></div><p>This will create the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .python-version  <span style="color:#75715e"># project&#39;s default python version</span>
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>└── pyproject.toml   <span style="color:#75715e"># metadata about the project</span>
+</span></span></code></pre></div><p>Run <code>uv add</code> to add dependencies. This will create an virtual enviroment (<code>.venv</code>), if you didn&rsquo;t already have one and it then installs the dependencies. The installed dependency will be present in the <code>pyproject.toml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add &lt;dependency&gt;
+</span></span></code></pre></div><p>Your project will have the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .venv               <span style="color:#75715e"># project&#39;s virtual environment</span>
+</span></span><span style="display:flex;"><span>├── .python-version
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>├── pyproject.toml 
+</span></span><span style="display:flex;"><span>└── uv.lock             <span style="color:#75715e"># lockfile containing exact info about projects dependencies</span>
+</span></span></code></pre></div><h2 id="development">Development<a hidden class="anchor" aria-hidden="true" href="#development">#</a></h2>
+<p>I like to have several things in my python development setup. A good linter and formatter. Some kind of tool that allows me to test my code.</p>
+<p>And finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.</p>
+<h3 id="linting--formatting-using-ruff">Linting &amp; formatting using <code>ruff</code><a hidden class="anchor" aria-hidden="true" href="#linting--formatting-using-ruff">#</a></h3>
+<p>I used to use black, flake8 and isort for my linting and code formatting. However since <code>ruff</code> was released I haven&rsquo;t looked back.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev ruff
+</span></span></code></pre></div><p>Using ruff after black, isort and flake8 is delightfull. <code>ruff</code> is a super fast linter (fixing issues and organizing imports) and code formatter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ruff linting</span>
+</span></span><span style="display:flex;"><span>uv run ruff check --fix --select I
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ruff formatting</span>
+</span></span><span style="display:flex;"><span>uv run ruff format
+</span></span></code></pre></div><h3 id="pre-commit-hooks"><code>pre-commit</code> hooks<a hidden class="anchor" aria-hidden="true" href="#pre-commit-hooks">#</a></h3>
+<p>pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pre-commit
+</span></span></code></pre></div><p>With the following <code>.pre-commit.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">repos</span>:
+</span></span><span style="display:flex;"><span>-   <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/pre-commit/pre-commit-hooks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v4.6.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">trailing-whitespace</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">end-of-file-fixer</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-toml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-json</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-yaml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-xml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-ast</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-docstring-first</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-executables-have-shebangs</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-added-large-files</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-case-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-merge-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-symlinks</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">detect-private-key</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#66d9ef">no</span>-<span style="color:#ae81ff">commit-to-branch</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/astral-sh/ruff-pre-commit</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v0.6.4</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">args</span>: [ --<span style="color:#ae81ff">fix, --select, I ]</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff-format</span>
+</span></span></code></pre></div><h3 id="testing-using-pytest">Testing using <code>pytest</code><a hidden class="anchor" aria-hidden="true" href="#testing-using-pytest">#</a></h3>
+<p>I don&rsquo;t always write tests, but if I do, I&rsquo;ll most likely use pytest, and a pytest coverage plugin.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pytest pytest-cov
+</span></span></code></pre></div><p>To run those test (with test coverage) against my python files I run the following.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run pytest &lt;test-dir&gt; --cov &lt;source-dir&gt;
+</span></span></code></pre></div><h2 id="ci-with-github-actions">CI with Github actions<a hidden class="anchor" aria-hidden="true" href="#ci-with-github-actions">#</a></h2>
+<p>I also like to run linting, formatting and tests in CI. Below is a Github Action at <code>.github/workflows/ci.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Checkout repo</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup uv</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install uv</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">astral-sh/setup-uv@v2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup python and install dependencies</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv sync --all-extras --dev</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run linting and formatting</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run ruff</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff check --fix --select I --output-format=github .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff format</span>            
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run pytest for tests</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run tests</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv run python -m pytest</span>
+</span></span></code></pre></div><h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<ul>
+<li><a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></li>
+<li><a href="https://docs.astral.sh/ruff/">https://docs.astral.sh/ruff/</a></li>
+</ul>
+<p>[[python]] [[tool]]</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/python/">Python</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/tool/">Tool</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://maxscheijen.github.io/posts/vps-101-setup-and-security/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>VPS 101 - Setup &amp; Security</span>
+  </a>
+  <a class="next" href="https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Git Bisect to Find Bugs</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

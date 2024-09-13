@@ -43,3 +43,5 @@ Atleast if you know what you're looking for.
 - https://github.com/sharkdp/fd
 - https://github.com/junegunn/fzf
 - https://github.com/BurntSushi/ripgrep
+
+[[tool]] [[cli]] [[unix]]

@@ -64,6 +64,7 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
 </span></span></code></pre></div><p>creating a note with formatting in a specific directory.</p>
 <h2 id="links">Links</h2>
 <p><a href="https://github.com/mischavandenburg/dotfiles/tree/main/scripts">https://github.com/mischavandenburg/dotfiles/tree/main/scripts</a></p>
+<p>[[cli]] [[unix]] [[bash]]</p>
 ]]></content:encoded>
     </item>
     <item>
@@ -93,6 +94,7 @@ Another nice tool to find files is fzf which is fuzzy finder.</description>
 <li><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></li>
 <li><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></li>
 </ul>
+<p>[[tool]] [[cli]] [[unix]]</p>
 ]]></content:encoded>
     </item>
   </channel>

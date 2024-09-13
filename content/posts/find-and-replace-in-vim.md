@@ -70,3 +70,4 @@ By adding a `i` add the end, if you want to ignore character case.
 
 https://linuxize.com/post/vim-find-replace/
 
+[[vim]]

@@ -80,3 +80,5 @@ creating a note with formatting in a specific directory.
 ## Links
 
 https://github.com/mischavandenburg/dotfiles/tree/main/scripts
+
+[[cli]] [[unix]] [[bash]]

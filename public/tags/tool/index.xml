@@ -6,8 +6,128 @@
     <description>Recent content in Tool on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/tool/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python Development Setup</title>
+      <link>https://maxscheijen.github.io/posts/python-development-seutup/</link>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/python-development-seutup/</guid>
+      <description>Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python enviroments, linting and formatting.
+Managing Python Packages using uv uv is an extremely fast Python package and and recently also became a full on package manager.
+You can install it using curl.
+curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:</description>
+      <content:encoded><![CDATA[<p>Recently, I started to center my python development around <a href="https://docs.astral.sh/uv"><code>uv</code></a> and other tooling  developed by <a href="https://astral.sh/">astral.sh</a>. It allows me to manage python enviroments, linting and formatting.</p>
+<h2 id="managing-python-packages-using-uv">Managing Python Packages using <code>uv</code></h2>
+<p><code>uv</code> is an extremely fast Python package and and recently also became a full on package manager.</p>
+<p>You can install it using <code>curl</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl -LsSf https://astral.sh/uv/install.sh | sh
+</span></span></code></pre></div><p>You can then create a new a new Python project, or use an existing one by running the <code>uv init</code> command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv init &lt;project-name&gt;
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># or if already in project</span>
+</span></span><span style="display:flex;"><span>uv init
+</span></span></code></pre></div><p>This will create the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .python-version  <span style="color:#75715e"># project&#39;s default python version</span>
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>└── pyproject.toml   <span style="color:#75715e"># metadata about the project</span>
+</span></span></code></pre></div><p>Run <code>uv add</code> to add dependencies. This will create an virtual enviroment (<code>.venv</code>), if you didn&rsquo;t already have one and it then installs the dependencies. The installed dependency will be present in the <code>pyproject.toml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add &lt;dependency&gt;
+</span></span></code></pre></div><p>Your project will have the following structure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>.
+</span></span><span style="display:flex;"><span>├── .venv               <span style="color:#75715e"># project&#39;s virtual environment</span>
+</span></span><span style="display:flex;"><span>├── .python-version
+</span></span><span style="display:flex;"><span>├── README.md
+</span></span><span style="display:flex;"><span>├── hello.py
+</span></span><span style="display:flex;"><span>├── pyproject.toml 
+</span></span><span style="display:flex;"><span>└── uv.lock             <span style="color:#75715e"># lockfile containing exact info about projects dependencies</span>
+</span></span></code></pre></div><h2 id="development">Development</h2>
+<p>I like to have several things in my python development setup. A good linter and formatter. Some kind of tool that allows me to test my code.</p>
+<p>And finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.</p>
+<h3 id="linting--formatting-using-ruff">Linting &amp; formatting using <code>ruff</code></h3>
+<p>I used to use black, flake8 and isort for my linting and code formatting. However since <code>ruff</code> was released I haven&rsquo;t looked back.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev ruff
+</span></span></code></pre></div><p>Using ruff after black, isort and flake8 is delightfull. <code>ruff</code> is a super fast linter (fixing issues and organizing imports) and code formatter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># ruff linting</span>
+</span></span><span style="display:flex;"><span>uv run ruff check --fix --select I
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ruff formatting</span>
+</span></span><span style="display:flex;"><span>uv run ruff format
+</span></span></code></pre></div><h3 id="pre-commit-hooks"><code>pre-commit</code> hooks</h3>
+<p>pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pre-commit
+</span></span></code></pre></div><p>With the following <code>.pre-commit.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">repos</span>:
+</span></span><span style="display:flex;"><span>-   <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/pre-commit/pre-commit-hooks</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v4.6.0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">trailing-whitespace</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">end-of-file-fixer</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-toml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-json</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-yaml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-xml</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-ast</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-docstring-first</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-executables-have-shebangs</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-added-large-files</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-case-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-merge-conflict</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">check-symlinks</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#ae81ff">detect-private-key</span>
+</span></span><span style="display:flex;"><span>    -   <span style="color:#f92672">id</span>: <span style="color:#66d9ef">no</span>-<span style="color:#ae81ff">commit-to-branch</span>
+</span></span><span style="display:flex;"><span>- <span style="color:#f92672">repo</span>: <span style="color:#ae81ff">https://github.com/astral-sh/ruff-pre-commit</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">rev</span>: <span style="color:#ae81ff">v0.6.4</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">hooks</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">args</span>: [ --<span style="color:#ae81ff">fix, --select, I ]</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">id</span>: <span style="color:#ae81ff">ruff-format</span>
+</span></span></code></pre></div><h3 id="testing-using-pytest">Testing using <code>pytest</code></h3>
+<p>I don&rsquo;t always write tests, but if I do, I&rsquo;ll most likely use pytest, and a pytest coverage plugin.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv add --dev pytest pytest-cov
+</span></span></code></pre></div><p>To run those test (with test coverage) against my python files I run the following.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>uv run pytest &lt;test-dir&gt; --cov &lt;source-dir&gt;
+</span></span></code></pre></div><h2 id="ci-with-github-actions">CI with Github actions</h2>
+<p>I also like to run linting, formatting and tests in CI. Below is a Github Action at <code>.github/workflows/ci.yaml</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">CI</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>: [ <span style="color:#ae81ff">main ]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Checkout repo</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup uv</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install uv</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">astral-sh/setup-uv@v2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Setup python and install dependencies</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Install dependencies</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv sync --all-extras --dev</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run linting and formatting</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run ruff</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: |<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff check --fix --select I --output-format=github .
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            uv run ruff format</span>            
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Run pytest for tests</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Run tests</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">run</span>: <span style="color:#ae81ff">uv run python -m pytest</span>
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<ul>
+<li><a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a></li>
+<li><a href="https://docs.astral.sh/ruff/">https://docs.astral.sh/ruff/</a></li>
+</ul>
+<p>[[python]] [[tool]]</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>Run Custom Scripts From Anywhere</title>
       <link>https://maxscheijen.github.io/posts/run-custom-scripts-anywhere/</link>
@@ -64,6 +184,7 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
 </span></span></code></pre></div><p>creating a note with formatting in a specific directory.</p>
 <h2 id="links">Links</h2>
 <p><a href="https://github.com/mischavandenburg/dotfiles/tree/main/scripts">https://github.com/mischavandenburg/dotfiles/tree/main/scripts</a></p>
+<p>[[cli]] [[unix]] [[bash]]</p>
 ]]></content:encoded>
     </item>
     <item>
@@ -93,6 +214,7 @@ Another nice tool to find files is fzf which is fuzzy finder.</description>
 <li><a href="https://github.com/junegunn/fzf">https://github.com/junegunn/fzf</a></li>
 <li><a href="https://github.com/BurntSushi/ripgrep">https://github.com/BurntSushi/ripgrep</a></li>
 </ul>
+<p>[[tool]] [[cli]] [[unix]]</p>
 ]]></content:encoded>
     </item>
   </channel>

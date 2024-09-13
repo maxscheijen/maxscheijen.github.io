@@ -76,6 +76,7 @@ One thing I wanted to learn this week is find and replace. This is an operation 
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gi</span>
 </span></span></code></pre></div><h2 id="links">Links</h2>
 <p><a href="https://linuxize.com/post/vim-find-replace/">https://linuxize.com/post/vim-find-replace/</a></p>
+<p>[[vim]]</p>
 ]]></content:encoded>
     </item>
   </channel>

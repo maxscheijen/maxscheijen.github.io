@@ -6,20 +6,55 @@
     <description>Recent content in Tags on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 04 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Git</title>
-      <link>https://maxscheijen.github.io/tags/git/</link>
-      <pubDate>Wed, 04 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/git/</guid>
+      <title>Linux</title>
+      <link>https://maxscheijen.github.io/tags/linux/</link>
+      <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://maxscheijen.github.io/tags/security/</link>
+      <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ssh</title>
+      <link>https://maxscheijen.github.io/tags/ssh/</link>
+      <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/ssh/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Vps</title>
+      <link>https://maxscheijen.github.io/tags/vps/</link>
+      <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/vps/</guid>
       <description></description>
     </item>
     <item>
       <title>Python</title>
       <link>https://maxscheijen.github.io/tags/python/</link>
-      <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tool</title>
+      <link>https://maxscheijen.github.io/tags/tool/</link>
+      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/tool/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Git</title>
+      <link>https://maxscheijen.github.io/tags/git/</link>
+      <pubDate>Wed, 04 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/git/</guid>
       <description></description>
     </item>
     <item>
@@ -55,13 +90,6 @@
       <link>https://maxscheijen.github.io/tags/productivity/</link>
       <pubDate>Thu, 15 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/tags/productivity/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Tool</title>
-      <link>https://maxscheijen.github.io/tags/tool/</link>
-      <pubDate>Thu, 15 Aug 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/tool/</guid>
       <description></description>
     </item>
   </channel>

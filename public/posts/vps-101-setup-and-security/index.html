@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>VPS 101 - Setup &amp; Security | Max Scheijen</title>
+<meta name="keywords" content="vps, ssh, security, linux">
+<meta name="description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
+This is the first part of my journey into hosting a Linux server.
+Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/vps-101-setup-and-security/">
+<meta name="google-site-verification" content="G-DC0740CRYY">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/vps-101-setup-and-security/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script>
+    
+  
+
+<meta property="og:title" content="VPS 101 - Setup &amp; Security" />
+<meta property="og:description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
+This is the first part of my journey into hosting a Linux server.
+Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://maxscheijen.github.io/posts/vps-101-setup-and-security/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-09-13T00:00:00+00:00" /><meta property="og:site_name" content="ExampleSite" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VPS 101 - Setup &amp; Security"/>
+<meta name="twitter:description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
+This is the first part of my journey into hosting a Linux server.
+Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "VPS 101 - Setup \u0026 Security",
+      "item": "https://maxscheijen.github.io/posts/vps-101-setup-and-security/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "VPS 101 - Setup \u0026 Security",
+  "name": "VPS 101 - Setup \u0026 Security",
+  "description": "Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).\nThis is the first part of my journey into hosting a Linux server.\nSetup \u0026amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I\u0026rsquo;m fine with that.",
+  "keywords": [
+    "vps", "ssh", "security", "linux"
+  ],
+  "articleBody": "Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).\nThis is the first part of my journey into hosting a Linux server.\nSetup \u0026 Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I’m fine with that.\nConnect to VPS with SSH. Your VPS provider will either guide you through setting up or automatically configure an SSH key or password, a (root) user, and an IP address, enabling you to connect to your VPS via SSH.\nYou can use this setup to establish your initial connection to the VPS. In my case the was root.\nssh @ Updates The first step is to update the packages on your VPS, as they may be outdated and could pose security vulnerabilities.\nTo update packages on an Ubuntu machine, run the following commands:\nsudo apt update sudo apt upgrade -y All packages should now be up to date. If any packages remain outdated, you may need to update them manually using the following command:\nsudo apt install After updating the packages, you may need to reboot the machine. Use the following command to check if a reboot is required:\nls /var/run/reboot-required if this file exists, a reboot is required, restart your VPS.\nreboot Automatic Updates To ensure packages are automatically kept up to date, install the unattended-upgrades package.\n# install unattended upgrades sudo apt install unattended-upgrades # start unattended upgrades sudo dpkg-reconfigure unattended-upgrades You will likely be prompted to enable automatic package upgrades. If the prompt does not appear, you can configure it manually.\nTo configure unattended-upgrades, open the following file:\nsudo vim /etc/apt.conf.d/50unattended-upgrades and un-comment the following line\n\"${distro_id}:${distro_codename}-updates\" To check if unattended-upgrades is running, use the systemctl command.\nsudo systemctl status unattended-upgrades Root and Users Your VPS provider will set you up with a user (likely root) and a password. It’s good practice to change this password if it was generated by the provider.\nTo change the root password, use the passwd command while logged in as root.\npasswd It’s also good practice not to use the root user for everyday tasks. Instead, create a non-root user using the adduser command.\nadduser You’ll be prompted to enter a password and some additional information for the new user.\nTo grant this user sudo (superuser) privileges, add them to the sudo group.\nusermod -aG sudo To verify if the user has been successfully added to the sudo group:\ngroups This command should confirm that is part of the sudo group:\n: sudo users You can now exit and attempt to log in as :\nssh @ You will be prompted to enter the password you just provided.\nLogin with SSH Passwords can be less secure, so its recommend to use a SSH key for logging into your server.\nFirst, generate an SSH key on your local machine if you don’t already have one:\nssh-keygen -t ed25519 -C \"\" Look for the .pub file in your ~/.ssh/ directory, such as ~/.ssh/id_ed25519.pub. This public key needs to be copied and added to your VPS.\nOn your VPS, create the ~/.ssh/ directory if it doesn’t already exist:\nmkdir -p ~/.ssh Create an ~/.ssh/authorized_keys file and add the public key (.pub) you generated on your local machine to this file. Save the changes.\nssh-copy-id @ exit the ssh session on your vps and try to login again.\nssh @ If everything is configured correctly, you should not be prompted for a password.\nDisable Passwords and Root Login For improved security, it’s best to disable both password authentication and root login.\nDisable Password Authentication Open the sshd_config file:\nsudo vim /etc/ssh/sshd_config Ensure the following settings are present or otherwise change them:\nPubkeyAuthentication yes PasswordAuthentication no Depending on your VPS provider, there may be additional files that enable password authentication, such as /etc/ssh/sshd_config.d/50-cloud-init.conf. Make sure to update these files as well.\nRestart the SSH service for the changes to take effect:\nsudo service ssh restart To verify that password authentication is disabled, try logging in as the root user:\nssh root@ You should receive a permission denied error if the configuration is correct.\nDisable Root Login Open the same sshd_config file:\nsudo vim /etc/ssh/sshd_config Locate and update the following line:\nPermitRootLogin no Restart the SSH service again:\nsudo service ssh restart Network and Firewall The firewall’s purpose is to only allow the ports on your VPS that you actually use. Commonly used ports include:\n22 for SSH 80 for HTTP 443 for HTTPS Some VPS providers allow you to manage ports through their dashboard or UI. However, you can also use ufw (Uncomplicated Firewall), which is simple to use and typically installed by default on Ubuntu.\nRun the following commands to configure ufw:\n# Disable all incoming connections by default sudo ufw default deny incoming # Allow all outgoing connections by default sudo ufw default allow outgoing # IMPORTANT: Allow incoming connections for SSH before enabling the firewall sudo ufw allow OpenSSH # Check the current rules to ensure they are correct sudo ufw show added # Enable the firewall sudo ufw enable With these settings, all ports will be blocked except port 22 for SSH.\nNote: Exposing a port with Docker may overwrite IP rules set by ufw. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports 80 and/or 443.\nLinks [[vps]] [[ssh]] [[linux]] [[security]]\n",
+  "wordCount" : "946",
+  "inLanguage": "en",
+  "datePublished": "2024-09-13T00:00:00Z",
+  "dateModified": "2024-09-13T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/vps-101-setup-and-security/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      VPS 101 - Setup &amp; Security
+    </h1>
+    <div class="post-meta"><span title='2024-09-13 00:00:00 +0000 UTC'>September 13, 2024</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).</p>
+<p>This is the first part of my journey into hosting a Linux server.</p>
+<ol>
+<li><strong><a href="/posts/vps-101-setup-and-security">Setup &amp; Security</a></strong></li>
+</ol>
+<p>To experiment with hosting my own Linux VPS, I opted for the cheapest <a href="https://www.digitalocean.com/products/droplets">DigitalOcean Droplet</a>, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.</p>
+<h2 id="connect-to-vps-with-ssh">Connect to VPS with SSH.<a hidden class="anchor" aria-hidden="true" href="#connect-to-vps-with-ssh">#</a></h2>
+<p>Your VPS provider will either guide you through setting up or automatically configure an SSH key or password, a (root) user, and an IP address, enabling you to connect to your VPS via SSH.</p>
+<p>You can use this setup to establish your initial connection to the VPS. In my case the <code>&lt;user&gt;</code> was <code>root</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;user&gt;@&lt;ip&gt;
+</span></span></code></pre></div><h2 id="updates">Updates<a hidden class="anchor" aria-hidden="true" href="#updates">#</a></h2>
+<p>The first step is to update the packages on your VPS, as they may be outdated and could pose security vulnerabilities.</p>
+<p>To update packages on an Ubuntu machine, run the following commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt update
+</span></span><span style="display:flex;"><span>sudo apt upgrade -y
+</span></span></code></pre></div><p>All packages should now be up to date. If any packages remain outdated, you may need to update them manually using the following command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo apt install &lt;package-name&gt;
+</span></span></code></pre></div><p>After updating the packages, you may need to reboot the machine. Use the following command to check if a reboot is required:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ls /var/run/reboot-required
+</span></span></code></pre></div><p>if this file exists, a reboot is required, restart your VPS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>reboot
+</span></span></code></pre></div><h3 id="automatic-updates">Automatic Updates<a hidden class="anchor" aria-hidden="true" href="#automatic-updates">#</a></h3>
+<p>To ensure packages are automatically kept up to date, install the unattended-upgrades package.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># install unattended upgrades</span>
+</span></span><span style="display:flex;"><span>sudo apt install unattended-upgrades
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># start unattended upgrades</span>
+</span></span><span style="display:flex;"><span>sudo dpkg-reconfigure unattended-upgrades
+</span></span></code></pre></div><blockquote>
+<p>You will likely be prompted to enable automatic package upgrades. If the prompt does not appear, you can configure it manually.</p>
+<p>To configure unattended-upgrades, open the following file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/apt.conf.d/50unattended-upgrades
+</span></span></code></pre></div><p>and un-comment the following line</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>distro_id<span style="color:#e6db74">}</span><span style="color:#e6db74">:</span><span style="color:#e6db74">${</span>distro_codename<span style="color:#e6db74">}</span><span style="color:#e6db74">-updates&#34;</span>
+</span></span></code></pre></div></blockquote>
+<p>To check if unattended-upgrades is running, use the systemctl command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo systemctl status unattended-upgrades
+</span></span></code></pre></div><h2 id="root-and-users">Root and Users<a hidden class="anchor" aria-hidden="true" href="#root-and-users">#</a></h2>
+<p>Your VPS provider will set you up with a user (likely root) and a password. It&rsquo;s good practice to change this password if it was generated by the provider.</p>
+<p>To change the root password, use the passwd command while logged in as root.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>passwd
+</span></span></code></pre></div><p>It’s also good practice not to use the <code>root</code> user for everyday tasks. Instead, create a non-root user using the <code>adduser</code> command.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>adduser &lt;username&gt;
+</span></span></code></pre></div><p>You’ll be prompted to enter a password and some additional information for the new user.</p>
+<p>To grant this user <code>sudo</code> (superuser) privileges, add them to the <code>sudo</code> group.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>usermod -aG sudo &lt;username&gt;
+</span></span></code></pre></div><p>To verify if the user has been successfully added to the sudo group:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>groups &lt;username&gt;
+</span></span></code></pre></div><p>This command should confirm that <code>&lt;username&gt;</code> is part of the <code>sudo</code> group:</p>
+<pre tabindex="0"><code>&lt;username&gt; : &lt;username&gt; sudo users
+</code></pre><p>You can now <code>exit</code> and attempt to log in as <code>&lt;username&gt;</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;username&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p>You will be prompted to enter the password you just provided.</p>
+<h2 id="login-with-ssh">Login with SSH<a hidden class="anchor" aria-hidden="true" href="#login-with-ssh">#</a></h2>
+<p>Passwords can be less secure, so its recommend to use a SSH key for logging into your server.</p>
+<p>First, generate an SSH key on your local machine if you don’t already have one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh-keygen -t ed25519 -C <span style="color:#e6db74">&#34;&lt;your_email@example.com&gt;&#34;</span>
+</span></span></code></pre></div><p>Look for the <code>.pub</code> file in your <code>~/.ssh/ directory</code>, such as <code>~/.ssh/id_ed25519.pub</code>. This public key needs to be copied and added to your VPS.</p>
+<p>On your VPS, create the <code>~/.ssh/</code> directory if it doesn’t already exist:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir -p ~/.ssh
+</span></span></code></pre></div><p>Create an <code>~/.ssh/authorized_keys</code> file and add the <strong>public key (.pub)</strong> you generated on your local machine to this file. Save the changes.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh-copy-id &lt;username&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p><code>exit</code> the ssh session on your vps and try to login again.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh &lt;user&gt;@&lt;ip&gt;
+</span></span></code></pre></div><p>If everything is configured correctly, you should not be prompted for a password.</p>
+<h2 id="disable-passwords-and-root-login">Disable Passwords and Root Login<a hidden class="anchor" aria-hidden="true" href="#disable-passwords-and-root-login">#</a></h2>
+<p>For improved security, it’s best to disable both password authentication and root login.</p>
+<h3 id="disable-password-authentication">Disable Password Authentication<a hidden class="anchor" aria-hidden="true" href="#disable-password-authentication">#</a></h3>
+<p>Open the <code>sshd_config</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/ssh/sshd_config
+</span></span></code></pre></div><p>Ensure the following settings are present or otherwise change them:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PubkeyAuthentication yes
+</span></span><span style="display:flex;"><span>PasswordAuthentication no
+</span></span></code></pre></div><blockquote>
+<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p>
+</blockquote>
+<p>Restart the SSH service for the changes to take effect:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
+</span></span></code></pre></div><p>To verify that password authentication is disabled, try logging in as the root user:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh root@&lt;ip&gt;
+</span></span></code></pre></div><p>You should receive a permission denied error if the configuration is correct.</p>
+<h3 id="disable-root-login">Disable Root Login<a hidden class="anchor" aria-hidden="true" href="#disable-root-login">#</a></h3>
+<p>Open the same <code>sshd_config</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo vim /etc/ssh/sshd_config
+</span></span></code></pre></div><p>Locate and update the following line:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PermitRootLogin no
+</span></span></code></pre></div><p>Restart the SSH service again:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
+</span></span></code></pre></div><h2 id="network-and-firewall">Network and Firewall<a hidden class="anchor" aria-hidden="true" href="#network-and-firewall">#</a></h2>
+<p>The firewall’s purpose is to only allow the ports on your VPS that you actually use. Commonly used ports include:</p>
+<ul>
+<li><code>22</code> for SSH</li>
+<li><code>80</code> for HTTP</li>
+<li><code>443</code> for HTTPS</li>
+</ul>
+<p>Some VPS providers allow you to manage ports through their dashboard or UI. However, you can also use <a href="https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html"><code>ufw</code></a> (Uncomplicated Firewall), which is simple to use and typically installed by default on Ubuntu.</p>
+<p>Run the following commands to configure <code>ufw</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Disable all incoming connections by default</span>
+</span></span><span style="display:flex;"><span>sudo ufw default deny incoming
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Allow all outgoing connections by default</span>
+</span></span><span style="display:flex;"><span>sudo ufw default allow outgoing
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># IMPORTANT: Allow incoming connections for SSH before enabling the firewall</span>
+</span></span><span style="display:flex;"><span>sudo ufw allow OpenSSH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check the current rules to ensure they are correct</span>
+</span></span><span style="display:flex;"><span>sudo ufw show added
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Enable the firewall</span>
+</span></span><span style="display:flex;"><span>sudo ufw enable
+</span></span></code></pre></div><p>With these settings, all ports will be blocked except port <code>22</code> for SSH.</p>
+<blockquote>
+<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p>
+</blockquote>
+<h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<p>[[vps]] [[ssh]] [[linux]] [[security]]</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/vps/">Vps</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/ssh/">Ssh</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/security/">Security</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/linux/">Linux</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://maxscheijen.github.io/posts/python-development-seutup/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Python Development Setup</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
