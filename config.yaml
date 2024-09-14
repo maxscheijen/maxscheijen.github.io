@@ -3,6 +3,7 @@ languageCode: en-us
 title: Max Scheijen 
 paginate: 20
 theme: ["PaperMod"]
+enableRobotsTXT: true
 
 services:
   googleAnalytics:
