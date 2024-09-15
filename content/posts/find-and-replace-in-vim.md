@@ -9,7 +9,7 @@ One of my goals for the remaining part of 2024 is to learn and get comfortable w
 
 I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
 
-One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or atleast the basics of find and replace.
+One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or at least the basics of find and replace.
 
 ## Pattern
 
@@ -41,13 +41,13 @@ Replace every occurrence of “foo” with bar on current line.
 :s/foo/bar/g
 ```
 
-One thing I do often is replace every occurence of a pattern. The `%` charachter will allow you to do this for the entire file. 
+One thing I do often is replace every occurrence of a pattern. The `%` character will allow you to do this for the entire file. 
 
 ```vim
 :%s/foo/bar/g
 ```
 
-If confirmation for subsitution is important add `i` to the end of the command.
+If confirmation for substitutions is important add `i` to the end of the command.
 
 ```vim
 :s/foo/bar/gc

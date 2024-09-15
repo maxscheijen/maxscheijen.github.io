@@ -6,11 +6,11 @@ tags:
   - tool
 ---
 
-Recently, I started to center my python development around [`uv`](https://docs.astral.sh/uv) and other tooling  developed by [astral.sh](https://astral.sh/). It allows me to manage python enviroments, linting and formatting.
+Recently, I started to center my python development around [`uv`](https://docs.astral.sh/uv) and other tooling  developed by [astral.sh](https://astral.sh/). It allows me to manage python environments, linting and formatting.
 
 ## Managing Python Packages using `uv`
 
-`uv` is an extremely fast Python package and and recently also became a full on package manager.
+`uv` is an extremely fast Python package and recently also became a full on package manager.
 
 You can install it using `curl`.
 
@@ -36,7 +36,7 @@ This will create the following structure:
 └── pyproject.toml   # metadata about the project
 ```
 
-Run `uv add` to add dependencies. This will create an virtual enviroment (`.venv`), if you didn't already have one and it then installs the dependencies. The installed dependency will be present in the `pyproject.toml`.
+Run `uv add` to add dependencies. This will create an virtual environment (`.venv`), if you didn't already have one and it then installs the dependencies. The installed dependency will be present in the `pyproject.toml`.
 
 ```bash
 uv add <dependency>
@@ -68,7 +68,7 @@ I used to use black, flake8 and isort for my linting and code formatting. Howeve
 uv add --dev ruff
 ```
 
-Using ruff after black, isort and flake8 is delightfull. `ruff` is a super fast linter (fixing issues and organizing imports) and code formatter. 
+Using ruff after black, isort and flake8 is delightful. `ruff` is a super fast linter (fixing issues and organizing imports) and code formatter. 
 
 ```bash
 # ruff linting
@@ -130,9 +130,9 @@ To run those test (with test coverage) against my python files I run the followi
 uv run pytest <test-dir> --cov <source-dir>
 ```
 
-## CI with Github actions
+## CI with GitHub actions
 
-I also like to run linting, formatting and tests in CI. Below is a Github Action at `.github/workflows/ci.yaml`. 
+I also like to run linting, formatting and tests in CI. Below is a GitHub Action at `.github/workflows/ci.yaml`. 
 
 ```yaml
 name: CI

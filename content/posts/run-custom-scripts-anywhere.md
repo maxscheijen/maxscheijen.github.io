@@ -47,7 +47,7 @@ echo -en "\n" >> "$directory/$filename.md"
 echo "## Links" >>  "$directory/$filename.md"
 echo -en "\n" >> "$directory/$filename.md"
 
-# Open up in neovim
+# Open up in NeoVim
 nvim '+ normal 2GzzA' "$directory/$filename.md"
 ```
 
@@ -57,7 +57,7 @@ I ensured that every script in `~/.dotfiles/scripts/` was executable by running
 chmod +x ~/.dotfiles/scripts/*
 ```
 
-After this I added the scripts directory to the PATH by adding the folling line to my `~/.zshrc` file
+After this I added the scripts directory to the PATH by adding the following line to my `~/.zshrc` file
 
 ```bash
 export PATH="$HOME/.dotfiles/scripts:$PATH"

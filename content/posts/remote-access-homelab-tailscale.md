@@ -10,7 +10,7 @@ For the last year I've been running a small Homelab on a Raspberry Pi 5. It runs
 
 Until now my Homelab was only accessible from my local network.
 
-I was hesitant in making my Homelab remotely accesable (port forwarding , setting up my own VPN). Eventhough I do alot of programming and software engeering related things, I'm not too comfortable working with networking side of things.
+I was hesitant in making my Homelab remotely accessible (port forwarding , setting up my own VPN). Even though I do a lot of programming and software engineering related things, I'm not too comfortable working with networking side of things.
 
 I don't want someone unauthorized having access to my Homelab...
 
@@ -46,7 +46,7 @@ You can then run the following command to start Tailwind and authenticate.
 sudo tailscale up
 ```
 
-In the [Tailscale Dashboard](https://login.tailscale.com/admin/machines) you can see all your machines and there ip addresses.
+In the [Tailscale Dashboard](https://login.tailscale.com/admin/machines) you can see all your machines and there IP addresses.
 
 Now add other machines to the same account, and as long as you're connected to the Tailscale VPN can access your machines remotely.
 

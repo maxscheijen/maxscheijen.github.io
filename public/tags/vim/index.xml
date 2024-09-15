@@ -53,7 +53,7 @@ I started to work with vim about 2 weeks ago and there is so much to learn. Howe
 One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.</description>
       <content:encoded><![CDATA[<p>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).</p>
 <p>I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.</p>
-<p>One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or atleast the basics of find and replace.</p>
+<p>One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or at least the basics of find and replace.</p>
 <h2 id="pattern">Pattern</h2>
 <p>In vim you can use <code>:substitute</code> (<code>:s</code>) to find and replace text.</p>
 <p>It follows the following pattern:</p>
@@ -66,9 +66,9 @@ One thing I wanted to learn this week is find and replace. This is an operation 
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>
 </span></span></code></pre></div><p>Replace every occurrence of “foo” with bar on current line.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
-</span></span></code></pre></div><p>One thing I do often is replace every occurence of a pattern. The <code>%</code> charachter will allow you to do this for the entire file.</p>
+</span></span></code></pre></div><p>One thing I do often is replace every occurrence of a pattern. The <code>%</code> character will allow you to do this for the entire file.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:%<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">g</span>
-</span></span></code></pre></div><p>If confirmation for subsitution is important add <code>i</code> to the end of the command.</p>
+</span></span></code></pre></div><p>If confirmation for substitutions is important add <code>i</code> to the end of the command.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/foo/</span><span style="color:#a6e22e">bar</span>/<span style="color:#a6e22e">gc</span>
 </span></span></code></pre></div><p>The <code>:s</code> command searches for string matches. If you want to match whole words and not part of words, put replace between <code>\&lt;\&gt;</code></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-vim" data-lang="vim"><span style="display:flex;"><span>:<span style="color:#a6e22e">s</span><span style="color:#e6db74">/\&lt;foor\&gt;/</span><span style="color:#a6e22e">bar</span>/:<span style="color:#a6e22e">w</span>

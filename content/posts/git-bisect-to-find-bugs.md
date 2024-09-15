@@ -45,7 +45,7 @@ We run our tests against commit `C`. If this commit turns out to be passing than
 A --- good --- C --- unknown --- E
 ```
 
-However if the bug is still present in `C` and our tests fail, than we know for sure that the commits between `C` and `E` arent good. 
+However if the bug is still present in `C` and our tests fail, than we know for sure that the commits between `C` and `E` aren't good. 
 
 ```
 ---------------------------------

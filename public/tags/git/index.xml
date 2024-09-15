@@ -39,7 +39,7 @@ A -- unknown -- C -- unknown -- E
 <pre tabindex="0"><code>----------------------------------
 |                                |
 A --- good --- C --- unknown --- E
-</code></pre><p>However if the bug is still present in <code>C</code> and our tests fail, than we know for sure that the commits between <code>C</code> and <code>E</code> arent good.</p>
+</code></pre><p>However if the bug is still present in <code>C</code> and our tests fail, than we know for sure that the commits between <code>C</code> and <code>E</code> aren&rsquo;t good.</p>
 <pre tabindex="0"><code>---------------------------------
 |                               |
 A --- unknown --- C --- bad --- E
