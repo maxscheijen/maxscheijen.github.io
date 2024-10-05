@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Tags | Max Scheijen</title>
+<title>Api | Max Scheijen</title>
 <meta name="keywords" content="">
 <meta name="description" content="Max Scheijen - Blog">
 <meta name="author" content="Max Scheijen">
-<link rel="canonical" href="https://maxscheijen.github.io/tags/">
+<link rel="canonical" href="https://maxscheijen.github.io/tags/api/">
 <meta name="google-site-verification" content="G-DC0740CRYY">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
@@ -19,8 +19,8 @@
 <link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://maxscheijen.github.io/tags/index.xml">
-<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/tags/">
+<link rel="alternate" type="application/rss+xml" href="https://maxscheijen.github.io/tags/api/index.xml">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/tags/api/">
 <noscript>
     <style>
         #theme-toggle,
@@ -77,13 +77,13 @@
     
   
 
-<meta property="og:title" content="Tags" />
+<meta property="og:title" content="Api" />
 <meta property="og:description" content="Max Scheijen - Blog" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://maxscheijen.github.io/tags/" /><meta property="og:site_name" content="ExampleSite" />
+<meta property="og:url" content="https://maxscheijen.github.io/tags/api/" /><meta property="og:site_name" content="ExampleSite" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Tags"/>
+<meta name="twitter:title" content="Api"/>
 <meta name="twitter:description" content="Max Scheijen - Blog"/>
 
 </head>
@@ -130,7 +130,7 @@
         <ul id="menu">
             <li>
                 <a href="https://maxscheijen.github.io/tags/" title="Tags">
-                    <span class="active">Tags</span>
+                    <span>Tags</span>
                 </a>
             </li>
             <li>
@@ -146,58 +146,26 @@
         </ul>
     </nav>
 </header>
-<main class="main">
+<main class="main"> 
 <header class="page-header">
-    <h1>Tags</h1>
+  <h1>
+    Api
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="https://maxscheijen.github.io/tags/api/">api <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/cli/">cli <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/fastapi/">fastapi <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/git/">git <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/homelab/">homelab <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/linux/">linux <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/productivity/">productivity <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/python/">python <sup><strong><sup>3</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/rest/">rest <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/security/">security <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/ssh/">ssh <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/tool/">tool <sup><strong><sup>3</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/vim/">vim <sup><strong><sup>2</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/vpn/">vpn <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="https://maxscheijen.github.io/tags/vps/">vps <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">HTML Form and JSON for single endpoint in FastAPI
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>A common challenge when building a FastAPI application is handling different content types, like JSON and Form data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.
+This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a single endpoint.
+The Challenge: Handling Different Content Types By default, web browsers use application/x-www-form-urlencoded or multipart/form-data content types when submitting forms....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-05 00:00:00 +0000 UTC'>October 5, 2024</span>&nbsp;·&nbsp;Max Scheijen</footer>
+  <a class="entry-link" aria-label="post link to HTML Form and JSON for single endpoint in FastAPI" href="https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/"></a>
+</article>
     </main>
     
 <footer class="footer">

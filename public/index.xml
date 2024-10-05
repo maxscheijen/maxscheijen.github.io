@@ -6,8 +6,150 @@
     <description>Recent content on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTML Form and JSON for single endpoint in FastAPI</title>
+      <link>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</guid>
+      <description>A common challenge when building a FastAPI application is handling different content types, like JSON and Form data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.
+This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a single endpoint.
+The Challenge: Handling Different Content Types By default, web browsers use application/x-www-form-urlencoded or multipart/form-data content types when submitting forms.</description>
+      <content:encoded><![CDATA[<p>A common challenge when building a FastAPI application is handling different content types, like <code>JSON</code> and <code>Form</code> data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.</p>
+<p>This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a <strong>single endpoint</strong>.</p>
+<h2 id="the-challenge-handling-different-content-types">The Challenge: Handling Different Content Types</h2>
+<p>By default, web browsers use <code>application/x-www-form-urlencoded</code> or <code>multipart/form-data</code> content types when submitting forms. On the other hand, APIs and modern front-ends typically send <code>application/json</code>. Our goal is to handle both efficiently and return appropriate responses.</p>
+<p>To achieve this I&rsquo;ll:</p>
+<ul>
+<li>Use dependency injection in FastAPI to dynamically process the request type (form or json).</li>
+<li>Validate the incoming data using Pydantic.</li>
+<li>Handle errors gracefully, including invalid content types and validation errors.</li>
+</ul>
+<h2 id="code-breakdown">Code Breakdown</h2>
+<p>Let’s dive into each part of this code to understand how it works.</p>
+<h3 id="validation">Validation</h3>
+<p>We define a Pydantic model <code>User</code> to enforce structure and validation on the incoming data. In this case, it expects a single field: <code>name</code>. This model will automatically validate the incoming data whether it comes from a form or a json body.</p>
+<p>You can extend this model by adding more fields as needed.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(BaseModel):
+</span></span><span style="display:flex;"><span>    name: str
+</span></span></code></pre></div><h3 id="request-type">Request Type</h3>
+<p>Below, I use the <code>request_type</code> function to dynamically handle both <code>JSON</code> and <code>Form</code> content types. The <code>Request</code> object is used to inspect the content type of the incoming request:</p>
+<ul>
+<li>If the content type is <code>application/x-www-form-urlencoded</code>, we treat it as form data and convert it to a dictionary using <code>await request.form()</code>.</li>
+<li>If it’s <code>application/json</code>, we parse it into a dictionary using <code>await request.json()</code>.</li>
+<li>If the content type is unsupported, we raise a <code>ValueError</code>.</li>
+</ul>
+<p>Later on the <code>request_type</code> function is injected into the route via FastAPI’s <code>Depends</code> feature.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> Request
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">request_type</span>(request: Request) <span style="color:#f92672">-&gt;</span> dict:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Get content-type (json or form) from request</span>
+</span></span><span style="display:flex;"><span>    content_type <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;Content-Type&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Convert form to dict</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> content_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>:
+</span></span><span style="display:flex;"><span>        form_data <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> request<span style="color:#f92672">.</span>form()
+</span></span><span style="display:flex;"><span>        data <span style="color:#f92672">=</span> dict(form_data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Convert json to dict</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> content_type <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;application/json&#34;</span>:
+</span></span><span style="display:flex;"><span>        data <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> request<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Handle unsupported content types</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unsupported content type: </span><span style="color:#e6db74">{</span>content_type<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> data
+</span></span></code></pre></div><h3 id="handle-request-in-route">Handle Request in Route</h3>
+<p>This is the main route for handling incoming requests. The <code>data</code> returned by the <code>request_type</code> function is validated against the <code>User</code> model. If the validation succeeds, it means that the request body (whether JSON or form) is valid and contains the correct structure.</p>
+<p>When the request’s content type is form data (<code>application/x-www-form-urlencoded</code>), we return a simple HTML response. This can of course be extended to return more complex HTML content based on your needs.</p>
+<p>For JSON requests, the validated data is returned as the response.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> Depends, FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi.responses <span style="color:#f92672">import</span> JSONResponse, HTMLResponse
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.post</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>(request: Request, data: dict <span style="color:#f92672">=</span> Depends(request_type)):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Validate data using pydantic model</span>
+</span></span><span style="display:flex;"><span>        user <span style="color:#f92672">=</span> User(<span style="color:#f92672">**</span>data)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># content-type is form, return HTML response</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> request<span style="color:#f92672">.</span>headers<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;Content-Type&#34;</span>) <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;application/x-www-form-urlencoded&#34;</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> HTMLResponse(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;p&gt;Hello, </span><span style="color:#e6db74">{</span>user<span style="color:#f92672">.</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">!&lt;/p&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># content-type not form return dict/json</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> user
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> ValidationError <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Exception handling when form or json data is invalid</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>            content<span style="color:#f92672">=</span>json<span style="color:#f92672">.</span>loads(e<span style="color:#f92672">.</span>json()),
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>,
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Handle unsupported content type</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> JSONResponse(
+</span></span><span style="display:flex;"><span>            content<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#34;error&#34;</span>: str(e)},
+</span></span><span style="display:flex;"><span>            status_code<span style="color:#f92672">=</span><span style="color:#ae81ff">415</span>,  <span style="color:#75715e"># Unsupported Media Type</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span></code></pre></div><p>If the data doesn’t meet the Pydantic model’s validation rules, a <code>ValidationError</code> is raised, and a <code>400 Bad Request</code> error with the detailed validation errors is returned as a JSON response.</p>
+<p>When the content type is unsupported, we catch the <code>ValueError</code> and return a <code>415 Unsupported Media Type</code> error with a descriptive message.</p>
+<h2 id="testing">Testing</h2>
+<p>We can now make a request using a json body or a form to the same endpoint</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;http://127.0.0.1:8000 &#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--header <span style="color:#e6db74">&#39;Content-Type: application/json&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--data <span style="color:#e6db74">&#39;{
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;name&#34;: &#34;John Doe&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">}&#39;</span>
+</span></span></code></pre></div><p>This will return the following json response.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>We can also make a request using a form</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;http://127.0.0.1:8000 &#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--header <span style="color:#e6db74">&#39;Content-Type: application/x-www-form-urlencoded&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--data-urlencode <span style="color:#e6db74">&#39;name=John Doe&#39;</span>
+</span></span></code></pre></div><p>This results in a HTML string</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">p</span>&gt;Hello, John Doe!&lt;/<span style="color:#f92672">p</span>&gt;
+</span></span></code></pre></div><p>When incorrect fields are specified this will result in a nice pydantic validation error response.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl --location <span style="color:#e6db74">&#39;http://127.0.0.1:8000 &#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--header <span style="color:#e6db74">&#39;Content-Type: application/x-www-form-urlencoded&#39;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>--data-urlencode <span style="color:#e6db74">&#39;user=John Doe&#39;</span>
+</span></span></code></pre></div><p>The incorrect field <code>user</code> is used this will result in the following response</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;missing&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;loc&#34;</span>: [
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;name&#34;</span>
+</span></span><span style="display:flex;"><span>        ],
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;msg&#34;</span>: <span style="color:#e6db74">&#34;Field required&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;input&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&#34;user&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;https://errors.pydantic.dev/2.6/v/missing&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h2 id="benefits">Benefits</h2>
+<p>This pattern allows for seamlessly processing both form and JSON data, making our API more flexible.</p>
+<p>It also leverages Pydantic’s integration with FastAPI ensures that incoming json or form data is validated automatically based on the schema we define.</p>
+<p>Unsupported content types and validation errors are handled gracefully, providing clear error messages to the client.</p>
+<p>By using dependency injection (<code>Depends</code>), the code remains modular. The logic for handling and converting request data is abstracted away, making the route handler simpler and more readable.</p>
+<h2 id="links">Links</h2>
+<p>[[rest]] [[api]] [[python]] [[fastapi]]</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>VPS 101 - Setup &amp; Security</title>
       <link>https://maxscheijen.github.io/posts/vps-101-setup-and-security/</link>

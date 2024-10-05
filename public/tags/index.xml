@@ -6,8 +6,36 @@
     <description>Recent content in Tags on Max Scheijen</description>
     <generator>Hugo -- 0.132.1</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Api</title>
+      <link>https://maxscheijen.github.io/tags/api/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/api/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fastapi</title>
+      <link>https://maxscheijen.github.io/tags/fastapi/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/fastapi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://maxscheijen.github.io/tags/python/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rest</title>
+      <link>https://maxscheijen.github.io/tags/rest/</link>
+      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/rest/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Linux</title>
       <link>https://maxscheijen.github.io/tags/linux/</link>
@@ -34,13 +62,6 @@
       <link>https://maxscheijen.github.io/tags/vps/</link>
       <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/tags/vps/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://maxscheijen.github.io/tags/python/</link>
-      <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/python/</guid>
       <description></description>
     </item>
     <item>
