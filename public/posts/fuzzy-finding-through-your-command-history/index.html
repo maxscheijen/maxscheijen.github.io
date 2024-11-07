@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Fuzzy Finding Through Your Command History | Max Scheijen</title>
+<meta name="keywords" content="fzf, cli">
+<meta name="description" content="We&rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?
+Let&rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&rsquo;ll use fzf as our fuzzy finder of choice.">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/">
+<meta name="google-site-verification" content="G-DC0740CRYY">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script>
+    
+  
+
+<meta property="og:title" content="Fuzzy Finding Through Your Command History" />
+<meta property="og:description" content="We&rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?
+Let&rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&rsquo;ll use fzf as our fuzzy finder of choice." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-11-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-11-07T00:00:00+00:00" /><meta property="og:site_name" content="ExampleSite" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Fuzzy Finding Through Your Command History"/>
+<meta name="twitter:description" content="We&rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?
+Let&rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&rsquo;ll use fzf as our fuzzy finder of choice."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Fuzzy Finding Through Your Command History",
+      "item": "https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Fuzzy Finding Through Your Command History",
+  "name": "Fuzzy Finding Through Your Command History",
+  "description": "We\u0026rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn\u0026rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?\nLet\u0026rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We\u0026rsquo;ll use fzf as our fuzzy finder of choice.",
+  "keywords": [
+    "fzf", "cli"
+  ],
+  "articleBody": "We’ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn’t it be nice to quickly search through your terminal history using fuzzy finding?\nLet’s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We’ll use fzf as our fuzzy finder of choice.\nBasic Implementation The simplest approach is to pipe your history directly to fzf:\nhistory | fzf However, you’ll quickly notice this gives us lots of duplicate commands, and each line includes some unnecessary numbers from the history format. Let’s clean that up!\nTo remove the leading whitespace, numbers, and timestamps, we can use sed combined with sort and uniq to get a clean, sorted list of unique commands:\nsed 's/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//' | sort | uniq Now we can combine these pieces:\nhistory | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//' | sort | uniq | fzf To actually execute the selected command, we just need to pipe it to sh:\nhistory | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//' | sort | uniq | fzf | sh Enhanced Script While the one-liner works, let’s make it more robust. Here’s a script that handles both bash and zsh histories, and includes some error checking:\n#!/bin/bash # Check if fzf is installed if ! command -v fzf \u003e/dev/null 2\u003e\u00261; then echo \"Error: fzf is not installed. Please install it first.\" exit 1 fi # Function to read zsh history read_zsh_history() { # Use fc -l with zsh to get readable history if [ -n \"$ZSH_VERSION\" ]; then # This needs to be run in zsh zsh -c 'fc -l 1' elif [ -r ~/.zsh_history ]; then # Attempt to read zsh history file directly and decode it command -v strings \u003e/dev/null 2\u003e\u00261 \u0026\u0026 strings ~/.zsh_history fi } # Function to read bash history read_bash_history() { if [ -r ~/.bash_history ]; then cat ~/.bash_history fi } # Function to execute the history search search_and_execute_history() { # Combine both histories, with zsh history taking precedence (read_zsh_history; read_bash_history) | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//' | sort | uniq | fzf --border --tac --reverse | (read command \u0026\u0026 eval \"$command\") } # Execute the function search_and_execute_history Using the Script Save the script as hist and make it executable: chmod +x hist Move it to your scripts directory: mv hist ~/.dotfiles/scripts/ Add the scripts directory to your PATH in your shell configuration: export PATH=\"$HOME/.dotfiles/scripts:$PATH\" Now you can simply type hist anywhere in your terminal to fuzzy find through your command history!\nLinks [[fzf]] [[cli]]\n",
+  "wordCount" : "435",
+  "inLanguage": "en",
+  "datePublished": "2024-11-07T00:00:00Z",
+  "dateModified": "2024-11-07T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Fuzzy Finding Through Your Command History
+    </h1>
+    <div class="post-meta"><span title='2024-11-07 00:00:00 +0000 UTC'>November 7, 2024</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>We&rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?</p>
+<p>Let&rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&rsquo;ll use <code>fzf</code> as our fuzzy finder of choice.</p>
+<h2 id="basic-implementation">Basic Implementation<a hidden class="anchor" aria-hidden="true" href="#basic-implementation">#</a></h2>
+<p>The simplest approach is to pipe your history directly to <code>fzf</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>history | fzf
+</span></span></code></pre></div><p>However, you&rsquo;ll quickly notice this gives us lots of duplicate commands, and each line includes some unnecessary numbers from the history format. Let&rsquo;s clean that up!</p>
+<p>To remove the leading whitespace, numbers, and timestamps, we can use <code>sed</code> combined with <code>sort</code> and <code>uniq</code> to get a clean, sorted list of unique commands:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sed <span style="color:#e6db74">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span> | sort | uniq
+</span></span></code></pre></div><p>Now we can combine these pieces:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>history | sed <span style="color:#e6db74">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span> | sort | uniq | fzf
+</span></span></code></pre></div><p>To actually execute the selected command, we just need to pipe it to <code>sh</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>history | sed <span style="color:#e6db74">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span> | sort | uniq | fzf | sh
+</span></span></code></pre></div><h2 id="enhanced-script">Enhanced Script<a hidden class="anchor" aria-hidden="true" href="#enhanced-script">#</a></h2>
+<p>While the one-liner works, let&rsquo;s make it more robust. Here&rsquo;s a script that handles both <code>bash</code> and <code>zsh</code> histories, and includes some error checking:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check if fzf is installed</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> ! command -v fzf &gt;/dev/null 2&gt;&amp;1; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;Error: fzf is not installed. Please install it first.&#34;</span>
+</span></span><span style="display:flex;"><span>    exit <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to read zsh history</span>
+</span></span><span style="display:flex;"><span>read_zsh_history<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Use fc -l with zsh to get readable history</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$ZSH_VERSION<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># This needs to be run in zsh</span>
+</span></span><span style="display:flex;"><span>        zsh -c <span style="color:#e6db74">&#39;fc -l 1&#39;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">elif</span> <span style="color:#f92672">[</span> -r ~/.zsh_history <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Attempt to read zsh history file directly and decode it</span>
+</span></span><span style="display:flex;"><span>        command -v strings &gt;/dev/null 2&gt;&amp;<span style="color:#ae81ff">1</span> <span style="color:#f92672">&amp;&amp;</span> strings ~/.zsh_history
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to read bash history</span>
+</span></span><span style="display:flex;"><span>read_bash_history<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -r ~/.bash_history <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>        cat ~/.bash_history
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Function to execute the history search</span>
+</span></span><span style="display:flex;"><span>search_and_execute_history<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Combine both histories, with zsh history taking precedence</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>read_zsh_history; read_bash_history<span style="color:#f92672">)</span> |
+</span></span><span style="display:flex;"><span>    sed <span style="color:#e6db74">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span> |
+</span></span><span style="display:flex;"><span>    sort |
+</span></span><span style="display:flex;"><span>    uniq |
+</span></span><span style="display:flex;"><span>    fzf --border --tac --reverse |
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>read command <span style="color:#f92672">&amp;&amp;</span> eval <span style="color:#e6db74">&#34;</span>$command<span style="color:#e6db74">&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Execute the function</span>
+</span></span><span style="display:flex;"><span>search_and_execute_history
+</span></span></code></pre></div><h2 id="using-the-script">Using the Script<a hidden class="anchor" aria-hidden="true" href="#using-the-script">#</a></h2>
+<ol>
+<li>Save the script as <code>hist</code> and make it executable:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>chmod +x hist
+</span></span></code></pre></div><ol start="2">
+<li>Move it to your scripts directory:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mv hist ~/.dotfiles/scripts/
+</span></span></code></pre></div><ol start="3">
+<li>Add the scripts directory to your PATH in your shell configuration:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$HOME<span style="color:#e6db74">/.dotfiles/scripts:</span>$PATH<span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>Now you can simply type <code>hist</code> anywhere in your terminal to fuzzy find through your command history!</p>
+<h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<p>[[fzf]] [[cli]]</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/fzf/">Fzf</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/cli/">Cli</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/">
+    <span class="title">Next »</span>
+    <br>
+    <span>HTML Form and JSON for single endpoint in FastAPI</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
