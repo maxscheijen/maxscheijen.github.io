@@ -3,21 +3,27 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://maxscheijen.github.io/tags/cli/</loc>
-    <lastmod>2024-11-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/</loc>
-    <lastmod>2024-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/fzf/</loc>
-    <lastmod>2024-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/git/</loc>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/</loc>
-    <lastmod>2024-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/</loc>
-    <lastmod>2024-11-07T00:00:00+00:00</lastmod>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</loc>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/</loc>
+    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/</loc>
     <lastmod>2024-11-07T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/api/</loc>
@@ -55,9 +61,6 @@
   </url><url>
     <loc>https://maxscheijen.github.io/tags/tool/</loc>
     <lastmod>2024-09-07T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/tags/git/</loc>
-    <lastmod>2024-09-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</loc>
     <lastmod>2024-09-04T00:00:00+00:00</lastmod>
