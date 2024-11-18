@@ -2,6 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://maxscheijen.github.io/tags/editor/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/lua/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/nvim/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/posts/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/posts/quick-reload-nvim-config/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://maxscheijen.github.io/tags/vim/</loc>
+    <lastmod>2024-11-18T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://maxscheijen.github.io/tags/cli/</loc>
     <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,16 +35,7 @@
     <loc>https://maxscheijen.github.io/tags/git/</loc>
     <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://maxscheijen.github.io/</loc>
-    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/posts/</loc>
-    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</loc>
-    <lastmod>2024-11-11T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/tags/</loc>
     <lastmod>2024-11-11T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/</loc>
@@ -66,9 +81,6 @@
     <lastmod>2024-09-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/posts/python-to-change-vim/</loc>
-    <lastmod>2024-08-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://maxscheijen.github.io/tags/vim/</loc>
     <lastmod>2024-08-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://maxscheijen.github.io/tags/homelab/</loc>
