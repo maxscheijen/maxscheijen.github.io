@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Dotfiles on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/dotfiles/</link>
+    <description>Recent content in Dotfiles on Max Scheijen</description>
+    <generator>Hugo -- 0.132.1</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/dotfiles/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I Really Like GNU Stow</title>
+      <link>https://maxscheijen.github.io/posts/gnu-stow/</link>
+      <pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/gnu-stow/</guid>
+      <description>Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that&amp;rsquo;ll make your dotfiles management a easier.
+What&amp;rsquo;s GNU Stow Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It&amp;rsquo;s like having a personal assistant for your config files.</description>
+      <content:encoded><![CDATA[<p>Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that&rsquo;ll make your dotfiles management a easier.</p>
+<h2 id="whats-gnu-stow">What&rsquo;s GNU Stow</h2>
+<p>Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It&rsquo;s like having a personal assistant for your config files.</p>
+<h3 id="why-i-use-stow-for-dotfiles">Why I use Stow for Dotfiles</h3>
+<ol>
+<li><strong>Centralized Management</strong>: All my dotfiles live in one tidy, version-controlled directory (<code>~/.dotfiles</code>). No more config chaos!</li>
+<li><strong>Crazy Good Organization</strong>: Stow lets me separate configs by program or however I want. Total flexibility.</li>
+<li><strong>Deployment Made Easy</strong>: When I need to set up a new machine, it&rsquo;s as simple as pulling my configs and running stow. No more manual copy-pasting.</li>
+<li><strong>Pick and Choose</strong>: With Stow packages, I can selectively install exactly the configurations I want.</li>
+</ol>
+<h2 id="getting-started-the-stow-setup">Getting Started: The Stow Setup</h2>
+<p><strong>1. Install GNU Stow</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># macOS</span>
+</span></span><span style="display:flex;"><span>brew install stow
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Ubuntu/Debian</span>
+</span></span><span style="display:flex;"><span>apt install stow
+</span></span></code></pre></div><p><strong>2. Create Your Dotfiles Directory</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir ~/.dotfiles
+</span></span><span style="display:flex;"><span>cd ~/.dotfiles
+</span></span></code></pre></div><p><strong>3. Organize Your Configs as Packages</strong></p>
+<p>I like creating packages base on programs</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mkdir -p nvim/.config/nvim kitty/.config/kitty zsh
+</span></span></code></pre></div><ol start="4">
+<li>Migrate Your Configs</li>
+</ol>
+<p>Move your existing config files, keeping the same home directory structure:</p>
+<!-- raw HTML omitted -->
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mv ~/.config/nvim/* ~/.dotfiles/nvim/.config/nvim/
+</span></span><span style="display:flex;"><span>mv ~/.config/kitty/* ~/.dotfiles/kitty/.config/kitty/
+</span></span><span style="display:flex;"><span>mv ~/.zshrc ~/.dotfiles/zsh/
+</span></span></code></pre></div><h2 id="stow-in-action">Stow in Action</h2>
+<p>Once your files are organized, using Stow is straightforward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd ~/.dotfiles
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Creates the symlink for ~/.config/nvim</span>
+</span></span><span style="display:flex;"><span>stow nvim
+</span></span></code></pre></div><p>In you run for example <code>ls -la .zshrc</code> you will see that it it symlinked to <code>~/.dotfiles/zsh/zshrc</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Displaying symlinks for dotfiles (example ~/.zshrc)</span>
+</span></span><span style="display:flex;"><span>ls -la ~/.zshrc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># output</span>
+</span></span><span style="display:flex;"><span>~/.zshrc        --&gt; ~/.dotfiles/zsh/.zshrc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># dotfile           GNU Stow</span>
+</span></span><span style="display:flex;"><span>~/.config/nvim  --&gt; ~/.dotfiles/nvim/.config/nvim
+</span></span><span style="display:flex;"><span>~/.config/kitty --&gt; ~/.dotfiles/kitty/.config/kitty
+</span></span></code></pre></div><h2 id="best-practices">Best Practices</h2>
+<p><strong>1. Use version control</strong></p>
+<p>Because all your dotfiles are in the same directory you can have just one repository for your dotfiles that has version control</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>cd ~/.dotfiles
+</span></span><span style="display:flex;"><span>git init
+</span></span><span style="display:flex;"><span>git add -am <span style="color:#e6db74">&#34;Initial dotfiles commit&#34;</span>
+</span></span></code></pre></div><p><strong>2. Create a setup script</strong></p>
+<p>Want to automate stowing everything? Here&rsquo;s a quick script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>cd ~/.dotfiles
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> dir in */; <span style="color:#66d9ef">do</span>
+</span></span><span style="display:flex;"><span>    stow <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>dir%/<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h2 id="common-issues-and-solutions">Common Issues and Solutions</h2>
+<p><strong>1. Existing Files</strong></p>
+<p>Stow wont overwrite existing files that are not managed by it self. You should backup and remove existing files before stowing. You can also use <code>stow --adopt</code> to incorporate existing files (however use it with caution).</p>
+<p><strong>2. Nested Directories</strong></p>
+<p>Stow create parent directories as needed. You should keep the same directory structure as in your home directory.</p>
+<p>For example the kitty config is located in <code>~/.config/kitty/</code>. So our stow setup should mirror the same structure. In <code>~/.dotfiles/kitty</code>. Where <code>kitty</code> is the stow package name. So inside this directory you should mirror <code>.config/kitty</code> resulting in <code>~/.dotfiles/kitty/.config/kitty</code>.</p>
+<h2 id="links">Links</h2>
+<p>[[linux]] [[stow]] [[dotfiles]]</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
