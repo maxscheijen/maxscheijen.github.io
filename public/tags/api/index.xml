@@ -4,7 +4,7 @@
     <title>Api on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/api/</link>
     <description>Recent content in Api on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/api/index.xml" rel="self" type="application/rss+xml" />
@@ -13,9 +13,10 @@
       <link>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</link>
       <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</guid>
-      <description>A common challenge when building a FastAPI application is handling different content types, like JSON and Form data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.
-This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a single endpoint.
-The Challenge: Handling Different Content Types By default, web browsers use application/x-www-form-urlencoded or multipart/form-data content types when submitting forms.</description>
+      <description>&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
+&lt;p&gt;This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a &lt;strong&gt;single endpoint&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;the-challenge-handling-different-content-types&#34;&gt;The Challenge: Handling Different Content Types&lt;/h2&gt;
+&lt;p&gt;By default, web browsers use &lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt; or &lt;code&gt;multipart/form-data&lt;/code&gt; content types when submitting forms. On the other hand, APIs and modern front-ends typically send &lt;code&gt;application/json&lt;/code&gt;. Our goal is to handle both efficiently and return appropriate responses.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>A common challenge when building a FastAPI application is handling different content types, like <code>JSON</code> and <code>Form</code> data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.</p>
 <p>This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a <strong>single endpoint</strong>.</p>
 <h2 id="the-challenge-handling-different-content-types">The Challenge: Handling Different Content Types</h2>

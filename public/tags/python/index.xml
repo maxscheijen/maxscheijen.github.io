@@ -4,18 +4,125 @@
     <title>Python on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/python/</link>
     <description>Recent content in Python on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 05 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure Functions and FastAPI</title>
+      <link>https://maxscheijen.github.io/posts/azure-functions-fastapi/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/azure-functions-fastapi/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a huge fan of &lt;a href=&#34;https://fastapi.tiangolo.com&#34;&gt;FastAPI&lt;/a&gt;. It&amp;rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.&lt;/p&gt;
+&lt;p&gt;At work, we extensively use &lt;a href=&#34;https://learn.microsoft.com/en-us/azure/azure-functions/&#34;&gt;Azure Functions&lt;/a&gt;. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the &lt;a href=&#34;https://pypi.org/project/azure-functions/&#34;&gt;azure-functions&lt;/a&gt; package.&lt;/p&gt;
+&lt;p&gt;However, I really love FastAPI as a framework for building APIs. Let&amp;rsquo;s explore how we can create an Azure Function leveraging FastAPI.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>I&rsquo;m a huge fan of <a href="https://fastapi.tiangolo.com">FastAPI</a>. It&rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.</p>
+<p>At work, we extensively use <a href="https://learn.microsoft.com/en-us/azure/azure-functions/">Azure Functions</a>. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the <a href="https://pypi.org/project/azure-functions/">azure-functions</a> package.</p>
+<p>However, I really love FastAPI as a framework for building APIs. Let&rsquo;s explore how we can create an Azure Function leveraging FastAPI.</p>
+<h2 id="setup">Setup</h2>
+<p>Let&rsquo;s start by setting up the following project structure:</p>
+<pre tabindex="0"><code>azure-function-fastapi
+├── api
+│   └── __init__.py
+├── function_app.py
+├── host.json
+└── local.settings.json
+</code></pre><p>Where:</p>
+<ul>
+<li><code>function_app.py</code> is the Azure Function entry point</li>
+<li><code>__init__.py</code> is where we create our FastAPI app</li>
+<li><code>host.json</code> defines global settings and behaviors</li>
+<li><code>local.settings.json</code> contains settings used for local running and debugging</li>
+</ul>
+<h2 id="creating-a-fastapi-app">Creating a FastAPI App</h2>
+<p>Let&rsquo;s build our FastAPI app in <code>__init__.py</code>. This can be done exactly as you would normally create a FastAPI application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(BaseModel):
+</span></span><span style="display:flex;"><span>  name: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/hello/</span><span style="color:#e6db74">{name}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>User)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_name</span>(name: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> User(name<span style="color:#f92672">=</span>name)
+</span></span></code></pre></div><p>This creates a parameterized route (<code>/hello/{name}</code>) that dynamically accepts a value in the URL path and returns a JSON response (<code>User</code>).</p>
+<p>You can run this app from the root using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app
+</span></span></code></pre></div><p>Let&rsquo;s make a <code>GET</code> request using <code>curl</code> to our API:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl http://127.0.0.1:8000/hello/Max
+</span></span></code></pre></div><p>Response</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Max&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Automatic documentation can be found at <code>[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)</code>.</p>
+<h2 id="integrating-in-azure-function">Integrating in Azure Function</h2>
+<p>Integrating the FastAPI app into an Azure Function is straightforward:</p>
+<p>Add the following to <code>function_app.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> azure.functions <span style="color:#f92672">import</span> AsgiFunctionApp, AuthLevel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> api <span style="color:#f92672">import</span> app <span style="color:#66d9ef">as</span> fastapi_app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> AsgiFunctionApp(
+</span></span><span style="display:flex;"><span>  app<span style="color:#f92672">=</span>fastapi_app,
+</span></span><span style="display:flex;"><span>  http_auth_level<span style="color:#f92672">=</span>AuthLevel<span style="color:#f92672">.</span>ANONYMOUS
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>We simply import our FastAPI app and use it in <code>AsgiFunctionApp</code>. It&rsquo;s that simple.</p>
+<p>Next, set the function app settings in <code>host.json</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;logging&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;applicationInsights&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;samplingSettings&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isEnabled&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;excludedTypes&#34;</span>: <span style="color:#e6db74">&#34;Request&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensionBundle&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;Microsoft.Azure.Functions.ExtensionBundle&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;[2.*, 3.0.0)&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensions&#34;</span>: 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;http&#34;</span>: 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;routePrefix&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Define the local settings in <code>local.settings.json</code> for running the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;IsEncrypted&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Values&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsStorage&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;FUNCTIONS_WORKER_RUNTIME&#34;</span>: <span style="color:#e6db74">&#34;python&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsFeatureFlags&#34;</span>: <span style="color:#e6db74">&#34;EnableWorkerIndexing&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can now start the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>func host start
+</span></span></code></pre></div><p>You now have a FastAPI app running in an Azure Function!</p>
+<blockquote>
+<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app --reload
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<p>[[azure]] [[python]] [[fastapi]] [[serverless]]</p>
+]]></content:encoded>
+    </item>
     <item>
       <title>HTML Form and JSON for single endpoint in FastAPI</title>
       <link>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</link>
       <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/html-form-and-json-endpoints-fastapi/</guid>
-      <description>A common challenge when building a FastAPI application is handling different content types, like JSON and Form data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.
-This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a single endpoint.
-The Challenge: Handling Different Content Types By default, web browsers use application/x-www-form-urlencoded or multipart/form-data content types when submitting forms.</description>
+      <description>&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
+&lt;p&gt;This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a &lt;strong&gt;single endpoint&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;the-challenge-handling-different-content-types&#34;&gt;The Challenge: Handling Different Content Types&lt;/h2&gt;
+&lt;p&gt;By default, web browsers use &lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt; or &lt;code&gt;multipart/form-data&lt;/code&gt; content types when submitting forms. On the other hand, APIs and modern front-ends typically send &lt;code&gt;application/json&lt;/code&gt;. Our goal is to handle both efficiently and return appropriate responses.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>A common challenge when building a FastAPI application is handling different content types, like <code>JSON</code> and <code>Form</code> data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.</p>
 <p>This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a <strong>single endpoint</strong>.</p>
 <h2 id="the-challenge-handling-different-content-types">The Challenge: Handling Different Content Types</h2>
@@ -155,10 +262,12 @@ The Challenge: Handling Different Content Types By default, web browsers use app
       <link>https://maxscheijen.github.io/posts/python-development-seutup/</link>
       <pubDate>Sat, 07 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/python-development-seutup/</guid>
-      <description>Recently, I started to center my python development around uv and other tooling developed by astral.sh. It allows me to manage python environments, linting and formatting.
-Managing Python Packages using uv uv is an extremely fast Python package and recently also became a full on package manager.
-You can install it using curl.
-curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new Python project, or use an existing one by running the uv init command:</description>
+      <description>&lt;p&gt;Recently, I started to center my python development around &lt;a href=&#34;https://docs.astral.sh/uv&#34;&gt;&lt;code&gt;uv&lt;/code&gt;&lt;/a&gt; and other tooling  developed by &lt;a href=&#34;https://astral.sh/&#34;&gt;astral.sh&lt;/a&gt;. It allows me to manage python environments, linting and formatting.&lt;/p&gt;
+&lt;h2 id=&#34;managing-python-packages-using-uv&#34;&gt;Managing Python Packages using &lt;code&gt;uv&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;uv&lt;/code&gt; is an extremely fast Python package and recently also became a full on package manager.&lt;/p&gt;
+&lt;p&gt;You can install it using &lt;code&gt;curl&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;curl -LsSf https://astral.sh/uv/install.sh | sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You can then create a new a new Python project, or use an existing one by running the &lt;code&gt;uv init&lt;/code&gt; command:&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Recently, I started to center my python development around <a href="https://docs.astral.sh/uv"><code>uv</code></a> and other tooling  developed by <a href="https://astral.sh/">astral.sh</a>. It allows me to manage python environments, linting and formatting.</p>
 <h2 id="managing-python-packages-using-uv">Managing Python Packages using <code>uv</code></h2>
 <p><code>uv</code> is an extremely fast Python package and recently also became a full on package manager.</p>
@@ -275,11 +384,22 @@ curl -LsSf https://astral.sh/uv/install.sh | sh You can then create a new a new 
       <link>https://maxscheijen.github.io/posts/python-to-change-vim/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/python-to-change-vim/</guid>
-      <description>The programming language I&amp;rsquo;m most familiar with is python. I also started to learn vim recently. How can I combine the two?
-I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.
-Script So I wrote a basic python script that can lower case a string.
-~/.dotfiles/scripts/lower
-#!/usr/bin/python3 import sys def to_lower() -&amp;gt; str: return sys.</description>
+      <description>&lt;p&gt;The programming language I&amp;rsquo;m most familiar with is &lt;a href=&#34;https://python.org&#34;&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
+&lt;p&gt;I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.&lt;/p&gt;
+&lt;h2 id=&#34;script&#34;&gt;Script&lt;/h2&gt;
+&lt;p&gt;So I wrote a basic python script that can lower case a string.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;~/.dotfiles/scripts/lower&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/python3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; sys
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_lower&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; str:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; sys&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;stdin&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lower()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rstrip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(to_lower())
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I then made the file executable&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>The programming language I&rsquo;m most familiar with is <a href="https://python.org">python</a>. I also started to learn vim recently. How can I combine the two?</p>
 <p>I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.</p>
 <h2 id="script">Script</h2>

@@ -4,7 +4,7 @@
     <title>Editor on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/editor/</link>
     <description>Recent content in Editor on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/editor/index.xml" rel="self" type="application/rss+xml" />
@@ -13,11 +13,20 @@
       <link>https://maxscheijen.github.io/posts/quick-reload-nvim-config/</link>
       <pubDate>Mon, 18 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/quick-reload-nvim-config/</guid>
-      <description>Tired of quitting and restarting Neovim every time you tweak your config? There&amp;rsquo;s a better way!
-By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.
-The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.
-For example, let&amp;rsquo;s look at the zen-mode plugin:
-Your lua/custom/plugin/zen-mode.lua file would contain the plugin declaration:</description>
+      <description>&lt;p&gt;Tired of quitting and restarting Neovim every time you tweak your config? There&amp;rsquo;s a better way!&lt;/p&gt;
+&lt;p&gt;By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.&lt;/p&gt;
+&lt;p&gt;The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.&lt;/p&gt;
+&lt;p&gt;For example, let&amp;rsquo;s look at the &lt;a href=&#34;https://github.com/folke/zen-mode.nvim&#34;&gt;zen-mode&lt;/a&gt; plugin:&lt;/p&gt;
+&lt;p&gt;Your &lt;code&gt;lua/custom/plugin/zen-mode.lua&lt;/code&gt; file would contain the plugin declaration:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;folke/zen-mode.nvim&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  config &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;-- Load in the config for this plugin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;-- from a different file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;custom.zen-mode&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;end&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, the configuration itself goes in &lt;code&gt;lua/custom/zen-mode.lua&lt;/code&gt;:&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Tired of quitting and restarting Neovim every time you tweak your config? There&rsquo;s a better way!</p>
 <p>By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.</p>
 <p>The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.</p>

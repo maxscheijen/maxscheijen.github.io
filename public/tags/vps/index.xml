@@ -4,7 +4,7 @@
     <title>Vps on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/vps/</link>
     <description>Recent content in Vps on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/vps/index.xml" rel="self" type="application/rss+xml" />
@@ -13,9 +13,12 @@
       <link>https://maxscheijen.github.io/posts/vps-101-setup-and-security/</link>
       <pubDate>Fri, 13 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/vps-101-setup-and-security/</guid>
-      <description>Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
-This is the first part of my journey into hosting a Linux server.
-Setup &amp;amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&amp;rsquo;m fine with that.</description>
+      <description>&lt;p&gt;Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).&lt;/p&gt;
+&lt;p&gt;This is the first part of my journey into hosting a Linux server.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&#34;https://maxscheijen.github.io/posts/vps-101-setup-and-security&#34;&gt;Setup &amp;amp; Security&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;To experiment with hosting my own Linux VPS, I opted for the cheapest &lt;a href=&#34;https://www.digitalocean.com/products/droplets&#34;&gt;DigitalOcean Droplet&lt;/a&gt;, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&amp;rsquo;m fine with that.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).</p>
 <p>This is the first part of my journey into hosting a Linux server.</p>
 <ol>

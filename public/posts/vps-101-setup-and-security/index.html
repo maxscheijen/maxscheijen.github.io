@@ -9,11 +9,14 @@
 <meta name="keywords" content="vps, ssh, security, linux">
 <meta name="description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
 This is the first part of my journey into hosting a Linux server.
-Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.">
+
+Setup &amp; Security
+
+To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.">
 <meta name="author" content="Max Scheijen">
 <link rel="canonical" href="https://maxscheijen.github.io/posts/vps-101-setup-and-security/">
 <meta name="google-site-verification" content="G-DC0740CRYY">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fc220c15db4aef0318bbf30adc45d33d4d7c88deff3238b23eb255afdc472ca6.css" integrity="sha256-/CIMFdtK7wMYu/MK3EXTPU18iN7/MjiyPrJVr9xHLKY=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
@@ -59,8 +62,6 @@ Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for th
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
       <script>
         var doNotTrack = false;
@@ -74,24 +75,29 @@ Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for th
           gtag('js', new Date());
           gtag('config', 'G-DC0740CRYY');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="VPS 101 - Setup &amp; Security" />
-<meta property="og:description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
+      </script><meta property="og:url" content="https://maxscheijen.github.io/posts/vps-101-setup-and-security/">
+  <meta property="og:site_name" content="Max Scheijen">
+  <meta property="og:title" content="VPS 101 - Setup & Security">
+  <meta property="og:description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
 This is the first part of my journey into hosting a Linux server.
-Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://maxscheijen.github.io/posts/vps-101-setup-and-security/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-09-13T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-09-13T00:00:00+00:00" /><meta property="og:site_name" content="ExampleSite" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="VPS 101 - Setup &amp; Security"/>
+Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I’m fine with that.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-09-13T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-09-13T00:00:00+00:00">
+    <meta property="article:tag" content="Vps">
+    <meta property="article:tag" content="Ssh">
+    <meta property="article:tag" content="Security">
+    <meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="VPS 101 - Setup &amp; Security">
 <meta name="twitter:description" content="Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
 This is the first part of my journey into hosting a Linux server.
-Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that."/>
+
+Setup &amp; Security
+
+To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I&rsquo;m fine with that.">
 
 
 <script type="application/ld+json">
@@ -120,7 +126,7 @@ Setup &amp; Security To experiment with hosting my own Linux VPS, I opted for th
   "@type": "BlogPosting",
   "headline": "VPS 101 - Setup \u0026 Security",
   "name": "VPS 101 - Setup \u0026 Security",
-  "description": "Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).\nThis is the first part of my journey into hosting a Linux server.\nSetup \u0026amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I\u0026rsquo;m fine with that.",
+  "description": "Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).\nThis is the first part of my journey into hosting a Linux server.\nSetup \u0026amp; Security To experiment with hosting my own Linux VPS, I opted for the cheapest DigitalOcean Droplet, priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I\u0026rsquo;m fine with that.\n",
   "keywords": [
     "vps", "ssh", "security", "linux"
   ],

@@ -4,7 +4,7 @@
     <title>Productivity on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/productivity/</link>
     <description>Recent content in Productivity on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 15 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/productivity/index.xml" rel="self" type="application/rss+xml" />
@@ -13,10 +13,10 @@
       <link>https://maxscheijen.github.io/posts/run-custom-scripts-anywhere/</link>
       <pubDate>Thu, 15 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/run-custom-scripts-anywhere/</guid>
-      <description>Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.
-I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of Mischa van den Burg I started taking in interest in more thorough note taking.
-My first script would be for easier note taking.
-So I took his blog script tweaked it a little, and wanted to make it executable from anywhere in my terminal.</description>
+      <description>&lt;p&gt;Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.&lt;/p&gt;
+&lt;p&gt;I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of &lt;a href=&#34;https://mischavandenburg.com/&#34;&gt;Mischa van den Burg&lt;/a&gt; I started taking in interest in more thorough note taking.&lt;/p&gt;
+&lt;p&gt;My first script would be for easier note taking.&lt;/p&gt;
+&lt;p&gt;So I took his &lt;a href=&#34;https://github.com/mischavandenburg/dotfiles/blob/main/scripts/blog&#34;&gt;blog script&lt;/a&gt; tweaked it a little, and wanted to make it executable from anywhere in my terminal.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.</p>
 <p>I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of <a href="https://mischavandenburg.com/">Mischa van den Burg</a> I started taking in interest in more thorough note taking.</p>
 <p>My first script would be for easier note taking.</p>
@@ -72,10 +72,11 @@ So I took his blog script tweaked it a little, and wanted to make it executable 
       <link>https://maxscheijen.github.io/posts/search-files-terminal/</link>
       <pubDate>Wed, 14 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/search-files-terminal/</guid>
-      <description>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.
-One of the easiest ways to find files on your system based on their name is using fd.
-fd [PATTERN] This will return all the relevant files with your current directory. It will also ignore the patterns from .gitignore by default.
-Another nice tool to find files is fzf which is fuzzy finder.</description>
+      <description>&lt;p&gt;Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.&lt;/p&gt;
+&lt;p&gt;One of the easiest ways to find files on your system based on their name is using &lt;code&gt;fd&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;fd &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;PATTERN&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This will return all the relevant files with your current directory. It will also ignore the patterns from &lt;code&gt;.gitignore&lt;/code&gt; by default.&lt;/p&gt;
+&lt;p&gt;Another nice tool to find files is &lt;code&gt;fzf&lt;/code&gt; which is fuzzy finder.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.</p>
 <p>One of the easiest ways to find files on your system based on their name is using <code>fd</code>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>fd <span style="color:#f92672">[</span>PATTERN<span style="color:#f92672">]</span>

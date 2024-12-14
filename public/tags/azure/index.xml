@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Azure on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/azure/</link>
+    <description>Recent content in Azure on Max Scheijen</description>
+    <generator>Hugo -- 0.139.3</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/azure/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure Functions and FastAPI</title>
+      <link>https://maxscheijen.github.io/posts/azure-functions-fastapi/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/azure-functions-fastapi/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a huge fan of &lt;a href=&#34;https://fastapi.tiangolo.com&#34;&gt;FastAPI&lt;/a&gt;. It&amp;rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.&lt;/p&gt;
+&lt;p&gt;At work, we extensively use &lt;a href=&#34;https://learn.microsoft.com/en-us/azure/azure-functions/&#34;&gt;Azure Functions&lt;/a&gt;. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the &lt;a href=&#34;https://pypi.org/project/azure-functions/&#34;&gt;azure-functions&lt;/a&gt; package.&lt;/p&gt;
+&lt;p&gt;However, I really love FastAPI as a framework for building APIs. Let&amp;rsquo;s explore how we can create an Azure Function leveraging FastAPI.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>I&rsquo;m a huge fan of <a href="https://fastapi.tiangolo.com">FastAPI</a>. It&rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.</p>
+<p>At work, we extensively use <a href="https://learn.microsoft.com/en-us/azure/azure-functions/">Azure Functions</a>. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the <a href="https://pypi.org/project/azure-functions/">azure-functions</a> package.</p>
+<p>However, I really love FastAPI as a framework for building APIs. Let&rsquo;s explore how we can create an Azure Function leveraging FastAPI.</p>
+<h2 id="setup">Setup</h2>
+<p>Let&rsquo;s start by setting up the following project structure:</p>
+<pre tabindex="0"><code>azure-function-fastapi
+├── api
+│   └── __init__.py
+├── function_app.py
+├── host.json
+└── local.settings.json
+</code></pre><p>Where:</p>
+<ul>
+<li><code>function_app.py</code> is the Azure Function entry point</li>
+<li><code>__init__.py</code> is where we create our FastAPI app</li>
+<li><code>host.json</code> defines global settings and behaviors</li>
+<li><code>local.settings.json</code> contains settings used for local running and debugging</li>
+</ul>
+<h2 id="creating-a-fastapi-app">Creating a FastAPI App</h2>
+<p>Let&rsquo;s build our FastAPI app in <code>__init__.py</code>. This can be done exactly as you would normally create a FastAPI application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(BaseModel):
+</span></span><span style="display:flex;"><span>  name: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/hello/</span><span style="color:#e6db74">{name}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>User)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_name</span>(name: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> User(name<span style="color:#f92672">=</span>name)
+</span></span></code></pre></div><p>This creates a parameterized route (<code>/hello/{name}</code>) that dynamically accepts a value in the URL path and returns a JSON response (<code>User</code>).</p>
+<p>You can run this app from the root using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app
+</span></span></code></pre></div><p>Let&rsquo;s make a <code>GET</code> request using <code>curl</code> to our API:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl http://127.0.0.1:8000/hello/Max
+</span></span></code></pre></div><p>Response</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Max&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Automatic documentation can be found at <code>[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)</code>.</p>
+<h2 id="integrating-in-azure-function">Integrating in Azure Function</h2>
+<p>Integrating the FastAPI app into an Azure Function is straightforward:</p>
+<p>Add the following to <code>function_app.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> azure.functions <span style="color:#f92672">import</span> AsgiFunctionApp, AuthLevel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> api <span style="color:#f92672">import</span> app <span style="color:#66d9ef">as</span> fastapi_app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> AsgiFunctionApp(
+</span></span><span style="display:flex;"><span>  app<span style="color:#f92672">=</span>fastapi_app,
+</span></span><span style="display:flex;"><span>  http_auth_level<span style="color:#f92672">=</span>AuthLevel<span style="color:#f92672">.</span>ANONYMOUS
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>We simply import our FastAPI app and use it in <code>AsgiFunctionApp</code>. It&rsquo;s that simple.</p>
+<p>Next, set the function app settings in <code>host.json</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;logging&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;applicationInsights&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;samplingSettings&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isEnabled&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;excludedTypes&#34;</span>: <span style="color:#e6db74">&#34;Request&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensionBundle&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;Microsoft.Azure.Functions.ExtensionBundle&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;[2.*, 3.0.0)&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensions&#34;</span>: 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;http&#34;</span>: 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;routePrefix&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Define the local settings in <code>local.settings.json</code> for running the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;IsEncrypted&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Values&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsStorage&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;FUNCTIONS_WORKER_RUNTIME&#34;</span>: <span style="color:#e6db74">&#34;python&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsFeatureFlags&#34;</span>: <span style="color:#e6db74">&#34;EnableWorkerIndexing&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can now start the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>func host start
+</span></span></code></pre></div><p>You now have a FastAPI app running in an Azure Function!</p>
+<blockquote>
+<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app --reload
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<p>[[azure]] [[python]] [[fastapi]] [[serverless]]</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

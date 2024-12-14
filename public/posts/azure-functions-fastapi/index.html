@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Azure Functions and FastAPI | Max Scheijen</title>
+<meta name="keywords" content="fastapi, python, azure, serverless">
+<meta name="description" content="I&rsquo;m a huge fan of FastAPI. It&rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.
+At work, we extensively use Azure Functions. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the azure-functions package.
+However, I really love FastAPI as a framework for building APIs. Let&rsquo;s explore how we can create an Azure Function leveraging FastAPI.">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/azure-functions-fastapi/">
+<meta name="google-site-verification" content="G-DC0740CRYY">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/azure-functions-fastapi/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script><meta property="og:url" content="https://maxscheijen.github.io/posts/azure-functions-fastapi/">
+  <meta property="og:site_name" content="Max Scheijen">
+  <meta property="og:title" content="Azure Functions and FastAPI">
+  <meta property="og:description" content="I’m a huge fan of FastAPI. It’s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.
+At work, we extensively use Azure Functions. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the azure-functions package.
+However, I really love FastAPI as a framework for building APIs. Let’s explore how we can create an Azure Function leveraging FastAPI.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-14T00:00:00+00:00">
+    <meta property="article:modified_time" content="2024-12-14T00:00:00+00:00">
+    <meta property="article:tag" content="Fastapi">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Azure">
+    <meta property="article:tag" content="Serverless">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Azure Functions and FastAPI">
+<meta name="twitter:description" content="I&rsquo;m a huge fan of FastAPI. It&rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.
+At work, we extensively use Azure Functions. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the azure-functions package.
+However, I really love FastAPI as a framework for building APIs. Let&rsquo;s explore how we can create an Azure Function leveraging FastAPI.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Azure Functions and FastAPI",
+      "item": "https://maxscheijen.github.io/posts/azure-functions-fastapi/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Azure Functions and FastAPI",
+  "name": "Azure Functions and FastAPI",
+  "description": "I\u0026rsquo;m a huge fan of FastAPI. It\u0026rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.\nAt work, we extensively use Azure Functions. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the azure-functions package.\nHowever, I really love FastAPI as a framework for building APIs. Let\u0026rsquo;s explore how we can create an Azure Function leveraging FastAPI.\n",
+  "keywords": [
+    "fastapi", "python", "azure", "serverless"
+  ],
+  "articleBody": "I’m a huge fan of FastAPI. It’s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.\nAt work, we extensively use Azure Functions. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the azure-functions package.\nHowever, I really love FastAPI as a framework for building APIs. Let’s explore how we can create an Azure Function leveraging FastAPI.\nSetup Let’s start by setting up the following project structure:\nazure-function-fastapi ├── api │ └── __init__.py ├── function_app.py ├── host.json └── local.settings.json Where:\nfunction_app.py is the Azure Function entry point __init__.py is where we create our FastAPI app host.json defines global settings and behaviors local.settings.json contains settings used for local running and debugging Creating a FastAPI App Let’s build our FastAPI app in __init__.py. This can be done exactly as you would normally create a FastAPI application:\nfrom fastapi import FastAPI from pydantic import BaseModel app = FastAPI() class User(BaseModel): name: str @app.get(\"/hello/{name}\", response_model=User) async def get_name(name: str): return User(name=name) This creates a parameterized route (/hello/{name}) that dynamically accepts a value in the URL path and returns a JSON response (User).\nYou can run this app from the root using:\nuvicorn api.__init__:app Let’s make a GET request using curl to our API:\ncurl http://127.0.0.1:8000/hello/Max Response\n{ \"name\": \"Max\" } Automatic documentation can be found at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).\nIntegrating in Azure Function Integrating the FastAPI app into an Azure Function is straightforward:\nAdd the following to function_app.py:\nfrom azure.functions import AsgiFunctionApp, AuthLevel from api import app as fastapi_app app = AsgiFunctionApp( app=fastapi_app, http_auth_level=AuthLevel.ANONYMOUS ) We simply import our FastAPI app and use it in AsgiFunctionApp. It’s that simple.\nNext, set the function app settings in host.json:\n{ \"version\": \"2.0\", \"logging\": { \"applicationInsights\": { \"samplingSettings\": { \"isEnabled\": true, \"excludedTypes\": \"Request\" } } }, \"extensionBundle\": { \"id\": \"Microsoft.Azure.Functions.ExtensionBundle\", \"version\": \"[2.*, 3.0.0)\" }, \"extensions\": { \"http\": { \"routePrefix\": \"\" } } } Define the local settings in local.settings.json for running the function app locally:\n{ \"IsEncrypted\": false, \"Values\": { \"AzureWebJobsStorage\": \"\", \"FUNCTIONS_WORKER_RUNTIME\": \"python\", \"AzureWebJobsFeatureFlags\": \"EnableWorkerIndexing\" } } You can now start the function app locally:\nfunc host start You now have a FastAPI app running in an Azure Function!\nTip: You can still run your FastAPI app without the azure function, which can be helpful during development:\nuvicorn api.__init__:app --reload Links [[azure]] [[python]] [[fastapi]] [[serverless]]\n",
+  "wordCount" : "411",
+  "inLanguage": "en",
+  "datePublished": "2024-12-14T00:00:00Z",
+  "dateModified": "2024-12-14T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/azure-functions-fastapi/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Azure Functions and FastAPI
+    </h1>
+    <div class="post-meta"><span title='2024-12-14 00:00:00 +0000 UTC'>December 14, 2024</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>I&rsquo;m a huge fan of <a href="https://fastapi.tiangolo.com">FastAPI</a>. It&rsquo;s a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.</p>
+<p>At work, we extensively use <a href="https://learn.microsoft.com/en-us/azure/azure-functions/">Azure Functions</a>. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the <a href="https://pypi.org/project/azure-functions/">azure-functions</a> package.</p>
+<p>However, I really love FastAPI as a framework for building APIs. Let&rsquo;s explore how we can create an Azure Function leveraging FastAPI.</p>
+<h2 id="setup">Setup<a hidden class="anchor" aria-hidden="true" href="#setup">#</a></h2>
+<p>Let&rsquo;s start by setting up the following project structure:</p>
+<pre tabindex="0"><code>azure-function-fastapi
+├── api
+│   └── __init__.py
+├── function_app.py
+├── host.json
+└── local.settings.json
+</code></pre><p>Where:</p>
+<ul>
+<li><code>function_app.py</code> is the Azure Function entry point</li>
+<li><code>__init__.py</code> is where we create our FastAPI app</li>
+<li><code>host.json</code> defines global settings and behaviors</li>
+<li><code>local.settings.json</code> contains settings used for local running and debugging</li>
+</ul>
+<h2 id="creating-a-fastapi-app">Creating a FastAPI App<a hidden class="anchor" aria-hidden="true" href="#creating-a-fastapi-app">#</a></h2>
+<p>Let&rsquo;s build our FastAPI app in <code>__init__.py</code>. This can be done exactly as you would normally create a FastAPI application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pydantic <span style="color:#f92672">import</span> BaseModel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(BaseModel):
+</span></span><span style="display:flex;"><span>  name: str
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/hello/</span><span style="color:#e6db74">{name}</span><span style="color:#e6db74">&#34;</span>, response_model<span style="color:#f92672">=</span>User)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_name</span>(name: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> User(name<span style="color:#f92672">=</span>name)
+</span></span></code></pre></div><p>This creates a parameterized route (<code>/hello/{name}</code>) that dynamically accepts a value in the URL path and returns a JSON response (<code>User</code>).</p>
+<p>You can run this app from the root using:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app
+</span></span></code></pre></div><p>Let&rsquo;s make a <code>GET</code> request using <code>curl</code> to our API:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl http://127.0.0.1:8000/hello/Max
+</span></span></code></pre></div><p>Response</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Max&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Automatic documentation can be found at <code>[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)</code>.</p>
+<h2 id="integrating-in-azure-function">Integrating in Azure Function<a hidden class="anchor" aria-hidden="true" href="#integrating-in-azure-function">#</a></h2>
+<p>Integrating the FastAPI app into an Azure Function is straightforward:</p>
+<p>Add the following to <code>function_app.py</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> azure.functions <span style="color:#f92672">import</span> AsgiFunctionApp, AuthLevel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> api <span style="color:#f92672">import</span> app <span style="color:#66d9ef">as</span> fastapi_app
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> AsgiFunctionApp(
+</span></span><span style="display:flex;"><span>  app<span style="color:#f92672">=</span>fastapi_app,
+</span></span><span style="display:flex;"><span>  http_auth_level<span style="color:#f92672">=</span>AuthLevel<span style="color:#f92672">.</span>ANONYMOUS
+</span></span><span style="display:flex;"><span>)
+</span></span></code></pre></div><p>We simply import our FastAPI app and use it in <code>AsgiFunctionApp</code>. It&rsquo;s that simple.</p>
+<p>Next, set the function app settings in <code>host.json</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;2.0&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;logging&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;applicationInsights&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;samplingSettings&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;isEnabled&#34;</span>: <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;excludedTypes&#34;</span>: <span style="color:#e6db74">&#34;Request&#34;</span>
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensionBundle&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;id&#34;</span>: <span style="color:#e6db74">&#34;Microsoft.Azure.Functions.ExtensionBundle&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;version&#34;</span>: <span style="color:#e6db74">&#34;[2.*, 3.0.0)&#34;</span>
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;extensions&#34;</span>: 
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;http&#34;</span>: 
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;routePrefix&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Define the local settings in <code>local.settings.json</code> for running the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;IsEncrypted&#34;</span>: <span style="color:#66d9ef">false</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;Values&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsStorage&#34;</span>: <span style="color:#e6db74">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;FUNCTIONS_WORKER_RUNTIME&#34;</span>: <span style="color:#e6db74">&#34;python&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;AzureWebJobsFeatureFlags&#34;</span>: <span style="color:#e6db74">&#34;EnableWorkerIndexing&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>You can now start the function app locally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>func host start
+</span></span></code></pre></div><p>You now have a FastAPI app running in an Azure Function!</p>
+<blockquote>
+<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app --reload
+</span></span></code></pre></div><h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<p>[[azure]] [[python]] [[fastapi]] [[serverless]]</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/fastapi/">Fastapi</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/python/">Python</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/azure/">Azure</a></li>
+      <li><a href="https://maxscheijen.github.io/tags/serverless/">Serverless</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://maxscheijen.github.io/posts/gnu-stow/">
+    <span class="title">Next »</span>
+    <br>
+    <span>I Really Like GNU Stow</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

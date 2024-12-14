@@ -4,7 +4,7 @@
     <title>Fzf on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/fzf/</link>
     <description>Recent content in Fzf on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/fzf/index.xml" rel="self" type="application/rss+xml" />
@@ -13,8 +13,9 @@
       <link>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</link>
       <pubDate>Mon, 11 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</guid>
-      <description>Ever found yourself scrolling endlessly through git log trying to find that one specific commit? Let&amp;rsquo;s explore how to transform this tedious process into a smooth, interactive experience using fzf, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.
-Basic Setup: Your First Fuzzy Git log The simplest way to start is by piping your git log into fzf:</description>
+      <description>&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let&amp;rsquo;s explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.&lt;/p&gt;
+&lt;h2 id=&#34;basic-setup-your-first-fuzzy-git-log&#34;&gt;Basic Setup: Your First Fuzzy Git log&lt;/h2&gt;
+&lt;p&gt;The simplest way to start is by piping your git log into &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Ever found yourself scrolling endlessly through <code>git log</code> trying to find that one specific commit? Let&rsquo;s explore how to transform this tedious process into a smooth, interactive experience using <code>fzf</code>, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.</p>
 <h2 id="basic-setup-your-first-fuzzy-git-log">Basic Setup: Your First Fuzzy Git log</h2>
 <p>The simplest way to start is by piping your git log into <code>fzf</code>:</p>
@@ -131,8 +132,8 @@ Basic Setup: Your First Fuzzy Git log The simplest way to start is by piping you
       <link>https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/</link>
       <pubDate>Thu, 07 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/fuzzy-finding-through-your-command-history/</guid>
-      <description>We&amp;rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&amp;rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?
-Let&amp;rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&amp;rsquo;ll use fzf as our fuzzy finder of choice.</description>
+      <description>&lt;p&gt;We&amp;rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&amp;rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&amp;rsquo;ll use &lt;code&gt;fzf&lt;/code&gt; as our fuzzy finder of choice.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>We&rsquo;ve all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn&rsquo;t it be nice to quickly search through your terminal history using fuzzy finding?</p>
 <p>Let&rsquo;s build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We&rsquo;ll use <code>fzf</code> as our fuzzy finder of choice.</p>
 <h2 id="basic-implementation">Basic Implementation</h2>

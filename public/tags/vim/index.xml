@@ -4,7 +4,7 @@
     <title>Vim on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/vim/</link>
     <description>Recent content in Vim on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/vim/index.xml" rel="self" type="application/rss+xml" />
@@ -13,11 +13,20 @@
       <link>https://maxscheijen.github.io/posts/quick-reload-nvim-config/</link>
       <pubDate>Mon, 18 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/quick-reload-nvim-config/</guid>
-      <description>Tired of quitting and restarting Neovim every time you tweak your config? There&amp;rsquo;s a better way!
-By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.
-The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.
-For example, let&amp;rsquo;s look at the zen-mode plugin:
-Your lua/custom/plugin/zen-mode.lua file would contain the plugin declaration:</description>
+      <description>&lt;p&gt;Tired of quitting and restarting Neovim every time you tweak your config? There&amp;rsquo;s a better way!&lt;/p&gt;
+&lt;p&gt;By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.&lt;/p&gt;
+&lt;p&gt;The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.&lt;/p&gt;
+&lt;p&gt;For example, let&amp;rsquo;s look at the &lt;a href=&#34;https://github.com/folke/zen-mode.nvim&#34;&gt;zen-mode&lt;/a&gt; plugin:&lt;/p&gt;
+&lt;p&gt;Your &lt;code&gt;lua/custom/plugin/zen-mode.lua&lt;/code&gt; file would contain the plugin declaration:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-lua&#34; data-lang=&#34;lua&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;folke/zen-mode.nvim&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  config &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;-- Load in the config for this plugin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;-- from a different file&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    require &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;custom.zen-mode&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;end&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, the configuration itself goes in &lt;code&gt;lua/custom/zen-mode.lua&lt;/code&gt;:&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Tired of quitting and restarting Neovim every time you tweak your config? There&rsquo;s a better way!</p>
 <p>By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.</p>
 <p>The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.</p>
@@ -54,11 +63,22 @@ Your lua/custom/plugin/zen-mode.lua file would contain the plugin declaration:</
       <link>https://maxscheijen.github.io/posts/python-to-change-vim/</link>
       <pubDate>Thu, 22 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/python-to-change-vim/</guid>
-      <description>The programming language I&amp;rsquo;m most familiar with is python. I also started to learn vim recently. How can I combine the two?
-I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.
-Script So I wrote a basic python script that can lower case a string.
-~/.dotfiles/scripts/lower
-#!/usr/bin/python3 import sys def to_lower() -&amp;gt; str: return sys.</description>
+      <description>&lt;p&gt;The programming language I&amp;rsquo;m most familiar with is &lt;a href=&#34;https://python.org&#34;&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
+&lt;p&gt;I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.&lt;/p&gt;
+&lt;h2 id=&#34;script&#34;&gt;Script&lt;/h2&gt;
+&lt;p&gt;So I wrote a basic python script that can lower case a string.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;~/.dotfiles/scripts/lower&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/usr/bin/python3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; sys
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;to_lower&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt; str:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; sys&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;stdin&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;lower()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;rstrip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(to_lower())
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;I then made the file executable&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>The programming language I&rsquo;m most familiar with is <a href="https://python.org">python</a>. I also started to learn vim recently. How can I combine the two?</p>
 <p>I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.</p>
 <h2 id="script">Script</h2>
@@ -89,9 +109,9 @@ Script So I wrote a basic python script that can lower case a string.
       <link>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</link>
       <pubDate>Fri, 16 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/find-and-replace-in-vim/</guid>
-      <description>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).
-I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.
-One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing.</description>
+      <description>&lt;p&gt;One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).&lt;/p&gt;
+&lt;p&gt;I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.&lt;/p&gt;
+&lt;p&gt;One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or at least the basics of find and replace.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).</p>
 <p>I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.</p>
 <p>One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or at least the basics of find and replace.</p>

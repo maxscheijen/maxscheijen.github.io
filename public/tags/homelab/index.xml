@@ -4,7 +4,7 @@
     <title>Homelab on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/homelab/</link>
     <description>Recent content in Homelab on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 18 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/homelab/index.xml" rel="self" type="application/rss+xml" />
@@ -13,9 +13,9 @@
       <link>https://maxscheijen.github.io/posts/remote-access-homelab-tailscale/</link>
       <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/remote-access-homelab-tailscale/</guid>
-      <description>For the last year I&amp;rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a Plex Media Server, Home Assistant, web servers and some Docker images.
-Until now my Homelab was only accessible from my local network.
-I was hesitant in making my Homelab remotely accessible (port forwarding , setting up my own VPN). Even though I do a lot of programming and software engineering related things, I&amp;rsquo;m not too comfortable working with networking side of things.</description>
+      <description>&lt;p&gt;For the last year I&amp;rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a &lt;a href=&#34;https://plex.tv/&#34;&gt;Plex Media Server&lt;/a&gt;, &lt;a href=&#34;https://home-assistant.io&#34;&gt;Home Assistant&lt;/a&gt;, web servers and some Docker images.&lt;/p&gt;
+&lt;p&gt;Until now my Homelab was only accessible from my local network.&lt;/p&gt;
+&lt;p&gt;I was hesitant in making my Homelab remotely accessible (port forwarding , setting up my own VPN). Even though I do a lot of programming and software engineering related things, I&amp;rsquo;m not too comfortable working with networking side of things.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>For the last year I&rsquo;ve been running a small Homelab on a Raspberry Pi 5. It runs a <a href="https://plex.tv/">Plex Media Server</a>, <a href="https://home-assistant.io">Home Assistant</a>, web servers and some Docker images.</p>
 <p>Until now my Homelab was only accessible from my local network.</p>
 <p>I was hesitant in making my Homelab remotely accessible (port forwarding , setting up my own VPN). Even though I do a lot of programming and software engineering related things, I&rsquo;m not too comfortable working with networking side of things.</p>

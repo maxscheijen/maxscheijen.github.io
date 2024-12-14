@@ -4,7 +4,7 @@
     <title>Stow on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/stow/</link>
     <description>Recent content in Stow on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 28 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/stow/index.xml" rel="self" type="application/rss+xml" />
@@ -13,8 +13,9 @@
       <link>https://maxscheijen.github.io/posts/gnu-stow/</link>
       <pubDate>Thu, 28 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/gnu-stow/</guid>
-      <description>Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that&amp;rsquo;ll make your dotfiles management a easier.
-What&amp;rsquo;s GNU Stow Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It&amp;rsquo;s like having a personal assistant for your config files.</description>
+      <description>&lt;p&gt;Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that&amp;rsquo;ll make your dotfiles management a easier.&lt;/p&gt;
+&lt;h2 id=&#34;whats-gnu-stow&#34;&gt;What&amp;rsquo;s GNU Stow&lt;/h2&gt;
+&lt;p&gt;Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It&amp;rsquo;s like having a personal assistant for your config files.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that&rsquo;ll make your dotfiles management a easier.</p>
 <h2 id="whats-gnu-stow">What&rsquo;s GNU Stow</h2>
 <p>Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It&rsquo;s like having a personal assistant for your config files.</p>

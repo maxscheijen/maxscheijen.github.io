@@ -4,10 +4,38 @@
     <title>Tags on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/</link>
     <description>Recent content in Tags on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Azure</title>
+      <link>https://maxscheijen.github.io/tags/azure/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/azure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fastapi</title>
+      <link>https://maxscheijen.github.io/tags/fastapi/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/fastapi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Python</title>
+      <link>https://maxscheijen.github.io/tags/python/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Serverless</title>
+      <link>https://maxscheijen.github.io/tags/serverless/</link>
+      <pubDate>Sat, 14 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/tags/serverless/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Dotfiles</title>
       <link>https://maxscheijen.github.io/tags/dotfiles/</link>
@@ -83,20 +111,6 @@
       <link>https://maxscheijen.github.io/tags/api/</link>
       <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/tags/api/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Fastapi</title>
-      <link>https://maxscheijen.github.io/tags/fastapi/</link>
-      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/fastapi/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Python</title>
-      <link>https://maxscheijen.github.io/tags/python/</link>
-      <pubDate>Sat, 05 Oct 2024 00:00:00 +0000</pubDate>
-      <guid>https://maxscheijen.github.io/tags/python/</guid>
       <description></description>
     </item>
     <item>

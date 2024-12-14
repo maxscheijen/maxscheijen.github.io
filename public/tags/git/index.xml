@@ -4,7 +4,7 @@
     <title>Git on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/git/</link>
     <description>Recent content in Git on Max Scheijen</description>
-    <generator>Hugo -- 0.132.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 11 Nov 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/git/index.xml" rel="self" type="application/rss+xml" />
@@ -13,8 +13,9 @@
       <link>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</link>
       <pubDate>Mon, 11 Nov 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/git-history-navigation-with-fuzzy-find/</guid>
-      <description>Ever found yourself scrolling endlessly through git log trying to find that one specific commit? Let&amp;rsquo;s explore how to transform this tedious process into a smooth, interactive experience using fzf, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.
-Basic Setup: Your First Fuzzy Git log The simplest way to start is by piping your git log into fzf:</description>
+      <description>&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let&amp;rsquo;s explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.&lt;/p&gt;
+&lt;h2 id=&#34;basic-setup-your-first-fuzzy-git-log&#34;&gt;Basic Setup: Your First Fuzzy Git log&lt;/h2&gt;
+&lt;p&gt;The simplest way to start is by piping your git log into &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Ever found yourself scrolling endlessly through <code>git log</code> trying to find that one specific commit? Let&rsquo;s explore how to transform this tedious process into a smooth, interactive experience using <code>fzf</code>, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.</p>
 <h2 id="basic-setup-your-first-fuzzy-git-log">Basic Setup: Your First Fuzzy Git log</h2>
 <p>The simplest way to start is by piping your git log into <code>fzf</code>:</p>
@@ -131,10 +132,14 @@ Basic Setup: Your First Fuzzy Git log The simplest way to start is by piping you
       <link>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</link>
       <pubDate>Wed, 04 Sep 2024 00:00:00 +0000</pubDate>
       <guid>https://maxscheijen.github.io/posts/git-bisect-to-find-bugs/</guid>
-      <description>Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.
-You searched through the commit and their messages. But you can&amp;rsquo;t find which commit introduced the bug. Damm what are we going to do&amp;hellip;
-This when you can use git bisect, and there are only two things you need
-the commits are ordered by time you need to know a commit where the issues was not present.</description>
+      <description>&lt;p&gt;Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.&lt;/p&gt;
+&lt;p&gt;You searched through the commit and their messages. But you can&amp;rsquo;t find which commit introduced the bug. Damm what are we going to do&amp;hellip;&lt;/p&gt;
+&lt;p&gt;This when you can use &lt;code&gt;git bisect&lt;/code&gt;, and there are only two things you need&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;the commits are ordered by time&lt;/li&gt;
+&lt;li&gt;you need to know a commit where the issues was not present.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Bisect uses &lt;strong&gt;binary search&lt;/strong&gt; to narrow down the search field, to find which commit introduced the bug.&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.</p>
 <p>You searched through the commit and their messages. But you can&rsquo;t find which commit introduced the bug. Damm what are we going to do&hellip;</p>
 <p>This when you can use <code>git bisect</code>, and there are only two things you need</p>
