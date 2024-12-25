@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tmux on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/tmux/</link>
+    <description>Recent content in Tmux on Max Scheijen</description>
+    <generator>Hugo -- 0.139.5</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Dec 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/tmux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Managing tmux sessions with fzf</title>
+      <link>https://maxscheijen.github.io/posts/managing-tmux-sessions-fzf/</link>
+      <pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/managing-tmux-sessions-fzf/</guid>
+      <description>&lt;p&gt;Terminal multiplexers like &lt;code&gt;tmux&lt;/code&gt; are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While &lt;code&gt;tmux&lt;/code&gt; itself is powerful, we can enhance its functionality by combining it with &lt;code&gt;fzf&lt;/code&gt;, the fuzzy finder, to create a more intuitive session management workflow.&lt;/p&gt;
+&lt;h2 id=&#34;the-basic-approach&#34;&gt;The Basic Approach&lt;/h2&gt;
+&lt;p&gt;The foundation of this solution lies in combining &lt;code&gt;tmux&lt;/code&gt;&amp;rsquo;s session listing capability with &lt;code&gt;fzf&lt;/code&gt;&amp;rsquo;s search interface. Here&amp;rsquo;s how we can list all sessions using &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>Terminal multiplexers like <code>tmux</code> are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While <code>tmux</code> itself is powerful, we can enhance its functionality by combining it with <code>fzf</code>, the fuzzy finder, to create a more intuitive session management workflow.</p>
+<h2 id="the-basic-approach">The Basic Approach</h2>
+<p>The foundation of this solution lies in combining <code>tmux</code>&rsquo;s session listing capability with <code>fzf</code>&rsquo;s search interface. Here&rsquo;s how we can list all sessions using <code>fzf</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>tmux ls | awk -F: <span style="color:#e6db74">&#39;{print $1}&#39;</span> | fzf
+</span></span></code></pre></div><p>This command breaks down into three parts:</p>
+<ul>
+<li><code>tmux ls</code> lists all active sessions</li>
+<li><code>awk -F:</code> splits the output at the colon and extracts session names</li>
+<li><code>fzf</code> provides an interactive search interface</li>
+</ul>
+<h2 id="creating-a-session-switcher">Creating a Session Switcher</h2>
+<p>To make this truly useful, we can create a script that not only lists sessions but also switches to the selected one. Here&rsquo;s the basic implementation:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>session<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>mux ls | awk -F: <span style="color:#e6db74">&#39;{print $1}&#39;</span> | fzf<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$session<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    tmux switch-client -t <span style="color:#e6db74">&#34;</span>$session<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;No session selected.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><h2 id="enhanced-version-with-visual-indicators">Enhanced Version with Visual Indicators</h2>
+<p>To make the interface more informative, we can add a colored indicator for the currently active session. Here&rsquo;s the improved version:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>session<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>tmux ls | awk -F: <span style="color:#e6db74">&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    /attached/ {print $1 &#34;\033[32m *\033[0m&#34;}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    !/attached/ {print $1} 
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#39;</span> | fzf --ansi<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>session<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>echo <span style="color:#e6db74">&#34;</span>$session<span style="color:#e6db74">&#34;</span> | sed <span style="color:#e6db74">&#39;s/ (attached)$//&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$session<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    tmux switch-client -t <span style="color:#e6db74">&#34;</span>$session<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>    echo <span style="color:#e6db74">&#34;No session selected.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><p>This enhanced version uses green asterisks to highlight attached sessions, making it immediately clear which session is currently active.</p>
+<h2 id="integration-with-tmux">Integration with <code>tmux</code></h2>
+<p>To make this functionality easily accessible, add this line to your <code>.tmux.conf</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>bind-key t run-shell <span style="color:#e6db74">&#34;tmux neww </span>$HOME<span style="color:#e6db74">/path/to/script&#34;</span>
+</span></span></code></pre></div><p>Now you can trigger the session switcher using the <code>prefix + t</code> key combination.</p>
+<p>Remember to make your script executable with <code>chmod +x path/to/script</code> before using it.</p>
+<p>This simple yet powerful integration demonstrates how combining familiar tools in thoughtful ways can significantly improve our development workflow. By leveraging <code>fzf</code>&rsquo;s search capabilities with <code>tmux</code>&rsquo;s session management, we&rsquo;ve created a more intuitive way to handle multiple terminal sessions.</p>
+<h2 id="links">Links</h2>
+<p>[[tmux]] [[fzf]]</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
