@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Cd on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/cd/</link>
+    <description>Recent content in Cd on Max Scheijen</description>
+    <generator>Hugo -- 0.141.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/cd/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Automating Docker Deployment with Github Actions</title>
+      <link>https://maxscheijen.github.io/posts/docker-cicd-vps/</link>
+      <pubDate>Sat, 18 Jan 2025 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/docker-cicd-vps/</guid>
+      <description>&lt;p&gt;As developers, we often need to deploy applications to server environments.&lt;/p&gt;
+&lt;p&gt;In this guide, I&amp;rsquo;ll show you how to automate Docker container deployments using &lt;a href=&#34;https://github.com/features/actions&#34;&gt;GitHub Actions&lt;/a&gt;, &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker Hub&lt;/a&gt;, and a simple cron job. Whether you&amp;rsquo;re new to Docker or looking to streamline your deployment process, this tutorial will walk you through both &lt;strong&gt;manual&lt;/strong&gt; and &lt;strong&gt;automated&lt;/strong&gt; approaches.&lt;/p&gt;
+&lt;h2 id=&#34;part-1-the-manual-process&#34;&gt;Part 1: The Manual Process&lt;/h2&gt;
+&lt;p&gt;Before building an Docker image, we setup a simple web server in &lt;code&gt;main.py&lt;/code&gt; with two endpoints using &lt;a href=&#34;https://fastapi.tiangolo.com&#34;&gt;FastAPI&lt;/a&gt;.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>As developers, we often need to deploy applications to server environments.</p>
+<p>In this guide, I&rsquo;ll show you how to automate Docker container deployments using <a href="https://github.com/features/actions">GitHub Actions</a>, <a href="https://hub.docker.com">Docker Hub</a>, and a simple cron job. Whether you&rsquo;re new to Docker or looking to streamline your deployment process, this tutorial will walk you through both <strong>manual</strong> and <strong>automated</strong> approaches.</p>
+<h2 id="part-1-the-manual-process">Part 1: The Manual Process</h2>
+<p>Before building an Docker image, we setup a simple web server in <code>main.py</code> with two endpoints using <a href="https://fastapi.tiangolo.com">FastAPI</a>.</p>
+<p>This is just for demo purposes you can use whatever you like.</p>
+<h3 id="1-creating-a-sample-fastapi-application">1. Creating a Sample FastAPI Application</h3>
+<p>First, let&rsquo;s create a minimal web server using <a href="https://fastapi.tiangolo.com">FastAPI</a>.</p>
+<p>Create a <code>main.py</code> file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> fastapi <span style="color:#f92672">import</span> FastAPI
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>app <span style="color:#f92672">=</span> FastAPI()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">root</span>():
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!!&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@app.get</span>(<span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">{name}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_name</span>(name: str):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Hello </span><span style="color:#e6db74">{</span>name<span style="color:#f92672">.</span>title()<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>You can test this locally by running:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Install dependencies</span>
+</span></span><span style="display:flex;"><span>pip install fastapi uvicorn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run server</span>
+</span></span><span style="display:flex;"><span>uvicorn main:app
+</span></span></code></pre></div><h3 id="2-containerizing-the-application">2. Containerizing the Application</h3>
+<p>We now want containerize the application. Create <code>Dockerfile</code> that packages the application:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-Dockerfile" data-lang="Dockerfile"><span style="display:flex;"><span><span style="color:#75715e"># Use a Python image</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">FROM</span><span style="color:#e6db74"> python:3.12 </span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install the project into `/app`</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">WORKDIR</span><span style="color:#e6db74"> /app</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Install dependencies</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">RUN</span> pip install fastapi uvicorn <span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Copy the application code</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">COPY</span> . /app<span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e"># Expose the port and start the server</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">EXPOSE</span><span style="color:#e6db74"> 8000</span><span style="color:#960050;background-color:#1e0010">
+</span></span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">CMD</span> [<span style="color:#e6db74">&#34;uvicorn&#34;</span>, <span style="color:#e6db74">&#34;main:app&#34;</span>, <span style="color:#e6db74">&#34;--host&#34;</span>, <span style="color:#e6db74">&#34;0.0.0.0&#34;</span>]<span style="color:#960050;background-color:#1e0010">
+</span></span></span></code></pre></div><h3 id="3-building-and-publishing-the-container">3. Building and Publishing the Container</h3>
+<p>To build the Docker image and get the container into production you need to:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Build the image</span>
+</span></span><span style="display:flex;"><span>docker build -t my-username/my-image .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run and test the container locally</span>
+</span></span><span style="display:flex;"><span>docker run --name container-name -p 8000:8000 my-username/my-image
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Push to Docker Hub</span>
+</span></span><span style="display:flex;"><span>docker push my-username/my-image
+</span></span></code></pre></div><h3 id="4-setting-up-docker-on-your-server">4. Setting Up Docker on Your Server</h3>
+<p>Here are the commands you&rsquo;ll need to setup Docker on a Debian-based server. Straight from the Docker <a href="https://docs.docker.com/engine/install/">documentation</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Remove old versions</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> pkg in docker.io docker-doc docker-compose podman-docker containerd runc; <span style="color:#66d9ef">do</span> sudo apt-get remove $pkg; <span style="color:#66d9ef">done</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Install prerequisites</span>
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>sudo apt-get install ca-certificates curl
+</span></span><span style="display:flex;"><span>sudo install -m <span style="color:#ae81ff">0755</span> -d /etc/apt/keyrings
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add Docker&#39;s PGP key and repository</span>
+</span></span><span style="display:flex;"><span>sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+</span></span><span style="display:flex;"><span>sudo chmod a+r /etc/apt/keyrings/docker.asc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add the repository sources:</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  <span style="color:#e6db74">&#34;deb [arch=</span><span style="color:#66d9ef">$(</span>dpkg --print-architecture<span style="color:#66d9ef">)</span><span style="color:#e6db74"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  </span><span style="color:#66d9ef">$(</span>. /etc/os-release <span style="color:#f92672">&amp;&amp;</span> echo <span style="color:#e6db74">&#34;</span>$VERSION_CODENAME<span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74"> stable&#34;</span> | <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Install Docker</span>
+</span></span><span style="display:flex;"><span>sudo apt-get update
+</span></span><span style="display:flex;"><span>sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Setup non-root access</span>
+</span></span><span style="display:flex;"><span>sudo groupadd docker
+</span></span><span style="display:flex;"><span>sudo usermod -aG docker $USER
+</span></span></code></pre></div><blockquote>
+<p>Remember to log out and back in for the group changes to take effect.</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Pull the image</span>
+</span></span><span style="display:flex;"><span>docker pull my-username/my-image
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Run the container</span>
+</span></span><span style="display:flex;"><span>docker run --name container-name -p 8000:8000 my-username/my-image
+</span></span></code></pre></div><h2 id="part-2-automating-the-process">Part 2: Automating the Process</h2>
+<p>Now let&rsquo;s automate everything we did manually. We&rsquo;ll use GitHub Actions for building and pushing images, and a custom script for automated deployments.</p>
+<h3 id="1-setting-up-github-actions">1. Setting Up GitHub Actions</h3>
+<p>Create <code>.github/workflows/deploy.yml</code>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span><span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and Push Docker Image</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">on</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">branches</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">jobs</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">build-and-push</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">runs-on</span>: <span style="color:#ae81ff">ubuntu-latest</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">steps</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Checkout</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">actions/checkout@v4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Log in to Docker Hub</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/login-action@v3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">username</span>: <span style="color:#ae81ff">${{ secrets.DOCKER_USERNAME }}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">password</span>: <span style="color:#ae81ff">${{ secrets.DOCKER_PASSWORD }}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Set up Docker Buildx</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/setup-buildx-action@v3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Build and Push Docker Image</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uses</span>: <span style="color:#ae81ff">docker/build-push-action@v6</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">with</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">context</span>: <span style="color:#ae81ff">.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">platforms</span>: <span style="color:#ae81ff">linux/arm64</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">push</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">tags</span>: <span style="color:#ae81ff">my-username/my-image:latest</span>
+</span></span></code></pre></div><h3 id="2-automated-deployment-script">2. Automated Deployment Script</h3>
+<p>Create a <code>deploy.sh</code> script on your server:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>IMAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my-username/my-image:latest&#34;</span>
+</span></span><span style="display:flex;"><span>CONTAINER_NAME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;my-container-name&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pull the latest image</span>
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Pulling the latest image...&#34;</span>
+</span></span><span style="display:flex;"><span>docker pull $IMAGE
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check if the container exists</span>
+</span></span><span style="display:flex;"><span>CONTAINER_EXISTS<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>docker ps -a --filter <span style="color:#e6db74">&#34;name=^/</span><span style="color:#e6db74">${</span>CONTAINER_NAME<span style="color:#e6db74">}</span>$<span style="color:#e6db74">&#34;</span> --format <span style="color:#e6db74">&#39;{{.Names}}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Check if the container is running</span>
+</span></span><span style="display:flex;"><span>CONTAINER_RUNNING<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>docker ps --filter <span style="color:#e6db74">&#34;name=^/</span><span style="color:#e6db74">${</span>CONTAINER_NAME<span style="color:#e6db74">}</span>$<span style="color:#e6db74">&#34;</span> --filter <span style="color:#e6db74">&#34;status=running&#34;</span> --format <span style="color:#e6db74">&#39;{{.Names}}&#39;</span><span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the hash of the currently running image (if the container exists)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$CONTAINER_EXISTS<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  CURRENT_IMAGE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>docker inspect --format<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{{.Image}}&#39;</span> $CONTAINER_NAME<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  CURRENT_IMAGE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Get the hash of the latest image</span>
+</span></span><span style="display:flex;"><span>LATEST_IMAGE<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>docker inspect --format<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{{.Id}}&#39;</span> $IMAGE<span style="color:#66d9ef">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CONTAINER_RUNNING<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">[</span> <span style="color:#e6db74">&#34;</span>$CURRENT_IMAGE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;</span>$LATEST_IMAGE<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;The container is already running the latest image. No action needed.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Updating or starting the container...&#34;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span>$CONTAINER_EXISTS<span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+</span></span><span style="display:flex;"><span>    docker stop $CONTAINER_NAME <span style="color:#f92672">||</span> true
+</span></span><span style="display:flex;"><span>    docker rm $CONTAINER_NAME <span style="color:#f92672">||</span> true
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  docker run --name $CONTAINER_NAME -d -p 8000:8000 $IMAGE
+</span></span><span style="display:flex;"><span>  echo <span style="color:#e6db74">&#34;Deployment completed.&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span></code></pre></div><h3 id="3-setting-up-the-cron-job">3. Setting Up the Cron Job</h3>
+<p>To automatically check for image updates:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Make the deploy script executable</span>
+</span></span><span style="display:flex;"><span>chmod +x deploy.sh
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add to crontab (runs every 15 minutes)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>crontab -l 2&gt;/dev/null; echo <span style="color:#e6db74">&#34;*/15 * * * * /path/to/deploy.sh &gt;&gt; /var/log/deploy.log 2&gt;&amp;1&#34;</span><span style="color:#f92672">)</span> | crontab -
+</span></span></code></pre></div><h2 id="considerations">Considerations</h2>
+<ol>
+<li>Always use specific image tags in production rather than <code>latest</code></li>
+<li>Implement health checks in your container</li>
+<li>Use Docker secrets for sensitive information</li>
+<li>Implement proper logging and monitoring</li>
+<li>Consider using Docker Compose for more complex applications</li>
+</ol>
+<h2 id="links">Links</h2>
+<p>[[docker]] [[python]] [[fastapi]] [[continuous-integration]] [[continuous-deployment]]</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
