@@ -1,7 +1,7 @@
 ---
 title: Azure Functions and FastAPI
 date: 2024-12-14
-tags: fastapi, python, azure, serverless
+tags: cloud
 ---
 
 I'm a huge fan of [FastAPI](https://fastapi.tiangolo.com). It's a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.
