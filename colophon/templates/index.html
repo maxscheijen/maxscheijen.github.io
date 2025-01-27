@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ SITENAME }}-{% endblock %}
+{% block title %}{{ SITENAME }}{% endblock %}
 
 {% block content %}
 
@@ -14,7 +14,7 @@
 
   <h2>Blog</h2>
     <div class="listpost">
-    {% for article in dates[:3] %}
+    {% for article in dates[:5] %}
       <div class="post">
             <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
             <span class="meta">

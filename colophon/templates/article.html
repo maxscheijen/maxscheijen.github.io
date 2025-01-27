@@ -3,7 +3,7 @@
 {% block title %}{{ SITENAME }} - {{ article.title }}{% endblock %}
 
 {% block content %}        
-  <h1><a href="{{ article.url }}" rel="bookmark" title="{{SITENAME}} - {{ article.title }}">{{ article.title }}</a></h1>
+  <h1>{{ article.title }}</h1>
   <p class="muted">{{ article.date.strftime('%b %d, %Y') }}</p>
   <article>
   {{ article.content }}
