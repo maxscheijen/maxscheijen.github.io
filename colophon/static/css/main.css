@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-family: "Crimson Pro", serif;
+  font-size: 1.125rem;
+  font-kerning: normal;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  font-optical-sizing: auto;
+  background-color: #FAF9F5; 
+  color: #0F0F0F;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 600px;
+  height: 100%;
+}
+
+header { 
+  margin: 6em 0 4em 0;
+}
+
+header svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+ul.nav {
+  margin: 0 0 5em 0;
+}
+
+li.nav-item {
+  display: inline;
+}
+
+ul.tags {
+  margin: 0 0 5em 0;
+}
+
+ul.tags li {
+  display: inline;
+  margin: 0 .5em 0 0;
+}
+
+li.nav-item:not(:last-child)::after {
+  content: "•";
+  margin: 0 5px 0 5px;
+  color: lightgrey;
+  font-size: .5em;
+  vertical-align: middle;
+}
+
+.post {
+    margin: 0 0 .75em 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
+}
+
+time {
+  float: right;
+  margin: 0 .25em 0 0;
+}
+
+.post a {
+  text-decoration: none;
+}
+
+.post a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.05rem;
+  text-underline-offset: 0.1875rem;
+}
+
+article {
+  margin: 3em 0 0 0;
+}
+
+footer {
+  margin: 4em 0 3em 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 1em 0 .5em 0;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.25em;
+}
+
+p {
+  margin: 0 0 1em 0;
+}
+
+p.compact {
+  margin: 0.25rem auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.05rem;
+  text-underline-offset: 0.1875rem;
+}
+
+ul {
+  margin: 0 0 1em 1em;
+}
+
+.muted {
+  color: #5B5B66;
+}
+
+img,
+picture {
+  /* aspect-ratio: 16/9; */
+  height: auto;
+  width: 100%;
+  border-radius: .5em;
+} 
+
+pre {
+  background-color: #e3e3e34f;
+  padding: .75em;
+  overflow-x: auto;
+  border-radius: .5em;
+  margin-bottom: 1em;
+}
+
+code {
+  overflow: scroll;
+  font-size: 13px;
+}
+
+blockquote {
+  margin: 1em 0;
+  padding: 0 1em;
+  border-left: 3px solid #5B5B66;
+}
+
+/* Responsive CSS for Tablet */
+@media (max-width: 768px) {
+  body {
+    max-width: 100%;
+    padding: 1em;
+  }
+
+  header {
+    margin: 3em 0 3em 0;
+  }
+}
+
+/* Responsive CSS for Mobile */
+@media (max-width: 375px) {
+  body {
+    max-width: 100%;
+    padding: .5em;
+  }
+
+  header {
+    margin: 3em 0 3em 0;
+  }
+
+  pre {
+    font-size: 12px;
+  }
+  
+  blockquote {
+    margin: 0.5em 0;
+    padding: 0.5em;
+    border-left: 2px solid #5B5B66;
+  }
+}

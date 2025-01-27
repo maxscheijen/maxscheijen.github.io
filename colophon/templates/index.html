@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ SITENAME }}-{% endblock %}
+
+{% block content %}
+
+<article>
+  <h1>Senior Data Scientist. Runner. Minimalist.</h1>
+  <p>Based in The Netherlands. Currently a Senior DevOps Engineer with over 16 years of experience building highly scalable, high performance infrastructure on top of AWS. On the side, I enjoy running, rowing and tinkering with code.</p>
+
+  {% include "menu.html" %}
+
+  <h2>Topics</h2>
+  {% include "tags.html" %}
+
+  <h2>Blog</h2>
+    <div class="listpost">
+    {% for article in dates[:3] %}
+      <div class="post">
+            <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
+            <span class="meta">
+              <time class="muted">{{ article.date.strftime('%b %d, %Y') }}</time>
+            </span>
+      </div>
+    {% endfor %}
+    </div>
+    <p><a href="{{ SITEURL }}/archives.html">All posts</a></p>
+</article>
+{% endblock %}

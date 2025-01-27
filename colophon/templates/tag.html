@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ SITENAME }} - «{{ tag }}»{% endblock %}
+
+{% block content %}
+ <h1>Topics/{{ tag }}</h1>
+
+ {% if articles %}
+  {% for article in articles %} 
+    <article class="post">
+    <div class="post">
+      <a href="{{ SITEURL }}/{{ article.url}}">{{ article.title }}</a>
+      <span class="meta">
+      <time class="muted">{{ article.date.strftime('%b %d, %Y') }}</time>
+      </span>
+    </div>
+
+    </article>
+  {% endfor %}
+  <p><a href="{{ SITEURL }}/archives.html">All posts</a></p>
+ {% endif %}
+{% endblock %}
+
