@@ -1,13 +1,7 @@
 ---
-id: html-form-and-json-endpoints-fastapi
-aliases: []
-tags:
-  - fastapi
-  - python
-  - rest
-  - api
 title: HTML Form and JSON for single endpoint in FastAPI
 date: 2024-10-05
+tags: apps
 ---
 
 A common challenge when building a FastAPI application is handling different content types, like `JSON` and `Form` data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.

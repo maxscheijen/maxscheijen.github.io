@@ -79,7 +79,7 @@ Here's a production-ready script that handles edge cases and provides a polished
  2. Verifies you're in a Git repository
  3. Gracefully handles clipboard operations across platforms.
 
-This script can then be added to your system's PATH for convenient access from any directory. See how to do so [here]({{< ref "posts/run-custom-scripts-anywhere.md" >}}).
+This script can then be added to your system's PATH for convenient access from any directory. See how to do so [here](run-custom-scripts-anywhere).
 
 ```sh
 #!/bin/bash
