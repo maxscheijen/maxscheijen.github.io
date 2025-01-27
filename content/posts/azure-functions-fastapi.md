@@ -34,20 +34,21 @@ Where:
 
 Let's build our FastAPI app in `__init__.py`. This can be done exactly as you would normally create a FastAPI application:
 
-    :::python
-    from fastapi import FastAPI
-    from pydantic import BaseModel
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-    app = FastAPI()
-
-
-    class User(BaseModel):
-      name: str
+app = FastAPI()
 
 
-    @app.get("/hello/{name}", response_model=User)
-    async def get_name(name: str):
-        return User(name=name)
+class User(BaseModel):
+  name: str
+
+
+@app.get("/hello/{name}", response_model=User)
+async def get_name(name: str):
+    return User(name=name)
+```
 
 This creates a parameterized route (`/hello/{name}`) that dynamically accepts a value in the URL path and returns a JSON response (`User`).
 
