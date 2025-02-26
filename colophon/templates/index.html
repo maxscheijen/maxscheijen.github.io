@@ -5,7 +5,7 @@
 
 <article>
   <div>
-  <h1>Data Scientist.</h1>
+  <h1>Max Scheijen.</h1>
   <p>Based in Amsterdam, The Netherlands. Currently I'm' Data Scientist/Machine Learning Engineer with over 6 years of experience building end-to-end machine learning systems. I enjoy weightlifting, and tinkering with code.</p>
   {% include "menu.html" %}
   </div>
@@ -20,14 +20,14 @@
       <div class="listpost">
       {% for article in dates[:5] %}
         <div class="post">
-              <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
               <span class="meta">
                 <time class="muted">{{ article.date.strftime('%b %d, %Y') }}</time>
               </span>
+              <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
         </div>
       {% endfor %}
       </div>
-      <p><a href="{{ SITEURL }}/archives.html">All posts</a></p>
+      <p style="margin-top: 10px;"><a href="{{ SITEURL }}/archives.html">All posts</a></p>
   </div>
 </article>
 {% endblock %}

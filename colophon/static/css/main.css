@@ -60,7 +60,8 @@ li.nav-item:not(:last-child)::after {
 }
 
 .post {
-    margin: 1.5em 0 .75em 0;
+    display: flex;
+    margin: 0 0 .75em 0;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -135,6 +136,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 40px;
 }
 
 img,
@@ -146,14 +148,21 @@ picture {
 } 
 
 pre {
-  background-color: #e3e3e34f;
+  background-color:#FFFCF0;
+  border: 1px solid #5B5B66;
   padding: .75em;
   overflow-x: auto;
   border-radius: .5em;
   margin-bottom: 1em;
 }
 
+.highlight {
+  border-radius: 0.5em;
+}
+
 code {
+  color: #3F6E75;
+  padding: 0px 5px;
   overflow: scroll;
   font-size: 13px;
 }
