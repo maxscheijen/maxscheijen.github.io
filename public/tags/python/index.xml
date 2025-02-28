@@ -4,7 +4,7 @@
     <title>Python on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/python/</link>
     <description>Recent content in Python on Max Scheijen</description>
-    <generator>Hugo -- 0.141.0</generator>
+    <generator>Hugo -- 0.143.0</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 18 Jan 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
@@ -99,8 +99,7 @@
 </span></span><span style="display:flex;"><span>sudo groupadd docker
 </span></span><span style="display:flex;"><span>sudo usermod -aG docker $USER
 </span></span></code></pre></div><blockquote>
-<p>Remember to log out and back in for the group changes to take effect.</p>
-</blockquote>
+<p>Remember to log out and back in for the group changes to take effect.</p></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Pull the image</span>
 </span></span><span style="display:flex;"><span>docker pull my-username/my-image
 </span></span><span style="display:flex;"><span>
@@ -298,8 +297,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>func host start
 </span></span></code></pre></div><p>You now have a FastAPI app running in an Azure Function!</p>
 <blockquote>
-<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p>
-</blockquote>
+<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app --reload
 </span></span></code></pre></div><h2 id="links">Links</h2>
 <p>[[azure]] [[python]] [[fastapi]] [[serverless]]</p>

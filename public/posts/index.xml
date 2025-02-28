@@ -4,10 +4,145 @@
     <title>Posts on Max Scheijen</title>
     <link>https://maxscheijen.github.io/posts/</link>
     <description>Recent content in Posts on Max Scheijen</description>
-    <generator>Hugo -- 0.141.0</generator>
+    <generator>Hugo -- 0.143.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Jan 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Feb 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Setting up a VPS on DigitalOcean with Terraform and Tailscale</title>
+      <link>https://maxscheijen.github.io/posts/digital-ocean-terraform/</link>
+      <pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/digital-ocean-terraform/</guid>
+      <description>&lt;p&gt;In this guide, I&amp;rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
+&lt;h2 id=&#34;setting-up-terraform-for-digitalocean&#34;&gt;Setting Up Terraform for DigitalOcean&lt;/h2&gt;
+&lt;p&gt;First create a &lt;code&gt;secrets.auto.tfvars&lt;/code&gt; file securely store your DigitalOcean access token and SSH key path.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;do_token &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;digital_ocean_access_token&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pvt_key &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;~/.ssh/your_private_key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next, create a &lt;code&gt;provider.tf&lt;/code&gt; file to configure the DigitalOcean provider in terraform.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>In this guide, I&rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.</p>
+<h2 id="setting-up-terraform-for-digitalocean">Setting Up Terraform for DigitalOcean</h2>
+<p>First create a <code>secrets.auto.tfvars</code> file securely store your DigitalOcean access token and SSH key path.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>do_token <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;digital_ocean_access_token&#34;</span>
+</span></span><span style="display:flex;"><span>pvt_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~/.ssh/your_private_key&#34;</span>
+</span></span></code></pre></div><p>Next, create a <code>provider.tf</code> file to configure the DigitalOcean provider in terraform.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#a6e22e">terraform</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">required_providers</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">digitalocean</span> = {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">source</span>  = <span style="color:#e6db74">&#34;digitalocean/digitalocean&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;~&gt; 2.0&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">variable</span> <span style="color:#e6db74">&#34;do_token&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">description</span> = <span style="color:#e6db74">&#34;DigitalOcean Personal Access Token&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sensitive</span>   = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">variable</span> <span style="color:#e6db74">&#34;pvt_key&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">description</span> = <span style="color:#e6db74">&#34;Path to your private SSH key&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">provider</span> <span style="color:#e6db74">&#34;digitalocean&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">token</span> = var.<span style="color:#a6e22e">do_token</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#e6db74">&#34;digitalocean_ssh_key&#34;</span> <span style="color:#e6db74">&#34;terraform&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;key_name_in_do&#34;</span><span style="color:#75715e"> # Replace with SSH key name in DigitalOcean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Initialize your Terraform working directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>terraform init
+</span></span></code></pre></div><h2 id="creating-the-digitalocean-droplet">Creating the DigitalOcean Droplet</h2>
+<p>Create a  <code>droplet.tf</code> file to define your server configuration and provisioning. Add a SSH connection so that you&rsquo;re able to provision, and add the path the scripts used for provisioning.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;digitalocean_droplet&#34;</span> <span style="color:#e6db74">&#34;droplet&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">image</span>    = <span style="color:#e6db74">&#34;ubuntu-20-04-x64&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>     = <span style="color:#e6db74">&#34;droplet-1&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">region</span>   = <span style="color:#e6db74">&#34;ams3&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">size</span>     = <span style="color:#e6db74">&#34;s-1vcpu-512mb-10gb&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">backups</span>  = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ssh_keys</span> = [data.<span style="color:#a6e22e">digitalocean_ssh_key</span>.<span style="color:#a6e22e">terraform</span>.<span style="color:#a6e22e">id</span>]<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # SSH connection for provisioning
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">connection</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">host</span>        = <span style="color:#a6e22e">self</span>.<span style="color:#a6e22e">ipv4_address</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">user</span>        = <span style="color:#e6db74">&#34;root&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span>        = <span style="color:#e6db74">&#34;ssh&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">private_key</span> = file(var.<span style="color:#a6e22e">pvt_key</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">timeout</span>     = <span style="color:#e6db74">&#34;2m&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">  provisioner</span> <span style="color:#e6db74">&#34;remote-exec&#34;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">scripts</span> = [
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;./scripts/update.sh&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;./scripts/tailscale.sh&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><h2 id="setting-up-provisioning-scripts">Setting Up Provisioning Scripts</h2>
+<p>Create a <code>scripts</code> directory with the following two scripts files:</p>
+<p><code>./scripts/update.sh</code> will update the system packages, without the need for user interaction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sudo apt update
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;openssh-server openssh-server/sshd_config boolean true&#39;</span> | sudo debconf-set-selections
+</span></span><span style="display:flex;"><span>sudo DEBIAN_FRONTEND<span style="color:#f92672">=</span>noninteractive apt upgrade -y
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;System packages updated successfully.&#34;</span>
+</span></span></code></pre></div><p><code>./scripts/tailscale.sh</code> will install tailscale.</p>
+<blockquote>
+<p>Note that <code>tailscale up</code> will request to authenticate and add the machine to your account by visiting and url.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sudo curl -fssl https://tailscale.com/install.sh | sh
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Starting Tailscale...&#34;</span>
+</span></span><span style="display:flex;"><span>sudo tailscale up
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Tailscale installed and running. Note the Tailscale IP from above.&#34;</span>
+</span></span></code></pre></div><h2 id="configuring-security-with-tailscale-and-firewall">Configuring Security with Tailscale and Firewall</h2>
+<p>Create a <code>firewall.tf</code> to define your firewall rules. We want only allow the traffic from the tailscale network, and block all the other incoming traffic.</p>
+<p>Read more about what ports ports tailscale uses <a href="https://tailscale.com/kb/1082/firewall-ports">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;digitalocean_firewall&#34;</span> <span style="color:#e6db74">&#34;firewall&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;tailscale&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">droplet_ids</span> = [<span style="color:#a6e22e">digitalocean_droplet</span>.<span style="color:#a6e22e">droplet</span>.<span style="color:#a6e22e">id</span>]<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # Tailscale required ports
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">inbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>         = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>       = <span style="color:#e6db74">&#34;3478&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source_addresses</span> = [<span style="color:#e6db74">&#34;100.64.0.0/10&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">inbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>         = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>       = <span style="color:#e6db74">&#34;41641&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source_addresses</span> = [<span style="color:#e6db74">&#34;100.64.0.0/10&#34;</span>]
+</span></span><span style="display:flex;"><span>  }<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # Allow all outbound traffic
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">outbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>              = <span style="color:#e6db74">&#34;tcp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>            = <span style="color:#e6db74">&#34;1-65535&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">destination_addresses</span> = [<span style="color:#e6db74">&#34;0.0.0.0/0&#34;</span>, <span style="color:#e6db74">&#34;::/0&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">outbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>              = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>            = <span style="color:#e6db74">&#34;1-65535&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">destination_addresses</span> = [<span style="color:#e6db74">&#34;0.0.0.0/0&#34;</span>, <span style="color:#e6db74">&#34;::/0&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="deploying-your-infrastructure">Deploying Your Infrastructure</h2>
+<p>Run Terraform to create your infrastructure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>terraform plan    <span style="color:#75715e"># Preview the changes</span>
+</span></span><span style="display:flex;"><span>terraform apply   <span style="color:#75715e"># Apply the changes</span>
+</span></span></code></pre></div><h2 id="connecting-to-your-server">Connecting to Your Server</h2>
+<p>After deployment, you&rsquo;ll need to connect to your server using its Tailscale IP rather than its public IP. This provides an additional layer of security, as your SSH port is only accessible through the private Tailscale network.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh -i ~/.ssh/your_private_key root@100.x.y.z  <span style="color:#75715e"># Replace with your Tailscale IP</span>
+</span></span></code></pre></div><h2 id="links">Links</h2>
+<ul>
+<li><a href="https://tailscale.com/kb/1082/firewall-ports">https://tailscale.com/kb/1082/firewall-ports</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean">https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean</a></li>
+<li><a href="https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup">https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup</a></li>
+<li><a href="https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet">https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet</a></li>
+</ul>
+]]></content:encoded>
+    </item>
     <item>
       <title>Automating Docker Deployment with Github Actions</title>
       <link>https://maxscheijen.github.io/posts/docker-cicd-vps/</link>
@@ -99,8 +234,7 @@
 </span></span><span style="display:flex;"><span>sudo groupadd docker
 </span></span><span style="display:flex;"><span>sudo usermod -aG docker $USER
 </span></span></code></pre></div><blockquote>
-<p>Remember to log out and back in for the group changes to take effect.</p>
-</blockquote>
+<p>Remember to log out and back in for the group changes to take effect.</p></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e"># Pull the image</span>
 </span></span><span style="display:flex;"><span>docker pull my-username/my-image
 </span></span><span style="display:flex;"><span>
@@ -347,8 +481,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>func host start
 </span></span></code></pre></div><p>You now have a FastAPI app running in an Azure Function!</p>
 <blockquote>
-<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p>
-</blockquote>
+<p><strong>Tip</strong>: You can still run your FastAPI app without the azure function, which can be helpful during development:</p></blockquote>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>uvicorn api.__init__:app --reload
 </span></span></code></pre></div><h2 id="links">Links</h2>
 <p>[[azure]] [[python]] [[fastapi]] [[serverless]]</p>
@@ -389,7 +522,6 @@
 <li>Migrate Your Configs</li>
 </ol>
 <p>Move your existing config files, keeping the same home directory structure:</p>
-<!-- raw HTML omitted -->
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>mv ~/.config/nvim/* ~/.dotfiles/nvim/.config/nvim/
 </span></span><span style="display:flex;"><span>mv ~/.config/kitty/* ~/.dotfiles/kitty/.config/kitty/
 </span></span><span style="display:flex;"><span>mv ~/.zshrc ~/.dotfiles/zsh/
@@ -908,8 +1040,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PubkeyAuthentication yes
 </span></span><span style="display:flex;"><span>PasswordAuthentication no
 </span></span></code></pre></div><blockquote>
-<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p>
-</blockquote>
+<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p></blockquote>
 <p>Restart the SSH service for the changes to take effect:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
 </span></span></code></pre></div><p>To verify that password authentication is disabled, try logging in as the root user:</p>
@@ -947,8 +1078,7 @@
 </span></span><span style="display:flex;"><span>sudo ufw enable
 </span></span></code></pre></div><p>With these settings, all ports will be blocked except port <code>22</code> for SSH.</p>
 <blockquote>
-<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p>
-</blockquote>
+<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p></blockquote>
 <h2 id="links">Links</h2>
 <p>[[vps]] [[ssh]] [[linux]] [[security]]</p>
 ]]></content:encoded>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Setting up a VPS on DigitalOcean with Terraform and Tailscale | Max Scheijen</title>
+<meta name="keywords" content="cloud">
+<meta name="description" content="In this guide, I&rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.
+Setting Up Terraform for DigitalOcean
+First create a secrets.auto.tfvars file securely store your DigitalOcean access token and SSH key path.
+do_token = &#34;digital_ocean_access_token&#34;
+pvt_key = &#34;~/.ssh/your_private_key&#34;
+Next, create a provider.tf file to configure the DigitalOcean provider in terraform.">
+<meta name="author" content="Max Scheijen">
+<link rel="canonical" href="https://maxscheijen.github.io/posts/digital-ocean-terraform/">
+<meta name="google-site-verification" content="G-DC0740CRYY">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://maxscheijen.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://maxscheijen.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://maxscheijen.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://maxscheijen.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://maxscheijen.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://maxscheijen.github.io/posts/digital-ocean-terraform/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC0740CRYY"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-DC0740CRYY');
+        }
+      </script><meta property="og:url" content="https://maxscheijen.github.io/posts/digital-ocean-terraform/">
+  <meta property="og:site_name" content="Max Scheijen">
+  <meta property="og:title" content="Setting up a VPS on DigitalOcean with Terraform and Tailscale">
+  <meta property="og:description" content="In this guide, I’ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.
+Setting Up Terraform for DigitalOcean First create a secrets.auto.tfvars file securely store your DigitalOcean access token and SSH key path.
+do_token = &#34;digital_ocean_access_token&#34; pvt_key = &#34;~/.ssh/your_private_key&#34; Next, create a provider.tf file to configure the DigitalOcean provider in terraform.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-02-15T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-02-15T00:00:00+00:00">
+    <meta property="article:tag" content="Cloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Setting up a VPS on DigitalOcean with Terraform and Tailscale">
+<meta name="twitter:description" content="In this guide, I&rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.
+Setting Up Terraform for DigitalOcean
+First create a secrets.auto.tfvars file securely store your DigitalOcean access token and SSH key path.
+do_token = &#34;digital_ocean_access_token&#34;
+pvt_key = &#34;~/.ssh/your_private_key&#34;
+Next, create a provider.tf file to configure the DigitalOcean provider in terraform.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://maxscheijen.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Setting up a VPS on DigitalOcean with Terraform and Tailscale",
+      "item": "https://maxscheijen.github.io/posts/digital-ocean-terraform/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Setting up a VPS on DigitalOcean with Terraform and Tailscale",
+  "name": "Setting up a VPS on DigitalOcean with Terraform and Tailscale",
+  "description": "In this guide, I\u0026rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.\nSetting Up Terraform for DigitalOcean First create a secrets.auto.tfvars file securely store your DigitalOcean access token and SSH key path.\ndo_token = \u0026#34;digital_ocean_access_token\u0026#34; pvt_key = \u0026#34;~/.ssh/your_private_key\u0026#34; Next, create a provider.tf file to configure the DigitalOcean provider in terraform.\n",
+  "keywords": [
+    "cloud"
+  ],
+  "articleBody": "In this guide, I’ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.\nSetting Up Terraform for DigitalOcean First create a secrets.auto.tfvars file securely store your DigitalOcean access token and SSH key path.\ndo_token = \"digital_ocean_access_token\" pvt_key = \"~/.ssh/your_private_key\" Next, create a provider.tf file to configure the DigitalOcean provider in terraform.\nterraform { required_providers { digitalocean = { source = \"digitalocean/digitalocean\" version = \"~\u003e 2.0\" } } } variable \"do_token\" { description = \"DigitalOcean Personal Access Token\" sensitive = true } variable \"pvt_key\" { description = \"Path to your private SSH key\" } provider \"digitalocean\" { token = var.do_token } data \"digitalocean_ssh_key\" \"terraform\" { name = \"key_name_in_do\" # Replace with SSH key name in DigitalOcean } Initialize your Terraform working directory:\nterraform init Creating the DigitalOcean Droplet Create a droplet.tf file to define your server configuration and provisioning. Add a SSH connection so that you’re able to provision, and add the path the scripts used for provisioning.\nresource \"digitalocean_droplet\" \"droplet\" { image = \"ubuntu-20-04-x64\" name = \"droplet-1\" region = \"ams3\" size = \"s-1vcpu-512mb-10gb\" backups = false ssh_keys = [data.digitalocean_ssh_key.terraform.id] # SSH connection for provisioning connection { host = self.ipv4_address user = \"root\" type = \"ssh\" private_key = file(var.pvt_key) timeout = \"2m\" } provisioner \"remote-exec\" { scripts = [ \"./scripts/update.sh\", \"./scripts/tailscale.sh\" ] } Setting Up Provisioning Scripts Create a scripts directory with the following two scripts files:\n./scripts/update.sh will update the system packages, without the need for user interaction.\n#!/usr/bin/bash sudo apt update echo 'openssh-server openssh-server/sshd_config boolean true' | sudo debconf-set-selections sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y echo \"System packages updated successfully.\" ./scripts/tailscale.sh will install tailscale.\nNote that tailscale up will request to authenticate and add the machine to your account by visiting and url.\n#!/usr/bin/bash sudo curl -fssl https://tailscale.com/install.sh | sh echo \"Starting Tailscale...\" sudo tailscale up echo \"Tailscale installed and running. Note the Tailscale IP from above.\" Configuring Security with Tailscale and Firewall Create a firewall.tf to define your firewall rules. We want only allow the traffic from the tailscale network, and block all the other incoming traffic.\nRead more about what ports ports tailscale uses here.\nresource \"digitalocean_firewall\" \"firewall\" { name = \"tailscale\" droplet_ids = [digitalocean_droplet.droplet.id] # Tailscale required ports inbound_rule { protocol = \"udp\" port_range = \"3478\" source_addresses = [\"100.64.0.0/10\"] } inbound_rule { protocol = \"udp\" port_range = \"41641\" source_addresses = [\"100.64.0.0/10\"] } # Allow all outbound traffic outbound_rule { protocol = \"tcp\" port_range = \"1-65535\" destination_addresses = [\"0.0.0.0/0\", \"::/0\"] } outbound_rule { protocol = \"udp\" port_range = \"1-65535\" destination_addresses = [\"0.0.0.0/0\", \"::/0\"] } } Deploying Your Infrastructure Run Terraform to create your infrastructure:\nterraform plan # Preview the changes terraform apply # Apply the changes Connecting to Your Server After deployment, you’ll need to connect to your server using its Tailscale IP rather than its public IP. This provides an additional layer of security, as your SSH port is only accessible through the private Tailscale network.\nssh -i ~/.ssh/your_private_key root@100.x.y.z # Replace with your Tailscale IP Links https://tailscale.com/kb/1082/firewall-ports https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet ",
+  "wordCount" : "522",
+  "inLanguage": "en",
+  "datePublished": "2025-02-15T00:00:00Z",
+  "dateModified": "2025-02-15T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Max Scheijen"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://maxscheijen.github.io/posts/digital-ocean-terraform/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Max Scheijen",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://maxscheijen.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://maxscheijen.github.io/" accesskey="h" title="Max Scheijen (Alt + H)">Max Scheijen</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://maxscheijen.github.io/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/archive/" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://maxscheijen.github.io/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Setting up a VPS on DigitalOcean with Terraform and Tailscale
+    </h1>
+    <div class="post-meta"><span title='2025-02-15 00:00:00 +0000 UTC'>February 15, 2025</span>&nbsp;·&nbsp;Max Scheijen
+
+</div>
+  </header> 
+  <div class="post-content"><p>In this guide, I&rsquo;ll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.</p>
+<h2 id="setting-up-terraform-for-digitalocean">Setting Up Terraform for DigitalOcean<a hidden class="anchor" aria-hidden="true" href="#setting-up-terraform-for-digitalocean">#</a></h2>
+<p>First create a <code>secrets.auto.tfvars</code> file securely store your DigitalOcean access token and SSH key path.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>do_token <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;digital_ocean_access_token&#34;</span>
+</span></span><span style="display:flex;"><span>pvt_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;~/.ssh/your_private_key&#34;</span>
+</span></span></code></pre></div><p>Next, create a <code>provider.tf</code> file to configure the DigitalOcean provider in terraform.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#a6e22e">terraform</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">required_providers</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">digitalocean</span> = {
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">source</span>  = <span style="color:#e6db74">&#34;digitalocean/digitalocean&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">version</span> = <span style="color:#e6db74">&#34;~&gt; 2.0&#34;</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">variable</span> <span style="color:#e6db74">&#34;do_token&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">description</span> = <span style="color:#e6db74">&#34;DigitalOcean Personal Access Token&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sensitive</span>   = <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">variable</span> <span style="color:#e6db74">&#34;pvt_key&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">description</span> = <span style="color:#e6db74">&#34;Path to your private SSH key&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">provider</span> <span style="color:#e6db74">&#34;digitalocean&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">token</span> = var.<span style="color:#a6e22e">do_token</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">data</span> <span style="color:#e6db74">&#34;digitalocean_ssh_key&#34;</span> <span style="color:#e6db74">&#34;terraform&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;key_name_in_do&#34;</span><span style="color:#75715e"> # Replace with SSH key name in DigitalOcean
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>Initialize your Terraform working directory:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>terraform init
+</span></span></code></pre></div><h2 id="creating-the-digitalocean-droplet">Creating the DigitalOcean Droplet<a hidden class="anchor" aria-hidden="true" href="#creating-the-digitalocean-droplet">#</a></h2>
+<p>Create a  <code>droplet.tf</code> file to define your server configuration and provisioning. Add a SSH connection so that you&rsquo;re able to provision, and add the path the scripts used for provisioning.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;digitalocean_droplet&#34;</span> <span style="color:#e6db74">&#34;droplet&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">image</span>    = <span style="color:#e6db74">&#34;ubuntu-20-04-x64&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span>     = <span style="color:#e6db74">&#34;droplet-1&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">region</span>   = <span style="color:#e6db74">&#34;ams3&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">size</span>     = <span style="color:#e6db74">&#34;s-1vcpu-512mb-10gb&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">backups</span>  = <span style="color:#66d9ef">false</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ssh_keys</span> = [data.<span style="color:#a6e22e">digitalocean_ssh_key</span>.<span style="color:#a6e22e">terraform</span>.<span style="color:#a6e22e">id</span>]<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # SSH connection for provisioning
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">connection</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">host</span>        = <span style="color:#a6e22e">self</span>.<span style="color:#a6e22e">ipv4_address</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">user</span>        = <span style="color:#e6db74">&#34;root&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">type</span>        = <span style="color:#e6db74">&#34;ssh&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">private_key</span> = file(var.<span style="color:#a6e22e">pvt_key</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">timeout</span>     = <span style="color:#e6db74">&#34;2m&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">  provisioner</span> <span style="color:#e6db74">&#34;remote-exec&#34;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">scripts</span> = [
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;./scripts/update.sh&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;./scripts/tailscale.sh&#34;</span>
+</span></span><span style="display:flex;"><span>    ]
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><h2 id="setting-up-provisioning-scripts">Setting Up Provisioning Scripts<a hidden class="anchor" aria-hidden="true" href="#setting-up-provisioning-scripts">#</a></h2>
+<p>Create a <code>scripts</code> directory with the following two scripts files:</p>
+<p><code>./scripts/update.sh</code> will update the system packages, without the need for user interaction.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sudo apt update
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#39;openssh-server openssh-server/sshd_config boolean true&#39;</span> | sudo debconf-set-selections
+</span></span><span style="display:flex;"><span>sudo DEBIAN_FRONTEND<span style="color:#f92672">=</span>noninteractive apt upgrade -y
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;System packages updated successfully.&#34;</span>
+</span></span></code></pre></div><p><code>./scripts/tailscale.sh</code> will install tailscale.</p>
+<blockquote>
+<p>Note that <code>tailscale up</code> will request to authenticate and add the machine to your account by visiting and url.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sudo curl -fssl https://tailscale.com/install.sh | sh
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Starting Tailscale...&#34;</span>
+</span></span><span style="display:flex;"><span>sudo tailscale up
+</span></span><span style="display:flex;"><span>echo <span style="color:#e6db74">&#34;Tailscale installed and running. Note the Tailscale IP from above.&#34;</span>
+</span></span></code></pre></div><h2 id="configuring-security-with-tailscale-and-firewall">Configuring Security with Tailscale and Firewall<a hidden class="anchor" aria-hidden="true" href="#configuring-security-with-tailscale-and-firewall">#</a></h2>
+<p>Create a <code>firewall.tf</code> to define your firewall rules. We want only allow the traffic from the tailscale network, and block all the other incoming traffic.</p>
+<p>Read more about what ports ports tailscale uses <a href="https://tailscale.com/kb/1082/firewall-ports">here</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-terraform" data-lang="terraform"><span style="display:flex;"><span><span style="color:#66d9ef">resource</span> <span style="color:#e6db74">&#34;digitalocean_firewall&#34;</span> <span style="color:#e6db74">&#34;firewall&#34;</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">name</span> = <span style="color:#e6db74">&#34;tailscale&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">droplet_ids</span> = [<span style="color:#a6e22e">digitalocean_droplet</span>.<span style="color:#a6e22e">droplet</span>.<span style="color:#a6e22e">id</span>]<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # Tailscale required ports
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">inbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>         = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>       = <span style="color:#e6db74">&#34;3478&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source_addresses</span> = [<span style="color:#e6db74">&#34;100.64.0.0/10&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">inbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>         = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>       = <span style="color:#e6db74">&#34;41641&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">source_addresses</span> = [<span style="color:#e6db74">&#34;100.64.0.0/10&#34;</span>]
+</span></span><span style="display:flex;"><span>  }<span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  # Allow all outbound traffic
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">outbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>              = <span style="color:#e6db74">&#34;tcp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>            = <span style="color:#e6db74">&#34;1-65535&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">destination_addresses</span> = [<span style="color:#e6db74">&#34;0.0.0.0/0&#34;</span>, <span style="color:#e6db74">&#34;::/0&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">outbound_rule</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">protocol</span>              = <span style="color:#e6db74">&#34;udp&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">port_range</span>            = <span style="color:#e6db74">&#34;1-65535&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">destination_addresses</span> = [<span style="color:#e6db74">&#34;0.0.0.0/0&#34;</span>, <span style="color:#e6db74">&#34;::/0&#34;</span>]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="deploying-your-infrastructure">Deploying Your Infrastructure<a hidden class="anchor" aria-hidden="true" href="#deploying-your-infrastructure">#</a></h2>
+<p>Run Terraform to create your infrastructure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>terraform plan    <span style="color:#75715e"># Preview the changes</span>
+</span></span><span style="display:flex;"><span>terraform apply   <span style="color:#75715e"># Apply the changes</span>
+</span></span></code></pre></div><h2 id="connecting-to-your-server">Connecting to Your Server<a hidden class="anchor" aria-hidden="true" href="#connecting-to-your-server">#</a></h2>
+<p>After deployment, you&rsquo;ll need to connect to your server using its Tailscale IP rather than its public IP. This provides an additional layer of security, as your SSH port is only accessible through the private Tailscale network.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>ssh -i ~/.ssh/your_private_key root@100.x.y.z  <span style="color:#75715e"># Replace with your Tailscale IP</span>
+</span></span></code></pre></div><h2 id="links">Links<a hidden class="anchor" aria-hidden="true" href="#links">#</a></h2>
+<ul>
+<li><a href="https://tailscale.com/kb/1082/firewall-ports">https://tailscale.com/kb/1082/firewall-ports</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean">https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean</a></li>
+<li><a href="https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup">https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup</a></li>
+<li><a href="https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet">https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://maxscheijen.github.io/tags/cloud/">Cloud</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://maxscheijen.github.io/posts/docker-cicd-vps/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Automating Docker Deployment with Github Actions</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://maxscheijen.github.io/">Max Scheijen</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

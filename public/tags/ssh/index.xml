@@ -4,7 +4,7 @@
     <title>Ssh on Max Scheijen</title>
     <link>https://maxscheijen.github.io/tags/ssh/</link>
     <description>Recent content in Ssh on Max Scheijen</description>
-    <generator>Hugo -- 0.141.0</generator>
+    <generator>Hugo -- 0.143.0</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 13 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://maxscheijen.github.io/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
@@ -93,8 +93,7 @@
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>PubkeyAuthentication yes
 </span></span><span style="display:flex;"><span>PasswordAuthentication no
 </span></span></code></pre></div><blockquote>
-<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p>
-</blockquote>
+<p>Depending on your VPS provider, there may be additional files that enable password authentication, such as <code>/etc/ssh/sshd_config.d/50-cloud-init.conf</code>. Make sure to update these files as well.</p></blockquote>
 <p>Restart the SSH service for the changes to take effect:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>sudo service ssh restart
 </span></span></code></pre></div><p>To verify that password authentication is disabled, try logging in as the root user:</p>
@@ -132,8 +131,7 @@
 </span></span><span style="display:flex;"><span>sudo ufw enable
 </span></span></code></pre></div><p>With these settings, all ports will be blocked except port <code>22</code> for SSH.</p>
 <blockquote>
-<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p>
-</blockquote>
+<p>Note: Exposing a port with Docker may overwrite IP rules set by <code>ufw</code>. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports <code>80</code> and/or <code>443</code>.</p></blockquote>
 <h2 id="links">Links</h2>
 <p>[[vps]] [[ssh]] [[linux]] [[security]]</p>
 ]]></content:encoded>
