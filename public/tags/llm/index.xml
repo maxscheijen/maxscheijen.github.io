@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Llm on Max Scheijen</title>
+    <link>https://maxscheijen.github.io/tags/llm/</link>
+    <description>Recent content in Llm on Max Scheijen</description>
+    <generator>Hugo -- 0.145.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Apr 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://maxscheijen.github.io/tags/llm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A MCP Yahoo Finance Server.</title>
+      <link>https://maxscheijen.github.io/posts/mcp-yahoo-finance/</link>
+      <pubDate>Fri, 18 Apr 2025 00:00:00 +0000</pubDate>
+      <guid>https://maxscheijen.github.io/posts/mcp-yahoo-finance/</guid>
+      <description>&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href=&#34;https://modelcontextprotocol.io/&#34;&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&#34;https://github.com/maxscheijen/mcp-yahoo-finance&#34;&gt;&lt;code&gt;mcp-yahoo-finance&lt;/code&gt;&lt;/a&gt; server is available on my &lt;a href=&#34;https://github.com/maxscheijen/mcp-yahoo-finance&#34;&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;high-level-design&#34;&gt;High level Design&lt;/h2&gt;
+&lt;p&gt;This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a> (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.</p>
+<p>The <a href="https://github.com/maxscheijen/mcp-yahoo-finance"><code>mcp-yahoo-finance</code></a> server is available on my <a href="https://github.com/maxscheijen/mcp-yahoo-finance">github</a>.</p>
+<h2 id="high-level-design">High level Design</h2>
+<p>This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.</p>
+<h3 id="wrapping-existing-api">Wrapping Existing API</h3>
+<p>The logic for retrieving stock prices lives in a small utility class. It uses <a href="https://github.com/ranaroussi/yfinance"><code>yfinance</code></a> python library under the hood:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">YahooFinance</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, session: Session <span style="color:#f92672">|</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>, verify: bool <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session <span style="color:#f92672">=</span> session <span style="color:#f92672">or</span> Session()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>session<span style="color:#f92672">.</span>verify <span style="color:#f92672">=</span> verify
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_current_stock_price</span>(self, symbol: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;&#34;&#34;Get the current stock price based on stock symbol.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        Args:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            symbol (str): Stock symbol in Yahoo Finance format.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>        stock <span style="color:#f92672">=</span> Ticker(ticker<span style="color:#f92672">=</span>symbol, session<span style="color:#f92672">=</span>self<span style="color:#f92672">.</span>session)<span style="color:#f92672">.</span>info
+</span></span><span style="display:flex;"><span>        current_price <span style="color:#f92672">=</span> stock<span style="color:#f92672">.</span>get(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;regularMarketPrice&#34;</span>, stock<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;currentPrice&#34;</span>, <span style="color:#e6db74">&#34;N/A&#34;</span>)
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{</span>current_price<span style="color:#e6db74">:</span><span style="color:#e6db74">.4f</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> current_price
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Couldn&#39;t fetch </span><span style="color:#e6db74">{</span>symbol<span style="color:#e6db74">}</span><span style="color:#e6db74"> current price&#34;</span>
+</span></span><span style="display:flex;"><span>        )
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># More methods to retrieve and aggregate data</span>
+</span></span></code></pre></div><p>It’s minimal, but it works well as a testbed for building and exposing MCP-compatible tools.</p>
+<h2 id="generate-tool-schemas">Generate Tool Schemas</h2>
+<p>Tool schemas give an LLM the necessary context about what parameters a tool expects.</p>
+<p>When using the <code>mcp.server.FastMCP</code> class, tool schemas are generated automatically based on the function’s docstring. However, in the examples here, I’m using the lower-level <code>mcp.server.Server</code> class. This approach gives me greater control over the schema. With this flexibility, we can define schemas manually or build a custom docstring parser for methods and functions.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> inspect
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> Any
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> mcp.types <span style="color:#f92672">import</span> Tool
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parse_docstring</span>(docstring: str) <span style="color:#f92672">-&gt;</span> dict[str, str]:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Parses a Google-style doc string to extract parameter descriptions.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    descriptions <span style="color:#f92672">=</span> {}
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> docstring:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> descriptions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    lines <span style="color:#f92672">=</span> docstring<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>    current_param <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> line <span style="color:#f92672">in</span> lines:
+</span></span><span style="display:flex;"><span>        line <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> line<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#34;Args:&#34;</span>):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">continue</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> line <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;(&#34;</span> <span style="color:#f92672">in</span> line <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;)&#34;</span> <span style="color:#f92672">in</span> line <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">in</span> line:
+</span></span><span style="display:flex;"><span>            param <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;(&#34;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>            desc <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;):&#34;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>            descriptions[param] <span style="color:#f92672">=</span> desc
+</span></span><span style="display:flex;"><span>            current_param <span style="color:#f92672">=</span> param
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> current_param <span style="color:#f92672">and</span> line:
+</span></span><span style="display:flex;"><span>            descriptions[current_param] <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34; &#34;</span> <span style="color:#f92672">+</span> line<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> descriptions
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_tool</span>(func: Any) <span style="color:#f92672">-&gt;</span> Tool:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Generates a tool schema from a Python function.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    signature <span style="color:#f92672">=</span> inspect<span style="color:#f92672">.</span>signature(func)
+</span></span><span style="display:flex;"><span>    docstring <span style="color:#f92672">=</span> inspect<span style="color:#f92672">.</span>getdoc(func) <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    param_descriptions <span style="color:#f92672">=</span> parse_docstring(docstring)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    schema <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span>: func<span style="color:#f92672">.</span>__name__,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;description&#34;</span>: docstring<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#34;Args:&#34;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>strip(),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;inputSchema&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;properties&#34;</span>: {},
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> param_name, param <span style="color:#f92672">in</span> signature<span style="color:#f92672">.</span>parameters<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>        param_type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;number&#34;</span> <span style="color:#66d9ef">if</span> param<span style="color:#f92672">.</span>annotation <span style="color:#f92672">is</span> float <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        schema[<span style="color:#e6db74">&#34;inputSchema&#34;</span>][<span style="color:#e6db74">&#34;properties&#34;</span>][param_name] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: param_type,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;description&#34;</span>: param_descriptions<span style="color:#f92672">.</span>get(param_name, <span style="color:#e6db74">&#34;&#34;</span>),
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;required&#34;</span> <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> schema[<span style="color:#e6db74">&#34;inputSchema&#34;</span>]:
+</span></span><span style="display:flex;"><span>            schema[<span style="color:#e6db74">&#34;inputSchema&#34;</span>][<span style="color:#e6db74">&#34;required&#34;</span>] <span style="color:#f92672">=</span> [param_name]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;=&#34;</span> <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> str(param):
+</span></span><span style="display:flex;"><span>                schema[<span style="color:#e6db74">&#34;inputSchema&#34;</span>][<span style="color:#e6db74">&#34;required&#34;</span>]<span style="color:#f92672">.</span>append(param_name)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Tool(<span style="color:#f92672">**</span>schema)
+</span></span></code></pre></div><p>As long as your function includes clear type hints and a structured docstring, it will automatically be exposed to clients as an MCP tool.</p>
+<h2 id="mcp-server">MCP Server</h2>
+<p>Finally, the core server uses the<code> mcp.server.Server</code> class and defines two key handlers:</p>
+<ul>
+<li><code>list_tools()</code> tells the client what functions/tools are available.</li>
+<li><code>call_tool()</code> handles tool invocations along with their arguments.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> mcp.server <span style="color:#f92672">import</span> Server
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">serve</span>() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>    server <span style="color:#f92672">=</span> Server(<span style="color:#e6db74">&#34;mcp-yahoo-finance&#34;</span>)
+</span></span><span style="display:flex;"><span>    yf <span style="color:#f92672">=</span> YahooFinance()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@server.list_tools</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">list_tools</span>() <span style="color:#f92672">-&gt;</span> list[Tool]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> [generate_tool(yf<span style="color:#f92672">.</span>get_current_stock_price)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@server.call_tool</span>()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_tool</span>(name: str, args: dict[str, Any]) <span style="color:#f92672">-&gt;</span> list[TextContent]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">match</span> name:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#34;get_current_stock_price&#34;</span>:
+</span></span><span style="display:flex;"><span>                price <span style="color:#f92672">=</span> yf<span style="color:#f92672">.</span>get_current_stock_price(<span style="color:#f92672">**</span>args)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> [TextContent(type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span>, text<span style="color:#f92672">=</span>price)]
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> _:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">ValueError</span>(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unknown tool: </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><p>By using <code>stdio_server()</code>, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.</p>
+<h2 id="links">Links</h2>
+<ul>
+<li><a href="https://github.com/maxscheijen/mcp-yahoo-finance">https://github.com/maxscheijen/mcp-yahoo-finance</a></li>
+<li><a href="https://modelcontextprotocol.io/">https://modelcontextprotocol.io/</a></li>
+<li><a href="https://github.com/ranaroussi/yfinance">https://github.com/ranaroussi/yfinance</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
