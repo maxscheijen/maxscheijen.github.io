@@ -5,8 +5,8 @@
 {% block content %}        
   <h1>{{ article.title }}</h1>
   <div class="meta">
-    <p class="muted">{{ article.date.strftime('%b %d, %Y') }}</p>
-    <p class="muted">{{ article.modified }}</p>
+    <p>{{ article.date.strftime('%b %d, %Y') }}</p>
+    <p>{{ article.modified }}</p>
   </div>
   <article>
   {{ article.content }}

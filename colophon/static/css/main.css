@@ -23,7 +23,7 @@ body {
 }
 
 header { 
-  margin: 6em 0 3em 0;
+  margin: 6em 0 2em 0;
   display: flex;
   justify-content: space-between;
 }
@@ -71,11 +71,13 @@ li.nav-item:not(:last-child)::after {
 time {
   float: right;
   margin: 0 .25em 0 0;
+  width: 6em;
 }
 
 .post a {
   text-decoration: none;
 }
+
 
 .post a:hover {
   text-decoration: underline;
@@ -89,10 +91,6 @@ main {
 
 article {
   margin: 3em 0 0 0;
-}
-
-footer {
-  /*margin: 4em 0 3em 0;*/
 }
 
 h1,
@@ -128,10 +126,6 @@ ul {
   margin: 0 0 1em 1em;
 }
 
-.muted {
-  color: #5B5B66;
-}
-
 .meta {
   display: flex;
   align-items: center;
@@ -148,7 +142,7 @@ picture {
 } 
 
 pre {
-  background-color:#FFFCF0;
+  background-color: #FFFBEE;
   padding: 1.5em;
   overflow-x: auto;
   border-radius: .5em;

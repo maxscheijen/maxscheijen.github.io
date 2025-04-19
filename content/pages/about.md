@@ -8,4 +8,4 @@ summary: What I'm focused on now.
 - Weightlifting at least 4 times a week
 - Reading more..
 
-<span class="muted">Last updated: Jan 27, 2025</span>
+Last updated: Jan 27, 2025

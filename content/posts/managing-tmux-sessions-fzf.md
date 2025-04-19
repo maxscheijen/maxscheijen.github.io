@@ -1,7 +1,7 @@
 ---
 title: Managing tmux sessions with fzf
 date: 2024-12-25
-tags: setup 
+tags: cli 
 ---
 
 Terminal multiplexers like `tmux` are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While `tmux` itself is powerful, we can enhance its functionality by combining it with `fzf`, the fuzzy finder, to create a more intuitive session management workflow.

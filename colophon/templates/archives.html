@@ -4,14 +4,14 @@
 
 {% block content %}
   <h2>Blog</h1>
-  <p class="muted">My thoughts about technology</p>
+  <p>My thoughts about technology</p>
 
   <article>
     <div class="listpost">
     {% for article in dates %}
       <div class="post">
             <span class="meta">
-              <time class="muted">{{ article.date.strftime('%b %d, %Y') }}</time>
+              <time>{{ article.date.strftime('%b %d, %Y') }}</time>
             </span>
             <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
       </div>

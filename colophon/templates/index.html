@@ -4,24 +4,14 @@
 {% block content %}
 
 <article>
-  <div>
-  <h1>Max Scheijen.</h1>
-  <p>Based in Amsterdam, The Netherlands. Currently I'm' Data Scientist/Machine Learning Engineer with over 6 years of experience building end-to-end machine learning systems. I enjoy weightlifting, and tinkering with code.</p>
-  {% include "menu.html" %}
-  </div>
 
   <div>
-    <h2>Topics</h2>
-    {% include "tags.html" %}
-  </div>
-
-  <div>
-    <h2>Writing</h2>
+    <h2>Writings</h2>
       <div class="listpost">
-      {% for article in dates[:5] %}
+      {% for article in dates[:10] %}
         <div class="post">
               <span class="meta">
-                <time class="muted">{{ article.date.strftime('%b %d, %Y') }}</time>
+                <time>{{ article.date.strftime('%b %d, %Y') }}</time>
               </span>
               <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
         </div>
