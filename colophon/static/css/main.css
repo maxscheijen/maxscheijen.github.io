@@ -142,10 +142,9 @@ picture {
 } 
 
 pre {
-  background-color: #FFFBEE;
-  padding: 1.5em;
+  background-color: #FFFCF0;
+  padding: 0.5em 1.5em;
   overflow-x: auto;
-  border-radius: .5em;
   margin-bottom: 1em;
 }
 
@@ -161,9 +160,10 @@ code {
 }
 
 blockquote {
+  color: #A6A6A6;
   margin: 1em 0;
   padding: 0 1em;
-  border-left: 3px solid #5B5B66;
+  border-left: 2px solid color(display-p3 0.935 0.925 0.888);
 }
 
 /* Responsive CSS for Tablet */
