@@ -1,7 +1,6 @@
 ---
 title: Find and Replace in Vim
 date: 2024-08-16
-tags: development
 ---
 
 One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).

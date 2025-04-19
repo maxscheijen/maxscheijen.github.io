@@ -1,14 +1,13 @@
 ---
 title: VPS 101 - Setup & Security 
 date: 2024-09-13
-tags: cloud
 ---
 
 Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).
 
 This is the first part of my journey into hosting a Linux server.
 
-1. **[Setup & Security](vps-101-setup-and-security)**
+1. **[Setup & Security](/posts/vps-101-setup-and-security)**
 
 To experiment with hosting my own Linux VPS, I opted for the cheapest [DigitalOcean Droplet](https://www.digitalocean.com/products/droplets), priced as 4$ per month. I chose this primarily for its ease of use and affordability. It suits my needs, there are maybe other providers that offer similar services (at lower costs), but I'm fine with that.
 

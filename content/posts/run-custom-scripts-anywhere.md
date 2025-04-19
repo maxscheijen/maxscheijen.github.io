@@ -1,7 +1,6 @@
 ---
 title: Run Custom Scripts From Anywhere
 date: 2024-08-15
-tags: development
 ---
 
 Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.

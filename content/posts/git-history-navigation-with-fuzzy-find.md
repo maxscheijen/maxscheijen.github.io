@@ -1,7 +1,6 @@
 ---
 title: Supercharge Your Git History Navigation with Fuzzy Find
 date: 2024-11-11
-tags: setup
 ---
 
 Ever found yourself scrolling endlessly through `git log` trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using `fzf`, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.
@@ -79,7 +78,7 @@ Here's a production-ready script that handles edge cases and provides a polished
  2. Verifies you're in a Git repository
  3. Gracefully handles clipboard operations across platforms.
 
-This script can then be added to your system's PATH for convenient access from any directory. See how to do so [here](run-custom-scripts-anywhere).
+This script can then be added to your system's PATH for convenient access from any directory. See how to do so [here]({{< ref "posts/run-custom-scripts-anywhere.md" >}}).
 
 ```sh
 #!/bin/bash

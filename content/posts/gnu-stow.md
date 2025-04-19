@@ -1,7 +1,6 @@
 ---
 title: I Really Like GNU Stow 
 date: 2024-11-28
-tags: setup
 ---
 
 Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that'll make your dotfiles management a easier.

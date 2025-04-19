@@ -1,7 +1,6 @@
 ---
 title: Finding files using the terminal
 date: 2024-08-14
-tags: development
 ---
 
 Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.

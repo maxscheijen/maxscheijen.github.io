@@ -1,7 +1,6 @@
 ---
 title: Fuzzy Finding Through Your Command History
 date: 2024-11-07
-tags: development
 ---
 
 We've all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn't it be nice to quickly search through your terminal history using fuzzy finding?

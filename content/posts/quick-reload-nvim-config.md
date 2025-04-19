@@ -1,7 +1,6 @@
 ---
 title: Quickly Reload Your Neovim Config
 date: 2024-11-18
-tags: setup
 ---
 
 Tired of quitting and restarting Neovim every time you tweak your config? There's a better way!

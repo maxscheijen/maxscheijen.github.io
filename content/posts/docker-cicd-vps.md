@@ -1,7 +1,6 @@
 ---
 title: Automating Docker Deployment with Github Actions
 date: 2025-01-18
-tags: cloud
 ---
 
 As developers, we often need to deploy applications to server environments.

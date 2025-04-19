@@ -1,7 +1,6 @@
 ---
 title: Remote Access to Homelab using Tailscale 
 date: 2024-08-18
-tags: cloud
 ---
 
 For the last year I've been running a small Homelab on a Raspberry Pi 5. It runs a [Plex Media Server](https://plex.tv/), [Home Assistant](https://home-assistant.io), web servers and some Docker images.

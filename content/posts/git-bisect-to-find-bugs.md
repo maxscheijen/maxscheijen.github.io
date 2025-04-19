@@ -1,8 +1,6 @@
 ---
 title: Git Bisect to Find Bugs 
 date: 2024-09-04
-tags:
-  - git
 ---
 
 Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.

@@ -1,9 +1,6 @@
 ---
 title: Python to Change VIM 
 date: 2024-08-22
-tags:
-  - vim
-  - python
 ---
 
 The programming language I'm most familiar with is [python](https://python.org). I also started to learn vim recently. How can I combine the two?

@@ -1,7 +1,6 @@
 ---
 title: Python Development Setup
 date: 2024-09-07
-tags: development
 ---
 
 Recently, I started to center my python development around [`uv`](https://docs.astral.sh/uv) and other tooling  developed by [astral.sh](https://astral.sh/). It allows me to manage python environments, linting and formatting.
