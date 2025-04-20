@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Automating Docker Deployment with Github Actions - Max Scheijen</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="../../theme/css/main.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/styles.css" type="text/css" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../../theme/images/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../theme/images/favicon-32x32.png">
+  
+  <link href="../../feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Max Scheijen - Flux ATOM" />
+</head>
+<body>
+  <header>
+    <a href="../../index.html">
+      <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64px" height="64px" viewBox="0 0 114.84 114.84" xml:space="preserve" transform="rotate(180)" stroke="#000000" stroke-width="0.00114838"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="1.607732"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M114.822,83.667c0.005-0.003,0.011-0.005,0.016-0.008l-0.242-0.438l-0.174-0.469c-2.889,1.074-5.479,1.014-7.918-0.184 c-7.797-3.829-12.357-18.479-16.769-32.646c-4.267-13.702-8.295-26.646-15.083-28.488c-2.775-0.755-5.739,0.351-9.064,3.382 c-4.777,4.55-9.23,14.32-13.539,23.769C46.907,59.866,41.59,71.53,36.476,72.012c-3.446,0.344-6.995-4.27-10.74-9.134 c-6.261-8.13-14.054-18.248-25.66-10.945l0.229,0.365c-0.084,0.058-0.167,0.105-0.251,0.165l0.24,0.339 c-0.087,0.066-0.173,0.121-0.26,0.189l0.249,0.316c-0.089,0.074-0.178,0.136-0.267,0.213l0.254,0.293 c-0.09,0.082-0.18,0.15-0.27,0.235l0.686,0.729c2.635-2.484,5.091-3.456,7.498-2.976c6.335,1.265,11.459,12.705,15.979,22.798 c4.567,10.196,8.524,19.032,13.547,19.032c0.11,0,0.221-0.004,0.333-0.013c7.147-0.553,9.792-10.111,12.855-21.179 c2.173-7.854,4.636-16.753,9.091-23.108c3.963-5.409,7.5-7.907,10.817-7.629c5.937,0.494,10.636,9.831,15.611,19.717 c5.268,10.469,10.717,21.292,18.522,23.691c3.108,0.956,6.427,0.473,9.86-1.432c0.002,0,0.004-0.001,0.006-0.002l0,0 C114.811,83.673,114.817,83.671,114.822,83.667L114.822,83.667z M24.531,69.191c4.388,7.786,8.159,14.507,12.775,14.122 c6.434-0.546,10.442-11.369,14.686-22.826c3.227-8.712,6.564-17.721,11.146-23.053c3.447-4.012,6.49-5.736,9.291-5.266 c6.006,1.004,10.359,11.948,14.968,23.534c2.541,6.386,5.128,12.874,8.129,18.122c-2.808-4.604-5.325-10.21-7.8-15.729 C82.805,47.113,78.154,36.74,71.658,35.95c-3.406-0.418-6.973,1.813-10.88,6.815c-4.667,5.972-7.538,14.824-10.313,23.385 c-3.473,10.709-6.752,20.825-12.871,21.32c-4.2,0.358-8.168-7.59-12.355-15.985c-1.759-3.528-3.542-7.097-5.426-10.274 C21.469,63.768,23.034,66.537,24.531,69.191z M18.281,57.277c2.314,2.75,4.445,6.018,6.449,9.103 c4.243,6.528,7.916,12.162,12.208,11.781c6.056-0.541,10.657-11.662,15.528-23.435c3.739-9.035,7.604-18.378,12.241-23.236 c3.227-3.38,6.053-4.754,8.648-4.196c6.096,1.309,10.256,13.104,14.66,25.591c2.211,6.268,4.457,12.633,7.051,18.011 c-2.417-4.699-4.596-10.17-6.74-15.563c-4.715-11.855-9.169-23.053-15.73-24.15c-3.176-0.529-6.521,1.3-10.217,5.601 c-4.699,5.467-8.067,14.562-11.325,23.357c-4.13,11.15-8.032,21.685-13.833,22.177c-3.943,0.333-7.774-6.441-11.819-13.616 C23.207,64.808,20.868,60.667,18.281,57.277z M24.944,63.489c4.088,5.309,7.611,9.898,11.626,9.52 c5.69-0.536,10.887-11.937,16.389-24.006c4.268-9.362,8.681-19.042,13.31-23.452c3.044-2.775,5.701-3.804,8.121-3.149 c6.258,1.698,10.207,14.387,14.391,27.822c2.001,6.428,4.034,12.95,6.4,18.56c-2.241-4.952-4.246-10.63-6.223-16.231 c-4.501-12.759-8.752-24.81-15.395-26.236c-2.961-0.635-6.096,0.831-9.581,4.484c-4.767,4.993-8.668,14.424-12.441,23.544 c-4.752,11.484-9.241,22.333-14.693,22.819c-3.694,0.341-7.383-5.333-11.281-11.331c-2.567-3.948-5.333-8.194-8.471-11.336 C19.945,57.002,22.508,60.325,24.944,63.489z M70.889,40.706c-3.684-0.308-7.521,2.321-11.713,8.043 c-4.56,6.504-7.046,15.493-9.242,23.424c-2.962,10.705-5.521,19.95-11.968,20.448c-4.478,0.347-8.564-8.773-12.89-18.432 c-1.322-2.952-2.657-5.93-4.038-8.73c1.141,2.136,2.241,4.336,3.305,6.472c4.421,8.864,8.252,16.551,12.978,16.55 c0.117,0,0.235-0.005,0.354-0.015c6.783-0.549,10.008-10.493,13.741-22.009c2.749-8.478,5.592-17.245,10.15-23.077 c3.674-4.702,6.941-6.806,9.972-6.438c5.935,0.722,10.474,10.844,15.277,21.561c2.743,6.119,5.538,12.334,8.753,17.243 c-2.96-4.259-5.633-9.56-8.258-14.775C82.205,50.827,77.383,41.246,70.889,40.706z"></path> </g> </g></svg>
+    </a>
+  </header>
+  <main>
+        
+  <h1>Automating Docker Deployment with Github Actions</h1>
+  <div class="meta">
+    <p>Jan 18, 2025</p>
+    <p></p>
+  </div>
+  <article>
+  <p>As developers, we often need to deploy applications to server environments.</p>
+<p>In this guide, I'll show you how to automate Docker container deployments using <a href="https://github.com/features/actions">GitHub Actions</a>, <a href="https://hub.docker.com">Docker Hub</a>, and a simple cron job. Whether you're new to Docker or looking to streamline your deployment process, this tutorial will walk you through both <strong>manual</strong> and <strong>automated</strong> approaches.</p>
+<h2>Part 1: The Manual Process</h2>
+<p>Before building an Docker image, we setup a simple web server in <code>main.py</code> with two endpoints using <a href="https://fastapi.tiangolo.com">FastAPI</a>.</p>
+<p>This is just for demo purposes you can use whatever you like.</p>
+<h3>1. Creating a Sample FastAPI Application</h3>
+<p>First, let's create a minimal web server using <a href="https://fastapi.tiangolo.com">FastAPI</a>. </p>
+<p>Create a <code>main.py</code> file:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">root</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!!&quot;</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>You can test this locally by running:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Install dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
+
+<span class="c1"># Run server</span>
+uvicorn<span class="w"> </span>main:app
+</code></pre></div>
+
+<h3>2. Containerizing the Application</h3>
+<p>We now want containerize the application. Create <code>Dockerfile</code> that packages the application:</p>
+<div class="highlight"><pre><span></span><code><span class="c"># Use a Python image</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12</span><span class="w"> </span>
+
+<span class="c"># Install the project into `/app`</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="c"># Install dependencies</span>
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn<span class="w"> </span>
+
+<span class="c"># Copy the application code</span>
+<span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>/app
+
+<span class="c"># Expose the port and start the server</span>
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">8000</span>
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uvicorn&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;main:app&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--host&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">]</span>
+</code></pre></div>
+
+<h3>3. Building and Publishing the Container</h3>
+<p>To build the Docker image and get the container into production you need to:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Build the image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>my-username/my-image<span class="w"> </span>.
+
+<span class="c1"># Run and test the container locally</span>
+docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>container-name<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>my-username/my-image
+
+<span class="c1"># Push to Docker Hub</span>
+docker<span class="w"> </span>push<span class="w"> </span>my-username/my-image
+</code></pre></div>
+
+<h3>4. Setting Up Docker on Your Server</h3>
+<p>Here are the commands you'll need to setup Docker on a Debian-based server. Straight from the Docker <a href="https://docs.docker.com/engine/install/">documentation</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Remove old versions</span>
+<span class="k">for</span><span class="w"> </span>pkg<span class="w"> </span><span class="k">in</span><span class="w"> </span>docker.io<span class="w"> </span>docker-doc<span class="w"> </span>docker-compose<span class="w"> </span>podman-docker<span class="w"> </span>containerd<span class="w"> </span>runc<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>remove<span class="w"> </span><span class="nv">$pkg</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+
+<span class="c1"># Install prerequisites</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ca-certificates<span class="w"> </span>curl
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+
+<span class="c1"># Add Docker&#39;s PGP key and repository</span>
+sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/debian/gpg<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.asc
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.asc
+
+<span class="c1"># Add the repository sources:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \</span>
+<span class="s2">  </span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$VERSION_CODENAME</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+
+<span class="c1"># Install Docker</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+
+<span class="c1"># Setup non-root access</span>
+sudo<span class="w"> </span>groupadd<span class="w"> </span>docker
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</code></pre></div>
+
+<blockquote>
+<p>Remember to log out and back in for the group changes to take effect.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="c1"># Pull the image</span>
+docker<span class="w"> </span>pull<span class="w"> </span>my-username/my-image
+
+<span class="c1"># Run the container</span>
+docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>container-name<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>my-username/my-image
+</code></pre></div>
+
+<h2>Part 2: Automating the Process</h2>
+<p>Now let's automate everything we did manually. We'll use GitHub Actions for building and pushing images, and a custom script for automated deployments.</p>
+<h3>1. Setting Up GitHub Actions</h3>
+<p>Create <code>.github/workflows/deploy.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Push</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Image</span>
+
+<span class="n">on</span><span class="o">:</span>
+<span class="w">  </span><span class="n">push</span><span class="o">:</span>
+<span class="w">    </span><span class="n">branches</span><span class="o">:</span>
+<span class="w">      </span><span class="o">-</span><span class="w"> </span><span class="n">main</span>
+
+<span class="n">jobs</span><span class="o">:</span>
+<span class="w">  </span><span class="n">build</span><span class="o">-</span><span class="n">and</span><span class="o">-</span><span class="n">push</span><span class="o">:</span>
+<span class="w">    </span><span class="n">runs</span><span class="o">-</span><span class="n">on</span><span class="o">:</span><span class="w"> </span><span class="n">ubuntu</span><span class="o">-</span><span class="n">latest</span>
+
+<span class="w">    </span><span class="n">steps</span><span class="o">:</span>
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Checkout</span>
+<span class="w">      </span><span class="n">uses</span><span class="o">:</span><span class="w"> </span><span class="n">actions</span><span class="o">/</span><span class="n">checkout</span><span class="err">@</span><span class="n">v4</span>
+
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Log</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Hub</span>
+<span class="w">      </span><span class="n">uses</span><span class="o">:</span><span class="w"> </span><span class="n">docker</span><span class="o">/</span><span class="n">login</span><span class="o">-</span><span class="n">action</span><span class="err">@</span><span class="n">v3</span>
+<span class="w">      </span><span class="k">with</span><span class="o">:</span>
+<span class="w">        </span><span class="n">username</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{{</span><span class="w"> </span><span class="n">secrets</span><span class="o">.</span><span class="na">DOCKER_USERNAME</span><span class="w"> </span><span class="o">}}</span>
+<span class="w">        </span><span class="n">password</span><span class="o">:</span><span class="w"> </span><span class="n">$</span><span class="o">{{</span><span class="w"> </span><span class="n">secrets</span><span class="o">.</span><span class="na">DOCKER_PASSWORD</span><span class="w"> </span><span class="o">}}</span>
+
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Buildx</span>
+<span class="w">      </span><span class="n">uses</span><span class="o">:</span><span class="w"> </span><span class="n">docker</span><span class="o">/</span><span class="n">setup</span><span class="o">-</span><span class="n">buildx</span><span class="o">-</span><span class="n">action</span><span class="err">@</span><span class="n">v3</span>
+
+<span class="w">    </span><span class="o">-</span><span class="w"> </span><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Push</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Image</span>
+<span class="w">      </span><span class="n">uses</span><span class="o">:</span><span class="w"> </span><span class="n">docker</span><span class="o">/</span><span class="n">build</span><span class="o">-</span><span class="n">push</span><span class="o">-</span><span class="n">action</span><span class="err">@</span><span class="n">v6</span>
+<span class="w">      </span><span class="k">with</span><span class="o">:</span>
+<span class="w">        </span><span class="n">context</span><span class="o">:</span><span class="w"> </span><span class="o">.</span>
+<span class="w">        </span><span class="n">platforms</span><span class="o">:</span><span class="w"> </span><span class="n">linux</span><span class="o">/</span><span class="n">arm64</span>
+<span class="w">        </span><span class="n">push</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">        </span><span class="n">tags</span><span class="o">:</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">username</span><span class="o">/</span><span class="n">my</span><span class="o">-</span><span class="n">image</span><span class="o">:</span><span class="n">latest</span>
+</code></pre></div>
+
+<h3>2. Automated Deployment Script</h3>
+<p>Create a <code>deploy.sh</code> script on your server:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="nv">IMAGE</span><span class="o">=</span><span class="s2">&quot;my-username/my-image:latest&quot;</span>
+<span class="nv">CONTAINER_NAME</span><span class="o">=</span><span class="s2">&quot;my-container-name&quot;</span>
+
+<span class="c1"># Pull the latest image</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Pulling the latest image...&quot;</span>
+docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$IMAGE</span>
+
+<span class="c1"># Check if the container exists</span>
+<span class="nv">CONTAINER_EXISTS</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--filter<span class="w"> </span><span class="s2">&quot;name=^/</span><span class="si">${</span><span class="nv">CONTAINER_NAME</span><span class="si">}</span>$<span class="s2">&quot;</span><span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{.Names}}&#39;</span><span class="k">)</span>
+
+<span class="c1"># Check if the container is running</span>
+<span class="nv">CONTAINER_RUNNING</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>--filter<span class="w"> </span><span class="s2">&quot;name=^/</span><span class="si">${</span><span class="nv">CONTAINER_NAME</span><span class="si">}</span>$<span class="s2">&quot;</span><span class="w"> </span>--filter<span class="w"> </span><span class="s2">&quot;status=running&quot;</span><span class="w"> </span>--format<span class="w"> </span><span class="s1">&#39;{{.Names}}&#39;</span><span class="k">)</span>
+
+<span class="c1"># Get the hash of the currently running image (if the container exists)</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CONTAINER_EXISTS</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nv">CURRENT_IMAGE</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s1">&#39;{{.Image}}&#39;</span><span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="k">)</span>
+<span class="k">else</span>
+<span class="w">  </span><span class="nv">CURRENT_IMAGE</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="k">fi</span>
+
+<span class="c1"># Get the hash of the latest image</span>
+<span class="nv">LATEST_IMAGE</span><span class="o">=</span><span class="k">$(</span>docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="o">=</span><span class="s1">&#39;{{.Id}}&#39;</span><span class="w"> </span><span class="nv">$IMAGE</span><span class="k">)</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CONTAINER_RUNNING</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CURRENT_IMAGE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$LATEST_IMAGE</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;The container is already running the latest image. No action needed.&quot;</span>
+<span class="k">else</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Updating or starting the container...&quot;</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CONTAINER_EXISTS</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>docker<span class="w"> </span>stop<span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span>docker<span class="w"> </span>rm<span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">  </span><span class="k">fi</span>
+
+<span class="w">  </span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span><span class="nv">$IMAGE</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Deployment completed.&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<h3>3. Setting Up the Cron Job</h3>
+<p>To automatically check for image updates:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Make the deploy script executable</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>deploy.sh
+
+<span class="c1"># Add to crontab (runs every 15 minutes)</span>
+<span class="o">(</span>crontab<span class="w"> </span>-l<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;*/15 * * * * /path/to/deploy.sh &gt;&gt; /var/log/deploy.log 2&gt;&amp;1&quot;</span><span class="o">)</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>crontab<span class="w"> </span>-
+</code></pre></div>
+
+<h2>Considerations</h2>
+<ol>
+<li>Always use specific image tags in production rather than <code>latest</code></li>
+<li>Implement health checks in your container</li>
+<li>Use Docker secrets for sensitive information</li>
+<li>Implement proper logging and monitoring</li>
+<li>Consider using Docker Compose for more complex applications</li>
+</ol>
+<h2>Links</h2>
+<p>[[docker]] [[python]] [[fastapi]] [[continuous-integration]] [[continuous-deployment]]</p>
+  </article>
+  </main>
+    <footer>
+        <h2>Follow</h2>
+        <p class="compact">
+            Follow me on <a href="/feeds/all-en.atom.xml">RSS</a>,
+            <a target="_blank" rel="me" href="https://github.com/maxscheijen">GitHub</a>,
+            <a target="_blank" rel="me" href="https://linkedin.com/in/max-scheijen/">LinkedIn</a>,
+            <a target="_blank" rel="me" href="https://bsky.app/profile/maxscheijen.bsky.social">BlueSky</a>,
+            <a href="../../about"> or more about me</a>.
+        </p>
+    </footer>
+</body>
+</html>
