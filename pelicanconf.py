@@ -1,6 +1,6 @@
 AUTHOR = "Max Scheijen"
 SITENAME = "Max Scheijen"
-SITEURL = ""
+SITEURL = "maxscheijen.github.io"
 
 PATH = "content"
 ARTICLE_PATHS = ["posts"]
@@ -27,4 +27,4 @@ LINKS = (
 DEFAULT_PAGINATION = False
 
 # Uncomment following line if you want document-relative URLs when developing
-# RELATIVE_URLS = True
+RELATIVE_URLS = True

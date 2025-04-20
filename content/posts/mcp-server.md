@@ -1,5 +1,5 @@
 ---
-title: A MCP Yahoo Finance Server.
+title: A MCP Server
 date: 2025-04-18
 ---
 
