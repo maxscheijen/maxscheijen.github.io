@@ -1,37 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
-* {
-  padding: 0;
-  margin: 0;
+:root {
+  color-scheme: light dark;
 }
 
 html {
-  font-family: "Crimson Pro", serif;
-  font-size: 1.125rem;
-  font-kerning: normal;
-  line-height: 1.4;
-  text-rendering: optimizeLegibility;
-  font-optical-sizing: auto;
-  background-color: #FFFCF0; 
-  color: #0F0F0F;
-}
-
-body {
-  margin: 0 auto;
-  max-width: 720px;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  max-width: 800px;
+  padding: 3em 1em;
+  line-height: 1.5;
+  font-size: 16px;
   height: 100%;
+  margin: auto;
 }
 
-header { 
-  margin: 6em 0 2em 0;
-  display: flex;
-  justify-content: space-between;
+header {
+  margin-bottom: 2em;
 }
 
-header svg {
-  width: 64px;
-  height: 64px;
-  display: block;
+footer {
+  margin-top: 2em;
 }
 
 .post {
@@ -42,96 +30,94 @@ header svg {
     white-space: nowrap;
 }
 
+.meta {
+  color: #59636E;
+}
+
 time {
   float: right;
-  margin: 0 .25em 0 0;
-  width: 4em;
+  margin: 0 2em 0 0;
+  width: 5em;
 }
 
-.post a {
-  text-decoration: none;
-}
-
-
-.post a:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 0.05rem;
-  text-underline-offset: 0.1875rem;
-}
-
-main {
-  margin: 0 0 4em 0;
-}
-
-article {
-  margin: 3em 0 0 0;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  margin: 1em 0 .5em 0;
-}
-
-h1 {
-  font-size: 1.5em;
-}
-
-h2 {
-  font-size: 1.25em;
-}
-
-p {
-  margin: 0 0 1em 0;
-}
-
-p.compact {
-  margin: 0.25rem auto;
-}
-
-a {
-  color: inherit;
-  text-decoration-thickness: 0.05rem;
-  text-underline-offset: 0.1875rem;
-}
-
-ul {
-  margin: 0 0 1em 1em;
-}
-
-.meta {
-  margin-right: 40px;
+blockquote {
+  color: #59636E;
+  padding: 0 1em;
+  margin-inline-start: 0;
+  border-left: .25em solid #D1D9E0;
 }
 
 
 pre {
-  background-color: #FFFCF0;
-  padding: 0.5em 1.5em;
-  overflow-x: auto;
-  margin-bottom: 1em;
-}
-
-.highlight {
+  background: #F8F8FF;
+  border: 1px solid #F8F8FF;
   border-radius: 0.5em;
+  padding: 1em 1em;
+  overflow-x: auto;
+  font-size: 0.9em;
 }
 
 code {
-  color: #3F6E75;
-  padding: 0px 5px;
-  overflow: scroll;
-  font-size: 13px;
+  background-color: #F0F1F2;
+  font-size: 0.8em;
+  font-family: SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  border-radius: 6px;
 }
 
-blockquote {
-  color: #A6A6A6;
-  margin: 1em 0;
-  padding: 0 1em;
-  border-left: 2px solid color(display-p3 0.935 0.925 0.888);
+pre code {
+    background: #F8F8FF;
+    padding: 0;
+    margin: 0;
 }
 
-/* Responsive CSS for Tablet */
-@media (max-width: 768px) {
+h1, h2, h3 {
+    border-bottom: 1px solid #DFE4E9;
+    padding-bottom: 0.3em;
+}
+
+header a, .post a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.post a:hover {
+  text-decoration: underline;
+  text-underline-offset: .2rem;
+}
+
+
+footer a {
+  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: .2rem;
+}
+
+a {
+  color: #0969DA;
+  text-decoration: underline;
+  text-underline-offset: .2rem;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #0D1117;
+    color: #F0F6FC;
+  }
+
+  pre {
+    background: #151B23;
+    border: 1px solid #151B23;
+  }
+
+  code {
+    background: #151B23;
+  }
+}
+
+@media (max-width: 720px) {
   body {
     max-width: 100%;
     padding: 1em;
@@ -147,19 +133,5 @@ blockquote {
   body {
     max-width: 100%;
     padding: .5em;
-  }
-
-  header {
-    margin: 3em 0 3em 0;
-  }
-
-  pre {
-    font-size: 12px;
-  }
-  
-  blockquote {
-    margin: 0.5em 0;
-    padding: 0.5em;
-    border-left: 2px solid #5B5B66;
   }
 }

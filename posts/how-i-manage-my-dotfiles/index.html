@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>Finding files using the terminal - Max Scheijen</title>
+  <title>How I manage my dotfiles - Max Scheijen</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../theme/css/main.css" type="text/css" />
   <link rel="stylesheet" href="../../theme/css/styles.css" type="text/css" />
@@ -22,37 +22,35 @@
   </header>
   <main>
         
-  <h1>Finding files using the terminal</h1>
+  <h1>How I manage my dotfiles</h1>
   <div class="meta">
-    <p>Aug 14, 2024</p>
+    <p>Nov 28, 2024</p>
     <p></p>
   </div>
   <article>
-  <p>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.</p>
-<p>One of the easiest ways to find files on your system based on their name is using <code>fd</code>.</p>
-<div class="highlight"><pre><span></span><code>fd<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
+  <p>I store all my dotfiles in a dedicated git repository called <code>dotfiles</code> with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.</p>
+<p>I then use <code>stow</code> to create <strong>symlinks</strong> to place the dotfiles in the appropriate places.</p>
+<p>This creates symlinks from for example <code>~/dotfiles/.zshrc</code> to <code>~/.zshrc</code>.</p>
+<div class="highlight"><pre><span></span><code>stow<span class="w"> </span>zsh
 </code></pre></div>
 
-<p>This will return all the relevant files with your current directory. It will also ignore the patterns from <code>.gitignore</code> by default.</p>
-<p>Another nice tool to find files is <code>fzf</code> which is fuzzy finder.</p>
-<div class="highlight"><pre><span></span><code>fzf
+<p>I organize them by tool.</p>
+<div class="highlight"><pre><span></span><code>dotfiles/
+├── zsh/
+│   └── .zshrc
+├── git/
+│   └── .gitconfig
+└── README.md
 </code></pre></div>
 
-<p>Will open-up an search prompt in the current directory. If you use the neovim plugin telescope <code>find_files</code> functionality it should look familiar.</p>
-<h2>Search in file content</h2>
-<p>However if you also want to search the content of your files ripgrep is probably the right tool <code>rg</code> is probably the right tool.</p>
-<div class="highlight"><pre><span></span><code>rg<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
+<p>Setup a machine using <code>dotfiles.sh</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>zsh
+git<span class="w"> </span>clone<span class="w"> </span>git@github.com/maxscheijen/dotfiles<span class="w"> </span><span class="nv">$HOME</span>/dotfiles
+stow<span class="w"> </span>git<span class="w"> </span>zsh
 </code></pre></div>
 
-<p>These to types of file search will probably find you the correct file or content 90% of the time.</p>
-<p>At least if you know what you're looking for.</p>
-<h2>Links</h2>
-<ul>
-<li>https://github.com/sharkdp/fd</li>
-<li>https://github.com/junegunn/fzf</li>
-<li>https://github.com/BurntSushi/ripgrep</li>
-</ul>
-<p>[[tool]] [[cli]] [[unix]]</p>
+<p>...</p>
   </article>
   </main>
     <footer>

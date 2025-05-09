@@ -1,314 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Max Scheijen - Max Scheijen</title><link href="maxscheijen.github.io/" rel="alternate"></link><link href="maxscheijen.github.io/feeds/max-scheijen.atom.xml" rel="self"></link><id>maxscheijen.github.io/</id><updated>2025-05-08T00:00:00+02:00</updated><entry><title>Basic LLM Agent with Tool Calling</title><link href="maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/" rel="alternate"></link><published>2025-05-08T00:00:00+02:00</published><updated>2025-05-08T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-05-08:maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/</id><summary type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks allow you to build agents, often serving as abstractions for calling LLMs, parsing, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is simple.&lt;/p&gt;
-&lt;p&gt;In this post, I share …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks allow you to build agents, often serving as abstractions for calling LLMs, parsing, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is simple.&lt;/p&gt;
-&lt;p&gt;In this post, I share a straightforward, bare-bones implementation of an agent that can call tools.&lt;/p&gt;
-&lt;h2&gt;Agent&lt;/h2&gt;
-&lt;p&gt;Let's start by defining what I mean by an &lt;strong&gt;agent&lt;/strong&gt;. Here, I follow Anthropic's definition of an agent.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;"&lt;em&gt;&lt;strong&gt;&lt;a href="https://www.anthropic.com/engineering/building-effective-agents"&gt;Agents&lt;/a&gt;&lt;/strong&gt; are systems where LLMs dynamically direct their own processes and tool usage, maintaining control over how they accomplish tasks"&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;The &lt;strong&gt;key points&lt;/strong&gt; are:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Direct own processes and tool usage.&lt;/li&gt;
-&lt;li&gt;Accomplish tasks.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Let's operationalize these two points:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;Implement a loop that keeps calling an LLM (optional but advised: set a maximum number of iterations).&lt;/li&gt;
-&lt;li&gt;Identify when a task is accomplished (e.g., when the LLM stops calling tools).&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;This is the structural setup of a simple agent:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;System prompt/instruction (Optional).&lt;/li&gt;
-&lt;li&gt;A large language model client.&lt;/li&gt;
-&lt;li&gt;List of tools, e.g. a list of functions (Optional).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Let's create a simple &lt;code&gt;Agent&lt;/code&gt; class based on this structure.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dataclasses&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;dataclass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;field&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;
-
-
-&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;gpt-4o-mini&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Callable&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default_factory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;Agent&lt;/code&gt; class is a simple &lt;code&gt;dataclass&lt;/code&gt; that takes a system prompt, a model name and a list of tools.&lt;/p&gt;
-&lt;p&gt;In the &lt;code&gt;__post_init__&lt;/code&gt; method, we initialize the &lt;code&gt;messages&lt;/code&gt; list and the &lt;code&gt;tool_mapping&lt;/code&gt; dictionary. The &lt;code&gt;messages&lt;/code&gt; list is used to store the messages that are sent to the LLM. The &lt;code&gt;tool_mapping&lt;/code&gt; dictionary is used to map the tool names to their corresponding functions.&lt;/p&gt;
-&lt;p&gt;The &lt;code&gt;tool_schema&lt;/code&gt; is a list of function schemas. The &lt;code&gt;function_schema&lt;/code&gt; function is used to create the schema for each tool. This is just a helper function that takes a function and returns function schema expected by OpenAI.&lt;/p&gt;
-&lt;p&gt;You can also define this tool/function schema manually.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="o"&gt;...&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__post_init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[]&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tool_mapping&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tool_schema&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;function_schema&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;system&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Let's now look at implementing those two key points.&lt;/p&gt;
-&lt;h3&gt;Agentic Loop&lt;/h3&gt;
-&lt;p&gt;The &lt;code&gt;run&lt;/code&gt; method implements a loop that calls the OpenAI API with a schema of available tools.&lt;/p&gt;
-&lt;p&gt;The main idea is to keep calling the large language model until it stops calling tools or until the &lt;code&gt;max_iterations&lt;/code&gt; is reached. Setting &lt;code&gt;max_iterations&lt;/code&gt; is optional, but it can be useful to &lt;strong&gt;avoid infinite loops&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;The tool calls, parameters and tool results are added to the &lt;code&gt;messages&lt;/code&gt; list. The &lt;code&gt;messages&lt;/code&gt; list is used to keep track of the &lt;strong&gt;conversation history&lt;/strong&gt;, which is essential because the LLM needs to know the &lt;strong&gt;context of the conversation&lt;/strong&gt; in order to generate relevant responses.&lt;/p&gt;
-&lt;p&gt;My assumption is that the task is &lt;strong&gt;accomplished when the LLM stops calling tools&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;This is a simplification, but it works for most cases. In practice, you might want to add more sophisticated logic to determine when a task is accomplished.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;OpenAI&lt;/span&gt;
-
-
-&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="o"&gt;...&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_iterations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;OpenAI&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
-
-        &lt;span class="c1"&gt;# 1. Some kind of loop that keeps calling an LLM&lt;/span&gt;
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_iterations&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-            &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;completions&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-                &lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="n"&gt;temperature&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tool_schema&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="p"&gt;)&lt;/span&gt;
-
-            &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;tool_calls&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tool_calls&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-                &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;tool_calls&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-                    &lt;span class="n"&gt;tool_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call_tool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_tool_call_message&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tool_result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_tool_result_message&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-            &lt;span class="c1"&gt;# 2. No more tool calls: Accomplish tasks&lt;/span&gt;
-            &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-                &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_assistant_message&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;choices&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-                &lt;span class="k"&gt;break&lt;/span&gt;
-
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3&gt;Tool Calling&lt;/h3&gt;
-&lt;p&gt;The &lt;code&gt;call_tool&lt;/code&gt; method is used to call the tool with the parameters passed in the tool call message. The &lt;code&gt;tool_mapping&lt;/code&gt; dictionary (constructed in the &lt;code&gt;__post_init__&lt;/code&gt;) maps the tool name to its corresponding function.&lt;/p&gt;
-&lt;p&gt;The function is called with the parameters identified by the large language model based on the function/tool schema.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="o"&gt;...&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call_tool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMesssageToolCall&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tool_mapping&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;
-            &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loads&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code&gt;Agent&lt;/code&gt; classes uses helper methods to add tool call messages and tool result messages to the &lt;code&gt;messages&lt;/code&gt; list.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai.types.chat&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMessageToolCall&lt;/span&gt;
-
-
-&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="o"&gt;...&lt;/span&gt;
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_tool_call_message&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMessageToolCall&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-            &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;assistant&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;tool_calls&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-                    &lt;span class="p"&gt;{&lt;/span&gt;
-                        &lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                        &lt;span class="s2"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;type&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                        &lt;span class="s2"&gt;&amp;quot;function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                            &lt;span class="s2"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                            &lt;span class="s2"&gt;&amp;quot;arguments&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;arguments&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                        &lt;span class="p"&gt;},&lt;/span&gt;
-                    &lt;span class="p"&gt;}&lt;/span&gt;
-                &lt;span class="p"&gt;],&lt;/span&gt;
-            &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;add_tool_result_message&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMessageToolCall&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="n"&gt;tool_result&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;
-    &lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;messages&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-            &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;tool&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;tool_call_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;tool_result&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3&gt;Running the Agent&lt;/h3&gt;
-&lt;p&gt;We can now run the agent with a query and see if it uses tools and stops when the task is accomplished.&lt;/p&gt;
-&lt;p&gt;I'll add a simple &lt;code&gt;get_weather&lt;/code&gt; tool that retreives weather data based on longitude and latitude. The code for this can be found at the end of this post.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;You are a helpful assistant.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;gpt-4o-mini&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;get_weather&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
-&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;query&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;What is the weather in Amsterdam?&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This results in:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;The current weather in Amsterdam is as follows:
-- Temperature: 15.2°C
-- Wind Speed: 11.2 km/h
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Looking at the messages we can see that the agent called the &lt;code&gt;get_weather&lt;/code&gt; tool and passed the parameters to it. The result of the tool call was then added to the messages list.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;[&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;system&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;You are a helpful assistant.&amp;quot;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;user&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Whats the weather in Amsterdam?&amp;quot;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;assistant&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;null&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;tool_calls&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
-&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;call_NaBl8NWIHZRBU92bhfc5kCq1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;get_weather&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;arguments&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;                        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;latitude&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;52.3676&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;longitude&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;4.9041&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tool&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;get_weather&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;tool_call_id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;call_NaBl8NWIHZRBU92bhfc5kCq1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;latitude&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;52.366&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;longitude&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.901&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;current&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;time&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;2025-05-08T09:45&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;interval&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;900&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;temperature_2m&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;15.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;                    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;wind_speed_10m&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;11.2&lt;/span&gt;
-&lt;span class="w"&gt;                &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;role&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;assistant&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;content&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;The current weather in Amsterdam is as follows:\n- Temperature: 15.2\n- Wind Speed: 11.2 km/h\n\nIf you need more details or a forecast, let me know!&amp;quot;&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This is a super simple implementation of an agent that can call tools. Tools can be anything, including API requests to external services, database queries, or any other function that can be called with parameters.&lt;/p&gt;
-&lt;p&gt;Tools can also be large language model calls; for example, you could add a reflection tool that reflects on the answer.&lt;/p&gt;
-&lt;h2&gt;Appendix&lt;/h2&gt;
-&lt;p&gt;Some additional details to run the full example.&lt;/p&gt;
-&lt;h3&gt;Tool&lt;/h3&gt;
-&lt;p&gt;Here is the simple &lt;code&gt;get_weather&lt;/code&gt; tool that gets the weather data based on longitude and latitude. It uses the Open-Meteo API to get the weather data.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
-
-
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_weather&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;latitude&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;longitude&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Get the weather data for a given latitude and longitude using Open-Meteo API.&lt;/span&gt;
-
-&lt;span class="sd"&gt;    Args:&lt;/span&gt;
-&lt;span class="sd"&gt;        latitude (float): Latitude of the location.&lt;/span&gt;
-&lt;span class="sd"&gt;        longitude (float): Longitude of the location.&lt;/span&gt;
-&lt;span class="sd"&gt;    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-
-    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;requests&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-            &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;https://api.open-meteo.com/v1/forecast?latitude=&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;latitude&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;amp;longitude=&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;longitude&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;amp;current=temperature_2m,wind_speed_10m&amp;amp;hourly=temperature_2m,relative_humidity_2m,wind_speed_10m&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-            &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;hourly_units&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;hourly&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;
-        &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Error: Unable to fetch data&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3&gt;Tool/Function Schema Generation&lt;/h3&gt;
-&lt;p&gt;The &lt;code&gt;function_schema&lt;/code&gt;  function is used to create the schema for each tool. This is a helper function that takes a function and returns the function schema expected by OpenAI. You can also define this schema manually.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;
-
-
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;openai_type_mapping&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;param_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;param_type&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;number&amp;quot;&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;param_type&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;number&amp;quot;&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;param_type&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;string&amp;quot;&lt;/span&gt;
-    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;param_type&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;boolean&amp;quot;&lt;/span&gt;
-    &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;object&amp;quot;&lt;/span&gt;
-
-
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;parse_param_types_from_docstring&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;docstring&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;param_descriptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{}&lt;/span&gt;
-    &lt;span class="n"&gt;current_param&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
-
-    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;docstring&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;startswith&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Args:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-            &lt;span class="k"&gt;continue&lt;/span&gt;
-
-        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;(&amp;quot;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;)&amp;quot;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;:&amp;quot;&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="n"&gt;param&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;(&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-            &lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;):&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-            &lt;span class="n"&gt;param_descriptions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;desc&lt;/span&gt;
-            &lt;span class="n"&gt;current_param&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;
-
-        &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;current_param&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-            &lt;span class="n"&gt;param_descriptions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;current_param&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot; &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;line&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;param_descriptions&lt;/span&gt;
-
-
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;function_schema&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;description&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__name__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__doc__&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;param_descriptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parse_param_types_from_docstring&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="n"&gt;annoations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;openai_type_mapping&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;param_type&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;description&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;param_descriptions&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;param_type&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__annotations__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;items&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;param&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;return&amp;quot;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="s2"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="s2"&gt;&amp;quot;function&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;description&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Args:&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strip&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;parameters&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;object&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;properties&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;annoations&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;required&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-                    &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;function&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__annotations__&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keys&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;key&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;return&amp;quot;&lt;/span&gt;
-                &lt;span class="p"&gt;],&lt;/span&gt;
-                &lt;span class="s2"&gt;&amp;quot;additionalProperties&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-            &lt;span class="p"&gt;},&lt;/span&gt;
-            &lt;span class="s2"&gt;&amp;quot;strict&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="p"&gt;},&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>A MCP Server</title><link href="maxscheijen.github.io/posts/a-mcp-server/" rel="alternate"></link><published>2025-04-18T00:00:00+02:00</published><updated>2025-04-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-04-18:maxscheijen.github.io/posts/a-mcp-server/</id><summary type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Max Scheijen - posts</title><link href="https://example.com/" rel="alternate"></link><link href="https://example.com/feeds/posts.atom.xml" rel="self"></link><id>https://example.com/</id><updated>2025-04-18T00:00:00+02:00</updated><entry><title>A MCP Server</title><link href="https://example.com/posts/a-mcp-server/" rel="alternate"></link><published>2025-04-18T00:00:00+02:00</published><updated>2025-04-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2025-04-18:/posts/a-mcp-server/</id><summary type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.&lt;/p&gt;
 &lt;p&gt;The &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;&lt;code&gt;mcp-yahoo-finance&lt;/code&gt;&lt;/a&gt; server is available on my &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;github&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;High level Design&lt;/h2&gt;
 &lt;p&gt;This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.&lt;/p&gt;
@@ -433,11 +124,12 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;By using &lt;code&gt;stdio_server()&lt;/code&gt;, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;github.com/maxscheijen/mcp-yahoo-finance&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://modelcontextprotocol.io/"&gt;modelcontextprotocol.io/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://github.com/ranaroussi/yfinance"&gt;github.com/ranaroussi/yfinance&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Setting up a VPS on DigitalOcean with Terraform and Tailscale</title><link href="maxscheijen.github.io/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/" rel="alternate"></link><published>2025-02-15T00:00:00+01:00</published><updated>2025-02-15T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-02-15:maxscheijen.github.io/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/</id><summary type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
+&lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Setting up a VPS on DigitalOcean with Terraform and Tailscale</title><link href="https://example.com/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/" rel="alternate"></link><published>2025-02-15T00:00:00+01:00</published><updated>2025-02-15T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2025-02-15:/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/</id><summary type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
 &lt;h2&gt;Setting Up Terraform for DigitalOcean&lt;/h2&gt;
 &lt;p&gt;First create a &lt;code&gt;secrets …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
 &lt;h2&gt;Setting Up Terraform for DigitalOcean&lt;/h2&gt;
@@ -573,12 +265,13 @@ terraform&lt;span class="w"&gt; &lt;/span&gt;apply&lt;span class="w"&gt;   &lt;/
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/.ssh/your_private_key&lt;span class="w"&gt; &lt;/span&gt;root@100.x.y.z&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Replace with your Tailscale IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2&gt;Links&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://tailscale.com/kb/1082/firewall-ports"&gt;https://tailscale.com/kb/1082/firewall-ports&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean"&gt;https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup"&gt;https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet"&gt;https://sergeykibish.com/blog/tailscale-based-vpn-on-digitalocean-droplet&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Automating Docker Deployment with Github Actions</title><link href="maxscheijen.github.io/posts/automating-docker-deployment-with-github-actions/" rel="alternate"></link><published>2025-01-18T00:00:00+01:00</published><updated>2025-01-18T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-01-18:maxscheijen.github.io/posts/automating-docker-deployment-with-github-actions/</id><summary type="html">&lt;p&gt;As developers, we often need to deploy applications to server environments.&lt;/p&gt;
+&lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Automating Docker Deployment with Github Actions</title><link href="https://example.com/posts/automating-docker-deployment-with-github-actions/" rel="alternate"></link><published>2025-01-18T00:00:00+01:00</published><updated>2025-01-18T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2025-01-18:/posts/automating-docker-deployment-with-github-actions/</id><summary type="html">&lt;p&gt;As developers, we often need to deploy applications to server environments.&lt;/p&gt;
 &lt;p&gt;In this guide, I'll show you how to automate Docker container deployments using &lt;a href="https://github.com/features/actions"&gt;GitHub Actions&lt;/a&gt;, &lt;a href="https://hub.docker.com"&gt;Docker Hub&lt;/a&gt;, and a simple cron job. Whether you're new to Docker or looking to streamline your deployment process, this tutorial will walk you …&lt;/p&gt;</summary><content type="html">&lt;p&gt;As developers, we often need to deploy applications to server environments.&lt;/p&gt;
 &lt;p&gt;In this guide, I'll show you how to automate Docker container deployments using &lt;a href="https://github.com/features/actions"&gt;GitHub Actions&lt;/a&gt;, &lt;a href="https://hub.docker.com"&gt;Docker Hub&lt;/a&gt;, and a simple cron job. Whether you're new to Docker or looking to streamline your deployment process, this tutorial will walk you through both &lt;strong&gt;manual&lt;/strong&gt; and &lt;strong&gt;automated&lt;/strong&gt; approaches.&lt;/p&gt;
 &lt;h2&gt;Part 1: The Manual Process&lt;/h2&gt;
@@ -774,7 +467,9 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;li&gt;Use Docker secrets for sensitive information&lt;/li&gt;
 &lt;li&gt;Implement proper logging and monitoring&lt;/li&gt;
 &lt;li&gt;Consider using Docker Compose for more complex applications&lt;/li&gt;
-&lt;/ol&gt;</content><category term="posts"></category></entry><entry><title>Managing tmux sessions with fzf</title><link href="maxscheijen.github.io/posts/managing-tmux-sessions-with-fzf/" rel="alternate"></link><published>2024-12-25T00:00:00+01:00</published><updated>2024-12-25T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-12-25:maxscheijen.github.io/posts/managing-tmux-sessions-with-fzf/</id><summary type="html">&lt;p&gt;Terminal multiplexers like &lt;code&gt;tmux&lt;/code&gt; are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While &lt;code&gt;tmux&lt;/code&gt; itself is powerful, we can enhance its functionality by combining it with &lt;code&gt;fzf&lt;/code&gt;, the fuzzy finder, to create a more intuitive session management workflow.&lt;/p&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[docker]] [[python]] [[fastapi]] [[continuous-integration]] [[continuous-deployment]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Managing tmux sessions with fzf</title><link href="https://example.com/posts/managing-tmux-sessions-with-fzf/" rel="alternate"></link><published>2024-12-25T00:00:00+01:00</published><updated>2024-12-25T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-12-25:/posts/managing-tmux-sessions-with-fzf/</id><summary type="html">&lt;p&gt;Terminal multiplexers like &lt;code&gt;tmux&lt;/code&gt; are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While &lt;code&gt;tmux&lt;/code&gt; itself is powerful, we can enhance its functionality by combining it with &lt;code&gt;fzf&lt;/code&gt;, the fuzzy finder, to create a more intuitive session management workflow.&lt;/p&gt;
 &lt;h2&gt;The Basic Approach&lt;/h2&gt;
 &lt;p&gt;The foundation of this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Terminal multiplexers like &lt;code&gt;tmux&lt;/code&gt; are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While &lt;code&gt;tmux&lt;/code&gt; itself is powerful, we can enhance its functionality by combining it with &lt;code&gt;fzf&lt;/code&gt;, the fuzzy finder, to create a more intuitive session management workflow.&lt;/p&gt;
 &lt;h2&gt;The Basic Approach&lt;/h2&gt;
@@ -820,7 +515,9 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 
 &lt;p&gt;Now you can trigger the session switcher using the &lt;code&gt;prefix + t&lt;/code&gt; key combination.&lt;/p&gt;
 &lt;p&gt;Remember to make your script executable with &lt;code&gt;chmod +x path/to/script&lt;/code&gt; before using it.&lt;/p&gt;
-&lt;p&gt;This simple yet powerful integration demonstrates how combining familiar tools in thoughtful ways can significantly improve our development workflow. By leveraging &lt;code&gt;fzf&lt;/code&gt;'s search capabilities with &lt;code&gt;tmux&lt;/code&gt;'s session management, we've created a more intuitive way to handle multiple terminal sessions.&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Azure Functions and FastAPI</title><link href="maxscheijen.github.io/posts/azure-functions-and-fastapi/" rel="alternate"></link><published>2024-12-14T00:00:00+01:00</published><updated>2024-12-14T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-12-14:maxscheijen.github.io/posts/azure-functions-and-fastapi/</id><summary type="html">&lt;p&gt;I'm a huge fan of &lt;a href="https://fastapi.tiangolo.com"&gt;FastAPI&lt;/a&gt;. It's a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.&lt;/p&gt;
+&lt;p&gt;This simple yet powerful integration demonstrates how combining familiar tools in thoughtful ways can significantly improve our development workflow. By leveraging &lt;code&gt;fzf&lt;/code&gt;'s search capabilities with &lt;code&gt;tmux&lt;/code&gt;'s session management, we've created a more intuitive way to handle multiple terminal sessions.&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[tmux]] [[fzf]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Azure Functions and FastAPI</title><link href="https://example.com/posts/azure-functions-and-fastapi/" rel="alternate"></link><published>2024-12-14T00:00:00+01:00</published><updated>2024-12-14T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-12-14:/posts/azure-functions-and-fastapi/</id><summary type="html">&lt;p&gt;I'm a huge fan of &lt;a href="https://fastapi.tiangolo.com"&gt;FastAPI&lt;/a&gt;. It's a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.&lt;/p&gt;
 &lt;p&gt;At work, we extensively use &lt;a href="https://learn.microsoft.com/en-us/azure/azure-functions/"&gt;Azure Functions&lt;/a&gt;. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I'm a huge fan of &lt;a href="https://fastapi.tiangolo.com"&gt;FastAPI&lt;/a&gt;. It's a high-performance web framework for building APIs in Python, based on type hints and Pydantic, which enables automatic documentation and data validation.&lt;/p&gt;
 &lt;p&gt;At work, we extensively use &lt;a href="https://learn.microsoft.com/en-us/azure/azure-functions/"&gt;Azure Functions&lt;/a&gt;. These are serverless resources that reduce the need for infrastructure configuration and maintenance, allowing us to focus more on writing code. To create Azure Functions in Python, we can use the &lt;a href="https://pypi.org/project/azure-functions/"&gt;azure-functions&lt;/a&gt; package.&lt;/p&gt;
 &lt;p&gt;However, I really love FastAPI as a framework for building APIs. Let's explore how we can create an Azure Function leveraging FastAPI.&lt;/p&gt;
@@ -933,31 +630,97 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;p&gt;&lt;strong&gt;Tip&lt;/strong&gt;: You can still run your FastAPI app without the azure function, which can be helpful during development:&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uvicorn&lt;span class="w"&gt; &lt;/span&gt;api.__init__:app&lt;span class="w"&gt; &lt;/span&gt;--reload
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>How I manage my dotfiles</title><link href="maxscheijen.github.io/posts/how-i-manage-my-dotfiles/" rel="alternate"></link><published>2024-11-28T00:00:00+01:00</published><updated>2024-11-28T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-28:maxscheijen.github.io/posts/how-i-manage-my-dotfiles/</id><summary type="html">&lt;p&gt;I store all my dotfiles in a dedicated git repository called &lt;code&gt;dotfiles&lt;/code&gt; with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.&lt;/p&gt;
-&lt;p&gt;I then use &lt;code&gt;stow&lt;/code&gt; to create &lt;strong&gt;symlinks&lt;/strong&gt; to place the dotfiles in the appropriate places.&lt;/p&gt;
-&lt;p&gt;This creates symlinks from …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I store all my dotfiles in a dedicated git repository called &lt;code&gt;dotfiles&lt;/code&gt; with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.&lt;/p&gt;
-&lt;p&gt;I then use &lt;code&gt;stow&lt;/code&gt; to create &lt;strong&gt;symlinks&lt;/strong&gt; to place the dotfiles in the appropriate places.&lt;/p&gt;
-&lt;p&gt;This creates symlinks from for example &lt;code&gt;~/dotfiles/.zshrc&lt;/code&gt; to &lt;code&gt;~/.zshrc&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;stow&lt;span class="w"&gt; &lt;/span&gt;zsh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;I organize them by tool.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;dotfiles/
-├── zsh/
-│   └── .zshrc
-├── git/
-│   └── .gitconfig
-└── README.md
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[azure]] [[python]] [[fastapi]] [[serverless]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>I Really Like GNU Stow</title><link href="https://example.com/posts/i-really-like-gnu-stow/" rel="alternate"></link><published>2024-11-28T00:00:00+01:00</published><updated>2024-11-28T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-11-28:/posts/i-really-like-gnu-stow/</id><summary type="html">&lt;p&gt;Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that'll make your dotfiles management a easier.&lt;/p&gt;
+&lt;h2&gt;What's GNU Stow&lt;/h2&gt;
+&lt;p&gt;Stow is basically a symlink farm manager that helps you organize your …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ever found yourself painfully recreating config files when setting up a new dev environment? Been there, done that. Let me introduce you to GNU Stow, the symlink cli that'll make your dotfiles management a easier.&lt;/p&gt;
+&lt;h2&gt;What's GNU Stow&lt;/h2&gt;
+&lt;p&gt;Stow is basically a symlink farm manager that helps you organize your dotfiles by keeping them in a separate directory while magically creating symbolic links to their intended locations. It's like having a personal assistant for your config files.&lt;/p&gt;
+&lt;h3&gt;Why I use Stow for Dotfiles&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Centralized Management&lt;/strong&gt;: All my dotfiles live in one tidy, version-controlled directory (&lt;code&gt;~/.dotfiles&lt;/code&gt;). No more config chaos!&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Crazy Good Organization&lt;/strong&gt;: Stow lets me separate configs by program or however I want. Total flexibility.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Deployment Made Easy&lt;/strong&gt;: When I need to set up a new machine, it's as simple as pulling my configs and running stow. No more manual copy-pasting.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Pick and Choose&lt;/strong&gt;: With Stow packages, I can selectively install exactly the configurations I want.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Getting Started: The Stow Setup&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1. Install GNU Stow&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# macOS&lt;/span&gt;
+brew&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;stow
+
+&lt;span class="c1"&gt;# Ubuntu/Debian&lt;/span&gt;
+apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;stow
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Setup a machine using &lt;code&gt;dotfiles.sh&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Create Your Dotfiles Directory&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles
+&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Organize Your Configs as Packages&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I like creating packages base on programs&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;nvim/.config/nvim&lt;span class="w"&gt; &lt;/span&gt;kitty/.config/kitty&lt;span class="w"&gt; &lt;/span&gt;zsh
+&lt;span class="sb"&gt;````&lt;/span&gt;
+
+&lt;span class="m"&gt;4&lt;/span&gt;.&lt;span class="w"&gt; &lt;/span&gt;Migrate&lt;span class="w"&gt; &lt;/span&gt;Your&lt;span class="w"&gt; &lt;/span&gt;Configs&lt;span class="w"&gt; &lt;/span&gt;
+
+Move&lt;span class="w"&gt; &lt;/span&gt;your&lt;span class="w"&gt; &lt;/span&gt;existing&lt;span class="w"&gt; &lt;/span&gt;config&lt;span class="w"&gt; &lt;/span&gt;files,&lt;span class="w"&gt; &lt;/span&gt;keeping&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;same&lt;span class="w"&gt; &lt;/span&gt;home&lt;span class="w"&gt; &lt;/span&gt;directory&lt;span class="w"&gt; &lt;/span&gt;structure:
+
+&amp;lt;!--TODO:&lt;span class="w"&gt; &lt;/span&gt;Check&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;moving&lt;span class="w"&gt; &lt;/span&gt;works&lt;span class="w"&gt; &lt;/span&gt;--&amp;gt;
+
+&lt;span class="sb"&gt;```&lt;/span&gt;sh
+mv&lt;span class="w"&gt; &lt;/span&gt;~/.config/nvim/*&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/nvim/.config/nvim/
+mv&lt;span class="w"&gt; &lt;/span&gt;~/.config/kitty/*&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/kitty/.config/kitty/
+mv&lt;span class="w"&gt; &lt;/span&gt;~/.zshrc&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/zsh/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Stow in Action&lt;/h2&gt;
+&lt;p&gt;Once your files are organized, using Stow is straightforward:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles
+
+&lt;span class="c1"&gt;# Creates the symlink for ~/.config/nvim&lt;/span&gt;
+stow&lt;span class="w"&gt; &lt;/span&gt;nvim
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In you run for example &lt;code&gt;ls -la .zshrc&lt;/code&gt; you will see that it it symlinked to &lt;code&gt;~/.dotfiles/zsh/zshrc&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Displaying symlinks for dotfiles (example ~/.zshrc)&lt;/span&gt;
+ls&lt;span class="w"&gt; &lt;/span&gt;-la&lt;span class="w"&gt; &lt;/span&gt;~/.zshrc
+
+&lt;span class="c1"&gt;# output&lt;/span&gt;
+~/.zshrc&lt;span class="w"&gt;        &lt;/span&gt;--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/zsh/.zshrc
+
+&lt;span class="c1"&gt;# dotfile           GNU Stow&lt;/span&gt;
+~/.config/nvim&lt;span class="w"&gt;  &lt;/span&gt;--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/nvim/.config/nvim
+~/.config/kitty&lt;span class="w"&gt; &lt;/span&gt;--&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/kitty/.config/kitty
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1. Use version control&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Because all your dotfiles are in the same directory you can have just one repository for your dotfiles that has version control&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles
+git&lt;span class="w"&gt; &lt;/span&gt;init
+git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-am&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Initial dotfiles commit&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Create a setup script&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Want to automate stowing everything? Here's a quick script:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
-sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;zsh
-git&lt;span class="w"&gt; &lt;/span&gt;clone&lt;span class="w"&gt; &lt;/span&gt;git@github.com/maxscheijen/dotfiles&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;/dotfiles
-stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;zsh
+&lt;span class="nb"&gt;cd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;dir&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;*/&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;do&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;stow&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;dir&lt;/span&gt;&lt;span class="p"&gt;%/&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;...&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Quickly Reload Your Neovim Config</title><link href="maxscheijen.github.io/posts/quickly-reload-your-neovim-config/" rel="alternate"></link><published>2024-11-18T00:00:00+01:00</published><updated>2024-11-18T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-18:maxscheijen.github.io/posts/quickly-reload-your-neovim-config/</id><summary type="html">&lt;p&gt;Tired of quitting and restarting Neovim every time you tweak your config? There's a better way!&lt;/p&gt;
+&lt;h2&gt;Common Issues and Solutions&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;1. Existing Files&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Stow wont overwrite existing files that are not managed by it self. You should backup and remove existing files before stowing. You can also use &lt;code&gt;stow --adopt&lt;/code&gt; to incorporate existing files (however use it with caution).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. Nested Directories&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Stow create parent directories as needed. You should keep the same directory structure as in your home directory.&lt;/p&gt;
+&lt;p&gt;For example the kitty config is located in &lt;code&gt;~/.config/kitty/&lt;/code&gt;. So our stow setup should mirror the same structure. In &lt;code&gt;~/.dotfiles/kitty&lt;/code&gt;. Where &lt;code&gt;kitty&lt;/code&gt; is the stow package name. So inside this directory you should mirror &lt;code&gt;.config/kitty&lt;/code&gt; resulting in &lt;code&gt;~/.dotfiles/kitty/.config/kitty&lt;/code&gt;.&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[linux]] [[stow]] [[dotfiles]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Quickly Reload Your Neovim Config</title><link href="https://example.com/posts/quickly-reload-your-neovim-config/" rel="alternate"></link><published>2024-11-18T00:00:00+01:00</published><updated>2024-11-18T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-11-18:/posts/quickly-reload-your-neovim-config/</id><summary type="html">&lt;p&gt;Tired of quitting and restarting Neovim every time you tweak your config? There's a better way!&lt;/p&gt;
 &lt;p&gt;By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.&lt;/p&gt;
 &lt;p&gt;The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Tired of quitting and restarting Neovim every time you tweak your config? There's a better way!&lt;/p&gt;
 &lt;p&gt;By separating your plugin declarations and configurations, you can quickly reload changes without the hassle.&lt;/p&gt;
@@ -991,7 +754,7 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;p&gt;This setup is a real time-saver, especially when you're dialing in your plugin preferences. No more opening and closing Neovim over and over!&lt;/p&gt;
 &lt;h2&gt;Links&lt;/h2&gt;
 &lt;p&gt;https://www.youtube.com/watch?v=kJVqxFnhIuw&lt;/p&gt;
-&lt;p&gt;[[neovim]] [[lua]] [[vim]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Supercharge Your Git History Navigation with Fuzzy Find</title><link href="maxscheijen.github.io/posts/supercharge-your-git-history-navigation-with-fuzzy-find/" rel="alternate"></link><published>2024-11-11T00:00:00+01:00</published><updated>2024-11-11T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-11:maxscheijen.github.io/posts/supercharge-your-git-history-navigation-with-fuzzy-find/</id><summary type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.&lt;/p&gt;
+&lt;p&gt;[[neovim]] [[lua]] [[vim]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Supercharge Your Git History Navigation with Fuzzy Find</title><link href="https://example.com/posts/supercharge-your-git-history-navigation-with-fuzzy-find/" rel="alternate"></link><published>2024-11-11T00:00:00+01:00</published><updated>2024-11-11T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-11-11:/posts/supercharge-your-git-history-navigation-with-fuzzy-find/</id><summary type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.&lt;/p&gt;
 &lt;h2&gt;Basic Setup: Your First Fuzzy Git log&lt;/h2&gt;
 &lt;p&gt;The simplest way to start is by piping your git log into &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
@@ -1106,7 +869,10 @@ awk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $2
 &lt;span class="k"&gt;fi&lt;/span&gt;
 
 &lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Copied commit hash &amp;#39;&lt;/span&gt;&lt;span class="nv"&gt;$commit_hash&lt;/span&gt;&lt;span class="s2"&gt;&amp;#39; to clipboard.&amp;quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>Search shell history</title><link href="maxscheijen.github.io/posts/search-shell-history/" rel="alternate"></link><published>2024-11-07T00:00:00+01:00</published><updated>2024-11-07T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-07:maxscheijen.github.io/posts/search-shell-history/</id><summary type="html">&lt;p&gt;We've all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn't it be nice to quickly search through your terminal history using fuzzy finding?&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[fzf]] [[cli]] [[git]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Fuzzy Finding Through Your Command History</title><link href="https://example.com/posts/fuzzy-finding-through-your-command-history/" rel="alternate"></link><published>2024-11-07T00:00:00+01:00</published><updated>2024-11-07T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-11-07:/posts/fuzzy-finding-through-your-command-history/</id><summary type="html">&lt;p&gt;We've all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn't it be nice to quickly search through your terminal history using fuzzy finding?&lt;/p&gt;
 &lt;p&gt;Let's build a simple tool …&lt;/p&gt;</summary><content type="html">&lt;p&gt;We've all been there: you type a complex command in your terminal, and a few weeks later, you need it again. Even with autosuggestion enabled, remembering these commands can be tricky. Wouldn't it be nice to quickly search through your terminal history using fuzzy finding?&lt;/p&gt;
 &lt;p&gt;Let's build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We'll use &lt;code&gt;fzf&lt;/code&gt; as our fuzzy finder of choice.&lt;/p&gt;
 &lt;h2&gt;Basic Implementation&lt;/h2&gt;
@@ -1190,7 +956,9 @@ search_and_execute_history
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Now you can simply type &lt;code&gt;hist&lt;/code&gt; anywhere in your terminal to fuzzy find through your command history!&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>HTML Form and JSON for single endpoint in FastAPI</title><link href="maxscheijen.github.io/posts/html-form-and-json-for-single-endpoint-in-fastapi/" rel="alternate"></link><published>2024-10-05T00:00:00+02:00</published><updated>2024-10-05T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-10-05:maxscheijen.github.io/posts/html-form-and-json-for-single-endpoint-in-fastapi/</id><summary type="html">&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
+&lt;p&gt;Now you can simply type &lt;code&gt;hist&lt;/code&gt; anywhere in your terminal to fuzzy find through your command history!&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[fzf]] [[cli]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>HTML Form and JSON for single endpoint in FastAPI</title><link href="https://example.com/posts/html-form-and-json-for-single-endpoint-in-fastapi/" rel="alternate"></link><published>2024-10-05T00:00:00+02:00</published><updated>2024-10-05T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-10-05:/posts/html-form-and-json-for-single-endpoint-in-fastapi/</id><summary type="html">&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
 &lt;p&gt;This post demonstrates how to build a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
 &lt;p&gt;This post demonstrates how to build a FastAPI application that handles and validates both JSON and from data inputs on a &lt;strong&gt;single endpoint&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2&gt;The Challenge: Handling Different Content Types&lt;/h2&gt;
@@ -1338,7 +1106,9 @@ search_and_execute_history
 &lt;p&gt;This pattern allows for seamlessly processing both form and JSON data, making our API more flexible.&lt;/p&gt;
 &lt;p&gt;It also leverages Pydantic’s integration with FastAPI ensures that incoming json or form data is validated automatically based on the schema we define.&lt;/p&gt;
 &lt;p&gt;Unsupported content types and validation errors are handled gracefully, providing clear error messages to the client.&lt;/p&gt;
-&lt;p&gt;By using dependency injection (&lt;code&gt;Depends&lt;/code&gt;), the code remains modular. The logic for handling and converting request data is abstracted away, making the route handler simpler and more readable.&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>VPS 101 - Setup &amp; Security</title><link href="maxscheijen.github.io/posts/vps-101-setup-security/" rel="alternate"></link><published>2024-09-13T00:00:00+02:00</published><updated>2024-09-13T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-09-13:maxscheijen.github.io/posts/vps-101-setup-security/</id><summary type="html">&lt;p&gt;Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).&lt;/p&gt;
+&lt;p&gt;By using dependency injection (&lt;code&gt;Depends&lt;/code&gt;), the code remains modular. The logic for handling and converting request data is abstracted away, making the route handler simpler and more readable.&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;[[rest]] [[api]] [[python]] [[fastapi]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>VPS 101 - Setup &amp; Security</title><link href="https://example.com/posts/vps-101-setup-security/" rel="alternate"></link><published>2024-09-13T00:00:00+02:00</published><updated>2024-09-13T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-09-13:/posts/vps-101-setup-security/</id><summary type="html">&lt;p&gt;Recently, I developed an interest in hosting my own servers, which led me to explore virtual private servers (VPS).&lt;/p&gt;
 &lt;p&gt;This is the first part of my journey into hosting a Linux server.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;&lt;a href="/posts/vps-101-setup-and-security"&gt;Setup &amp;amp; Security&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
@@ -1511,7 +1281,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;&
 &lt;p&gt;Note: Exposing a port with Docker may overwrite IP rules set by &lt;code&gt;ufw&lt;/code&gt;. Instead of defining ports in a Docker Compose file, consider setting up a reverse proxy to manage access to ports &lt;code&gt;80&lt;/code&gt; and/or &lt;code&gt;443&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;Links&lt;/h2&gt;
-&lt;p&gt;[[vps]] [[ssh]] [[linux]] [[security]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Python Development Setup</title><link href="maxscheijen.github.io/posts/python-development-setup/" rel="alternate"></link><published>2024-09-07T00:00:00+02:00</published><updated>2024-09-07T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-09-07:maxscheijen.github.io/posts/python-development-setup/</id><summary type="html">&lt;p&gt;Recently, I started to center my python development around &lt;a href="https://docs.astral.sh/uv"&gt;&lt;code&gt;uv&lt;/code&gt;&lt;/a&gt; and other tooling  developed by &lt;a href="https://astral.sh/"&gt;astral.sh&lt;/a&gt;. It allows me to manage python environments, linting and formatting.&lt;/p&gt;
+&lt;p&gt;[[vps]] [[ssh]] [[linux]] [[security]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Python Development Setup</title><link href="https://example.com/posts/python-development-setup/" rel="alternate"></link><published>2024-09-07T00:00:00+02:00</published><updated>2024-09-07T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-09-07:/posts/python-development-setup/</id><summary type="html">&lt;p&gt;Recently, I started to center my python development around &lt;a href="https://docs.astral.sh/uv"&gt;&lt;code&gt;uv&lt;/code&gt;&lt;/a&gt; and other tooling  developed by &lt;a href="https://astral.sh/"&gt;astral.sh&lt;/a&gt;. It allows me to manage python environments, linting and formatting.&lt;/p&gt;
 &lt;h2&gt;Managing Python Packages using &lt;code&gt;uv&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;uv&lt;/code&gt; is an extremely fast Python package and recently also became a full on package manager.&lt;/p&gt;
 &lt;p&gt;You can …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently, I started to center my python development around &lt;a href="https://docs.astral.sh/uv"&gt;&lt;code&gt;uv&lt;/code&gt;&lt;/a&gt; and other tooling  developed by &lt;a href="https://astral.sh/"&gt;astral.sh&lt;/a&gt;. It allows me to manage python environments, linting and formatting.&lt;/p&gt;
@@ -1645,7 +1415,8 @@ uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;ruf
 &lt;ul&gt;
 &lt;li&gt;https://docs.astral.sh/uv/&lt;/li&gt;
 &lt;li&gt;https://docs.astral.sh/ruff/&lt;/li&gt;
-&lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Git Bisect to Find Bugs</title><link href="maxscheijen.github.io/posts/git-bisect-to-find-bugs/" rel="alternate"></link><published>2024-09-04T00:00:00+02:00</published><updated>2024-09-04T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-09-04:maxscheijen.github.io/posts/git-bisect-to-find-bugs/</id><summary type="html">&lt;p&gt;Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.&lt;/p&gt;
+&lt;/ul&gt;
+&lt;p&gt;[[python]] [[tool]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Git Bisect to Find Bugs</title><link href="https://example.com/posts/git-bisect-to-find-bugs/" rel="alternate"></link><published>2024-09-04T00:00:00+02:00</published><updated>2024-09-04T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-09-04:/posts/git-bisect-to-find-bugs/</id><summary type="html">&lt;p&gt;Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.&lt;/p&gt;
 &lt;p&gt;You searched through the commit and their messages. But you can't find which commit introduced the bug. Damm what are we going to do...&lt;/p&gt;
 &lt;p&gt;This when you can use &lt;code&gt;git …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;Say you and your team are working on a project. Somewhere in the last 300 commits a bug was introduced.&lt;/p&gt;
 &lt;p&gt;You searched through the commit and their messages. But you can't find which commit introduced the bug. Damm what are we going to do...&lt;/p&gt;
@@ -1726,7 +1497,9 @@ A --- unknown --- C --- bad --- E
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect run python -m pytest 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;https://git-scm.com/docs/git-bisect&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Python to Change VIM</title><link href="maxscheijen.github.io/posts/python-to-change-vim/" rel="alternate"></link><published>2024-08-22T00:00:00+02:00</published><updated>2024-08-22T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-22:maxscheijen.github.io/posts/python-to-change-vim/</id><summary type="html">&lt;p&gt;The programming language I'm most familiar with is &lt;a href="https://python.org"&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;https://git-scm.com/docs/git-bisect&lt;/p&gt;
+&lt;p&gt;[[git]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Python to Change VIM</title><link href="https://example.com/posts/python-to-change-vim/" rel="alternate"></link><published>2024-08-22T00:00:00+02:00</published><updated>2024-08-22T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-08-22:/posts/python-to-change-vim/</id><summary type="html">&lt;p&gt;The programming language I'm most familiar with is &lt;a href="https://python.org"&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
 &lt;p&gt;I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input …&lt;/p&gt;</summary><content type="html">&lt;p&gt;The programming language I'm most familiar with is &lt;a href="https://python.org"&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
 &lt;p&gt;I discovered that I can use python (or any programming language for that matter) to manipulate text in vim. You simply need to read from the standard input, and provide a output.&lt;/p&gt;
 &lt;h2&gt;Script&lt;/h2&gt;
@@ -1755,7 +1528,7 @@ A --- unknown --- C --- bad --- E
 &lt;p&gt;I can now hit &lt;code&gt;!!&lt;/code&gt; in vim, and type the name of my script &lt;code&gt;lower&lt;/code&gt; and hit enter.&lt;/p&gt;
 &lt;p&gt;The line below my cursor is now lower cased.&lt;/p&gt;
 &lt;h2&gt;Links&lt;/h2&gt;
-&lt;p&gt;[[vim]] [[python]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Remote Access to Homelab using Tailscale</title><link href="maxscheijen.github.io/posts/remote-access-to-homelab-using-tailscale/" rel="alternate"></link><published>2024-08-18T00:00:00+02:00</published><updated>2024-08-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-18:maxscheijen.github.io/posts/remote-access-to-homelab-using-tailscale/</id><summary type="html">&lt;p&gt;For the last year I've been running a small Homelab on a Raspberry Pi 5. It runs a &lt;a href="https://plex.tv/"&gt;Plex Media Server&lt;/a&gt;, &lt;a href="https://home-assistant.io"&gt;Home Assistant&lt;/a&gt;, web servers and some Docker images.&lt;/p&gt;
+&lt;p&gt;[[vim]] [[python]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Remote Access to Homelab using Tailscale</title><link href="https://example.com/posts/remote-access-to-homelab-using-tailscale/" rel="alternate"></link><published>2024-08-18T00:00:00+02:00</published><updated>2024-08-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-08-18:/posts/remote-access-to-homelab-using-tailscale/</id><summary type="html">&lt;p&gt;For the last year I've been running a small Homelab on a Raspberry Pi 5. It runs a &lt;a href="https://plex.tv/"&gt;Plex Media Server&lt;/a&gt;, &lt;a href="https://home-assistant.io"&gt;Home Assistant&lt;/a&gt;, web servers and some Docker images.&lt;/p&gt;
 &lt;p&gt;Until now my Homelab was only accessible from my local network.&lt;/p&gt;
 &lt;p&gt;I was hesitant in making my Homelab remotely accessible (port …&lt;/p&gt;</summary><content type="html">&lt;p&gt;For the last year I've been running a small Homelab on a Raspberry Pi 5. It runs a &lt;a href="https://plex.tv/"&gt;Plex Media Server&lt;/a&gt;, &lt;a href="https://home-assistant.io"&gt;Home Assistant&lt;/a&gt;, web servers and some Docker images.&lt;/p&gt;
 &lt;p&gt;Until now my Homelab was only accessible from my local network.&lt;/p&gt;
@@ -1786,7 +1559,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;i
 &lt;p&gt;Now add other machines to the same account, and as long as you're connected to the Tailscale VPN can access your machines remotely.&lt;/p&gt;
 &lt;h2&gt;Links&lt;/h2&gt;
 &lt;p&gt;https://tailscale.com/learn/how-to-ssh-into-a-raspberry-pi&lt;/p&gt;
-&lt;p&gt;[[homelab]] [[vpn]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Find and Replace in Vim</title><link href="maxscheijen.github.io/posts/find-and-replace-in-vim/" rel="alternate"></link><published>2024-08-16T00:00:00+02:00</published><updated>2024-08-16T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-16:maxscheijen.github.io/posts/find-and-replace-in-vim/</id><summary type="html">&lt;p&gt;One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).&lt;/p&gt;
+&lt;p&gt;[[homelab]] [[vpn]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Find and Replace in Vim</title><link href="https://example.com/posts/find-and-replace-in-vim/" rel="alternate"></link><published>2024-08-16T00:00:00+02:00</published><updated>2024-08-16T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-08-16:/posts/find-and-replace-in-vim/</id><summary type="html">&lt;p&gt;One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).&lt;/p&gt;
 &lt;p&gt;I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;One of my goals for the remaining part of 2024 is to learn and get comfortable with vim. Both with motions and the editor (NeoVim).&lt;/p&gt;
 &lt;p&gt;I started to work with vim about 2 weeks ago and there is so much to learn. However, I think I have some of the basics covered.&lt;/p&gt;
 &lt;p&gt;One thing I wanted to learn this week is find and replace. This is an operation I use a lot, both in my coding work as in my writing. Or at least the basics of find and replace.&lt;/p&gt;
@@ -1824,7 +1597,9 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;i
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/gi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;https://linuxize.com/post/vim-find-replace/&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Run Custom Scripts From Anywhere</title><link href="maxscheijen.github.io/posts/run-custom-scripts-from-anywhere/" rel="alternate"></link><published>2024-08-15T00:00:00+02:00</published><updated>2024-08-15T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-15:maxscheijen.github.io/posts/run-custom-scripts-from-anywhere/</id><summary type="html">&lt;p&gt;Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.&lt;/p&gt;
+&lt;h2&gt;Links&lt;/h2&gt;
+&lt;p&gt;https://linuxize.com/post/vim-find-replace/&lt;/p&gt;
+&lt;p&gt;[[vim]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Run Custom Scripts From Anywhere</title><link href="https://example.com/posts/run-custom-scripts-from-anywhere/" rel="alternate"></link><published>2024-08-15T00:00:00+02:00</published><updated>2024-08-15T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-08-15:/posts/run-custom-scripts-from-anywhere/</id><summary type="html">&lt;p&gt;Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.&lt;/p&gt;
 &lt;p&gt;I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of &lt;a href="https://mischavandenburg.com/"&gt;Mischa van den Burg&lt;/a&gt; I started taking …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.&lt;/p&gt;
 &lt;p&gt;I wanted to run and have access to these scripts from anywhere in my terminal. After watching a lot of &lt;a href="https://mischavandenburg.com/"&gt;Mischa van den Burg&lt;/a&gt; I started taking in interest in more thorough note taking.&lt;/p&gt;
 &lt;p&gt;My first script would be for easier note taking.&lt;/p&gt;
@@ -1882,7 +1657,7 @@ nvim&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;+ normal
 &lt;p&gt;creating a note with formatting in a specific directory.&lt;/p&gt;
 &lt;h2&gt;Links&lt;/h2&gt;
 &lt;p&gt;https://github.com/mischavandenburg/dotfiles/tree/main/scripts&lt;/p&gt;
-&lt;p&gt;[[cli]] [[unix]] [[bash]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Finding files using the terminal</title><link href="maxscheijen.github.io/posts/finding-files-using-the-terminal/" rel="alternate"></link><published>2024-08-14T00:00:00+02:00</published><updated>2024-08-14T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-14:maxscheijen.github.io/posts/finding-files-using-the-terminal/</id><summary type="html">&lt;p&gt;Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.&lt;/p&gt;
+&lt;p&gt;[[cli]] [[unix]] [[bash]]&lt;/p&gt;</content><category term="posts"></category></entry><entry><title>Finding files using the terminal</title><link href="https://example.com/posts/finding-files-using-the-terminal/" rel="alternate"></link><published>2024-08-14T00:00:00+02:00</published><updated>2024-08-14T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:example.com,2024-08-14:/posts/finding-files-using-the-terminal/</id><summary type="html">&lt;p&gt;Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.&lt;/p&gt;
 &lt;p&gt;One of the easiest ways to find files on your system based on their name is using &lt;code&gt;fd&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
