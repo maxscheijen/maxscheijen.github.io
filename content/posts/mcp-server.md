@@ -145,8 +145,6 @@ async def serve() -> None:
 
 By using `stdio_server()`, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.
 
-## Links
-
 - [github.com/maxscheijen/mcp-yahoo-finance](https://github.com/maxscheijen/mcp-yahoo-finance)
 - [modelcontextprotocol.io/](https://modelcontextprotocol.io/)
 - [github.com/ranaroussi/yfinance](https://github.com/ranaroussi/yfinance)

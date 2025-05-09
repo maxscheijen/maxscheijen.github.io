@@ -146,6 +146,3 @@ You now have a FastAPI app running in an Azure Function!
 uvicorn api.__init__:app --reload
 ```
 
-## Links
-
-[[azure]] [[python]] [[fastapi]] [[serverless]]

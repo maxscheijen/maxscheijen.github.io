@@ -230,7 +230,3 @@ chmod +x deploy.sh
 4. Implement proper logging and monitoring
 5. Consider using Docker Compose for more complex applications
 
-## Links
-
-[[docker]] [[python]] [[fastapi]] [[continuous-integration]] [[continuous-deployment]]
-

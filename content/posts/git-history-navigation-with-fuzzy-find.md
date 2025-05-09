@@ -138,7 +138,3 @@ fi
 echo "Copied commit hash '$commit_hash' to clipboard."
 ```
 
-
-## Links
-
-[[fzf]] [[cli]] [[git]]

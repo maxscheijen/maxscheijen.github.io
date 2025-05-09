@@ -1,5 +1,5 @@
 ---
-title: Fuzzy Finding Through Your Command History
+title: Search shell history
 date: 2024-11-07
 ---
 
@@ -104,6 +104,3 @@ export PATH="$HOME/.dotfiles/scripts:$PATH"
 
 Now you can simply type `hist` anywhere in your terminal to fuzzy find through your command history!
 
-## Links
-
-[[fzf]] [[cli]]

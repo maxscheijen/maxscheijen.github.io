@@ -190,6 +190,3 @@ Unsupported content types and validation errors are handled gracefully, providin
 
 By using dependency injection (`Depends`), the code remains modular. The logic for handling and converting request data is abstracted away, making the route handler simpler and more readable.
 
-## Links
-
-[[rest]] [[api]] [[python]] [[fastapi]]

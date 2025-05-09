@@ -65,7 +65,3 @@ Remember to make your script executable with `chmod +x path/to/script` before us
 
 This simple yet powerful integration demonstrates how combining familiar tools in thoughtful ways can significantly improve our development workflow. By leveraging `fzf`'s search capabilities with `tmux`'s session management, we've created a more intuitive way to handle multiple terminal sessions.
 
-## Links
-
-[[tmux]] [[fzf]]
-

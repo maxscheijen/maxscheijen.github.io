@@ -104,10 +104,5 @@ Where `<cmd>` is the (test) command you want to run.
 git bisect run python -m pytest 
 ```
 
-
-## Links
-
 https://git-scm.com/docs/git-bisect
-
-[[git]]
 

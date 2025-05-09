@@ -169,5 +169,3 @@ jobs:
 - https://docs.astral.sh/uv/
 - https://docs.astral.sh/ruff/
 
-[[python]] [[tool]]
-
