@@ -115,6 +115,35 @@ a {
   code {
     background: #151B23;
   }
+
+  pre code {
+    background: #151B23;
+    padding: 0;
+    margin: 0;
+  }
+
+  header a, .post a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .post a:hover {
+    text-decoration: underline;
+    text-underline-offset: .2rem;
+  }
+
+
+  footer a {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: .2rem;
+  }
+
+  a {
+    color: #0969DA;
+    text-decoration: underline;
+    text-underline-offset: .2rem;
+  }
 }
 
 @media (max-width: 720px) {
