@@ -3,17 +3,17 @@ title: A MCP Server
 date: 2025-04-18
 ---
 
-Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.
+Lately, I’ve become increasingly interested in tools for large language models (LLMs), and I started exploring the [Model Context Protocol](https://modelcontextprotocol.io/) (MCP). In this post, I’ll showcase a simple MCP server I built that allows clients to interact with Yahoo Finance to retrieve stock prices and company information.
 
-The [`mcp-yahoo-finance`](https://github.com/maxscheijen/mcp-yahoo-finance) server is available on my [github](https://github.com/maxscheijen/mcp-yahoo-finance).
+The [`mcp-yahoo-finance`](https://github.com/maxscheijen/mcp-yahoo-finance) server is available on my [GitHub](https://github.com/maxscheijen/mcp-yahoo-finance).
 
 ## High level Design
 
-This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.
+This project is a minimal MCP tool server that enables LLMs to retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.
 
 ###  Wrapping Existing API
 
-The logic for retrieving stock prices lives in a small utility class. It uses [`yfinance`](https://github.com/ranaroussi/yfinance) python library under the hood:
+The logic for retrieving stock prices resides in a small utility class. It uses the [`yfinance`](https://github.com/ranaroussi/yfinance) Python library under the hood:
 
 ```python
 class YahooFinance:
@@ -44,9 +44,9 @@ It’s minimal, but it works well as a testbed for building and exposing MCP-com
 
 ## Generate Tool Schemas
 
-Tool schemas give an LLM the necessary context about what parameters a tool expects.
+Tool schemas provide LLMs with the necessary context about what parameters a tool expects.
 
-When using the `mcp.server.FastMCP` class, tool schemas are generated automatically based on the function’s docstring. However, in the examples here, I’m using the lower-level `mcp.server.Server` class. This approach gives me greater control over the schema. With this flexibility, we can define schemas manually or build a custom docstring parser for methods and functions.
+When using the `mcp.server.FastMCP` class, tool schemas are generated automatically based on a function’s docstring. However, in the examples here, I’m using the lower-level `mcp.server.Server` class. This approach offers greater control over the schema, allowing us to define schemas manually or build a custom docstring parser for methods and functions.
 
 ```python
 import inspect
@@ -111,14 +111,14 @@ def generate_tool(func: Any) -> Tool:
     return Tool(**schema)
 ```
 
-As long as your function includes clear type hints and a structured docstring, it will automatically be exposed to clients as an MCP tool.
+As long as your function includes clear type hints and a structured docstring, it can be automatically exposed to clients as an MCP tool.
 
 ## MCP Server
 
-Finally, the core server uses the` mcp.server.Server` class and defines two key handlers:
+Finally, the core server uses the `mcp.server.Server` class and defines two key handlers:
 
-- `list_tools()` tells the client what functions/tools are available.
-- `call_tool()` handles tool invocations along with their arguments.
+- `list_tools()` informs the client of the available functions/tools.
+- `call_tool()` handles tool invocations and their arguments
 
 ```python
 from mcp.server import Server
@@ -143,9 +143,8 @@ async def serve() -> None:
 
 ```
 
-By using `stdio_server()`, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.
+By using `stdio_server()`, this project can be plugged directly into an LLM runtime that supports MCP—no web server required.
 
 - [github.com/maxscheijen/mcp-yahoo-finance](https://github.com/maxscheijen/mcp-yahoo-finance)
 - [modelcontextprotocol.io/](https://modelcontextprotocol.io/)
-- [github.com/ranaroussi/yfinance](https://github.com/ranaroussi/yfinance)
 
