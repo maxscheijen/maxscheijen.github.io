@@ -72,7 +72,7 @@ pre code {
     margin: 0;
 }
 
-h1, h2, h3 {
+h1, h2 {
     border-bottom: 1px solid #DFE4E9;
     padding-bottom: 0.3em;
 }
@@ -143,6 +143,12 @@ a {
     color: #0969DA;
     text-decoration: underline;
     text-underline-offset: .2rem;
+  }
+
+
+  h1, h2 {
+    border-bottom: 1px solid #2F353D;
+    padding-bottom: 0.3em;
   }
 }
 
