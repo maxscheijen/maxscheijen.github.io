@@ -28,12 +28,12 @@
     <p></p>
   </div>
   <article>
-  <p>Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a> (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.</p>
-<p>The <a href="https://github.com/maxscheijen/mcp-yahoo-finance"><code>mcp-yahoo-finance</code></a> server is available on my <a href="https://github.com/maxscheijen/mcp-yahoo-finance">github</a>.</p>
+  <p>Lately, I’ve become increasingly interested in tools for large language models (LLMs), and I started exploring the <a href="https://modelcontextprotocol.io/">Model Context Protocol</a> (MCP). In this post, I’ll showcase a simple MCP server I built that allows clients to interact with Yahoo Finance to retrieve stock prices and company information.</p>
+<p>The <a href="https://github.com/maxscheijen/mcp-yahoo-finance"><code>mcp-yahoo-finance</code></a> server is available on my <a href="https://github.com/maxscheijen/mcp-yahoo-finance">GitHub</a>.</p>
 <h2>High level Design</h2>
-<p>This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.</p>
+<p>This project is a minimal MCP tool server that enables LLMs to retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.</p>
 <h3>Wrapping Existing API</h3>
-<p>The logic for retrieving stock prices lives in a small utility class. It uses <a href="https://github.com/ranaroussi/yfinance"><code>yfinance</code></a> python library under the hood:</p>
+<p>The logic for retrieving stock prices resides in a small utility class. It uses the <a href="https://github.com/ranaroussi/yfinance"><code>yfinance</code></a> Python library under the hood:</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">YahooFinance</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">Session</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span> <span class="ow">or</span> <span class="n">Session</span><span class="p">()</span>
@@ -60,8 +60,8 @@
 
 <p>It’s minimal, but it works well as a testbed for building and exposing MCP-compatible tools.</p>
 <h2>Generate Tool Schemas</h2>
-<p>Tool schemas give an LLM the necessary context about what parameters a tool expects.</p>
-<p>When using the <code>mcp.server.FastMCP</code> class, tool schemas are generated automatically based on the function’s docstring. However, in the examples here, I’m using the lower-level <code>mcp.server.Server</code> class. This approach gives me greater control over the schema. With this flexibility, we can define schemas manually or build a custom docstring parser for methods and functions.</p>
+<p>Tool schemas provide LLMs with the necessary context about what parameters a tool expects.</p>
+<p>When using the <code>mcp.server.FastMCP</code> class, tool schemas are generated automatically based on a function’s docstring. However, in the examples here, I’m using the lower-level <code>mcp.server.Server</code> class. This approach offers greater control over the schema, allowing us to define schemas manually or build a custom docstring parser for methods and functions.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
@@ -124,12 +124,12 @@
     <span class="k">return</span> <span class="n">Tool</span><span class="p">(</span><span class="o">**</span><span class="n">schema</span><span class="p">)</span>
 </code></pre></div>
 
-<p>As long as your function includes clear type hints and a structured docstring, it will automatically be exposed to clients as an MCP tool.</p>
+<p>As long as your function includes clear type hints and a structured docstring, it can be automatically exposed to clients as an MCP tool.</p>
 <h2>MCP Server</h2>
-<p>Finally, the core server uses the<code>mcp.server.Server</code> class and defines two key handlers:</p>
+<p>Finally, the core server uses the <code>mcp.server.Server</code> class and defines two key handlers:</p>
 <ul>
-<li><code>list_tools()</code> tells the client what functions/tools are available.</li>
-<li><code>call_tool()</code> handles tool invocations along with their arguments.</li>
+<li><code>list_tools()</code> informs the client of the available functions/tools.</li>
+<li><code>call_tool()</code> handles tool invocations and their arguments</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">mcp.server</span> <span class="kn">import</span> <span class="n">Server</span>
 
@@ -152,11 +152,10 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown tool: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<p>By using <code>stdio_server()</code>, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.</p>
+<p>By using <code>stdio_server()</code>, this project can be plugged directly into an LLM runtime that supports MCP—no web server required.</p>
 <ul>
 <li><a href="https://github.com/maxscheijen/mcp-yahoo-finance">github.com/maxscheijen/mcp-yahoo-finance</a></li>
 <li><a href="https://modelcontextprotocol.io/">modelcontextprotocol.io/</a></li>
-<li><a href="https://github.com/ranaroussi/yfinance">github.com/ranaroussi/yfinance</a></li>
 </ul>
   </article>
   </main>

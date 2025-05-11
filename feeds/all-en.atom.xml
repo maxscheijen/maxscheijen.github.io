@@ -252,12 +252,13 @@
             &lt;span class="s2"&gt;&amp;quot;strict&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="p"&gt;},&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>A MCP Server</title><link href="maxscheijen.github.io/posts/a-mcp-server/" rel="alternate"></link><published>2025-04-18T00:00:00+02:00</published><updated>2025-04-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-04-18:maxscheijen.github.io/posts/a-mcp-server/</id><summary type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately I’m becoming more and more interested in tools for large language models (LLMs), and I started to look into the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post I wanted to show a simple MCP server I built that allows clients to interact with Yahoo Finance to get stock pricing and company information.&lt;/p&gt;
-&lt;p&gt;The &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;&lt;code&gt;mcp-yahoo-finance&lt;/code&gt;&lt;/a&gt; server is available on my &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;github&lt;/a&gt;.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"></category></entry><entry><title>A MCP Server</title><link href="maxscheijen.github.io/posts/a-mcp-server/" rel="alternate"></link><published>2025-04-18T00:00:00+02:00</published><updated>2025-04-18T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-04-18:maxscheijen.github.io/posts/a-mcp-server/</id><summary type="html">&lt;p&gt;Lately, I’ve become increasingly interested in tools for large language models (LLMs), and I started exploring the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post, I’ll showcase a simple MCP server I built that allows clients to interact with Yahoo Finance to retrieve stock prices and company information.&lt;/p&gt;
+&lt;p&gt;The …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately, I’ve become increasingly interested in tools for large language models (LLMs), and I started exploring the &lt;a href="https://modelcontextprotocol.io/"&gt;Model Context Protocol&lt;/a&gt; (MCP). In this post, I’ll showcase a simple MCP server I built that allows clients to interact with Yahoo Finance to retrieve stock prices and company information.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;&lt;code&gt;mcp-yahoo-finance&lt;/code&gt;&lt;/a&gt; server is available on my &lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;High level Design&lt;/h2&gt;
-&lt;p&gt;This project is a minimal MCP tool server that lets LLMs retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.&lt;/p&gt;
+&lt;p&gt;This project is a minimal MCP tool server that enables LLMs to retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.&lt;/p&gt;
 &lt;h3&gt;Wrapping Existing API&lt;/h3&gt;
-&lt;p&gt;The logic for retrieving stock prices lives in a small utility class. It uses &lt;a href="https://github.com/ranaroussi/yfinance"&gt;&lt;code&gt;yfinance&lt;/code&gt;&lt;/a&gt; python library under the hood:&lt;/p&gt;
+&lt;p&gt;The logic for retrieving stock prices resides in a small utility class. It uses the &lt;a href="https://github.com/ranaroussi/yfinance"&gt;&lt;code&gt;yfinance&lt;/code&gt;&lt;/a&gt; Python library under the hood:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;YahooFinance&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Session&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verify&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;session&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -284,8 +285,8 @@
 
 &lt;p&gt;It’s minimal, but it works well as a testbed for building and exposing MCP-compatible tools.&lt;/p&gt;
 &lt;h2&gt;Generate Tool Schemas&lt;/h2&gt;
-&lt;p&gt;Tool schemas give an LLM the necessary context about what parameters a tool expects.&lt;/p&gt;
-&lt;p&gt;When using the &lt;code&gt;mcp.server.FastMCP&lt;/code&gt; class, tool schemas are generated automatically based on the function’s docstring. However, in the examples here, I’m using the lower-level &lt;code&gt;mcp.server.Server&lt;/code&gt; class. This approach gives me greater control over the schema. With this flexibility, we can define schemas manually or build a custom docstring parser for methods and functions.&lt;/p&gt;
+&lt;p&gt;Tool schemas provide LLMs with the necessary context about what parameters a tool expects.&lt;/p&gt;
+&lt;p&gt;When using the &lt;code&gt;mcp.server.FastMCP&lt;/code&gt; class, tool schemas are generated automatically based on a function’s docstring. However, in the examples here, I’m using the lower-level &lt;code&gt;mcp.server.Server&lt;/code&gt; class. This approach offers greater control over the schema, allowing us to define schemas manually or build a custom docstring parser for methods and functions.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;inspect&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;
 
@@ -348,12 +349,12 @@
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;Tool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;schema&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;As long as your function includes clear type hints and a structured docstring, it will automatically be exposed to clients as an MCP tool.&lt;/p&gt;
+&lt;p&gt;As long as your function includes clear type hints and a structured docstring, it can be automatically exposed to clients as an MCP tool.&lt;/p&gt;
 &lt;h2&gt;MCP Server&lt;/h2&gt;
-&lt;p&gt;Finally, the core server uses the&lt;code&gt;mcp.server.Server&lt;/code&gt; class and defines two key handlers:&lt;/p&gt;
+&lt;p&gt;Finally, the core server uses the &lt;code&gt;mcp.server.Server&lt;/code&gt; class and defines two key handlers:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;list_tools()&lt;/code&gt; tells the client what functions/tools are available.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;call_tool()&lt;/code&gt; handles tool invocations along with their arguments.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;list_tools()&lt;/code&gt; informs the client of the available functions/tools.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;call_tool()&lt;/code&gt; handles tool invocations and their arguments&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;mcp.server&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;
 
@@ -376,11 +377,10 @@
                 &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Unknown tool: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;By using &lt;code&gt;stdio_server()&lt;/code&gt;, this project can be plugged directly into an LLM runtime that supports MCP — no web server required.&lt;/p&gt;
+&lt;p&gt;By using &lt;code&gt;stdio_server()&lt;/code&gt;, this project can be plugged directly into an LLM runtime that supports MCP—no web server required.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://github.com/maxscheijen/mcp-yahoo-finance"&gt;github.com/maxscheijen/mcp-yahoo-finance&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://modelcontextprotocol.io/"&gt;modelcontextprotocol.io/&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/ranaroussi/yfinance"&gt;github.com/ranaroussi/yfinance&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;</content><category term="posts"></category></entry><entry><title>Setting up a VPS on DigitalOcean with Terraform and Tailscale</title><link href="maxscheijen.github.io/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/" rel="alternate"></link><published>2025-02-15T00:00:00+01:00</published><updated>2025-02-15T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-02-15:maxscheijen.github.io/posts/setting-up-a-vps-on-digitalocean-with-terraform-and-tailscale/</id><summary type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
 &lt;h2&gt;Setting Up Terraform for DigitalOcean&lt;/h2&gt;
 &lt;p&gt;First create a &lt;code&gt;secrets …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
