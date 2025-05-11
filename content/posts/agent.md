@@ -3,33 +3,33 @@ title: Basic LLM Agent with Tool Calling
 date: 2025-05-08
 ---
 
-Over the past few years, agents have become a popular topic in the AI community. Many frameworks allow you to build agents, often serving as abstractions for calling LLMs, parsing, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is simple.
+Over the past few years, agents have become a popular topic in the AI community. Many frameworks now allow you to build agents, often serving as abstractions for calling LLMs, parsing inputs, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is straightforward.
 
-In this post, I share a straightforward, bare-bones implementation of an agent that can call tools.
+In this post, I’ll share a simple, bare-bones implementation of an agent that can call tools.
 
 ## Agent
 
-Let's start by defining what I mean by an **agent**. Here, I follow Anthropic's definition of an agent.
+Let’s begin by defining what I mean by an agent. Here, I adopt Anthropic’s definition:
 
 > "***[Agents](https://www.anthropic.com/engineering/building-effective-agents)** are systems where LLMs dynamically direct their own processes and tool usage, maintaining control over how they accomplish tasks"*
 
-The **key points** are:
+The **key characteristics** of agents are:
 
-1. Direct own processes and tool usage.
-2. Accomplish tasks.
+1.	They direct their own processes and tool usage.
+2.	They accomplish tasks.
 
-Let's operationalize these two points:
+Let’s operationalize these two points:
 
-1. Implement a loop that keeps calling an LLM (optional but advised: set a maximum number of iterations).
-2. Identify when a task is accomplished (e.g., when the LLM stops calling tools).
+1.	Implement a loop that keeps calling an LLM (optionally, set a maximum number of iterations).
+2.	Detect when a task is accomplished (e.g., when the LLM stops calling tools).
 
-This is the structural setup of a simple agent:
+This is the basic structure of a simple agent:
 
-- System prompt/instruction (Optional).
-- A large language model client.
-- List of tools, e.g. a list of functions (Optional).
+- System prompt/instruction (optional)
+- A large language model client
+- A list of tools (e.g., functions) (optional)
 
-Let's create a simple `Agent` class based on this structure.
+Let’s create a simple `Agent` class based on this structure:
 
 ```python
 from dataclasses import dataclass, field
@@ -43,11 +43,11 @@ class Agent:
     tools: list[Callable] = field(default_factory=list)
 ```
 
-The `Agent` class is a simple `dataclass` that takes a system prompt, a model name and a list of tools.
+The `Agent` class is a `dataclass` that takes a system prompt, a model name, and a list of tools.
 
-In the `__post_init__` method, we initialize the `messages` list and the `tool_mapping` dictionary. The `messages` list is used to store the messages that are sent to the LLM. The `tool_mapping` dictionary is used to map the tool names to their corresponding functions.
+In the `__post_init__` method, we initialize the `messages` list and the tool_mapping dictionary. The messages list stores the conversation history sent to the LLM. The `tool_mapping` dictionary maps tool names to their corresponding functions.
 
-The `tool_schema` is a list of function schemas. The `function_schema` function is used to create the schema for each tool. This is just a helper function that takes a function and returns function schema expected by OpenAI.
+The `tool_schema` is a list of function schemas. The `function_schema` function helps create schemas expected by the OpenAI API. Alternatively, you can define this schema manually.
 
 You can also define this tool/function schema manually.
 
@@ -64,19 +64,15 @@ class Agent:
             self.messages.append({"role": "system", "content": self.system_prompt})
 ```
 
-Let's now look at implementing those two key points.
-
 ### Agentic Loop
 
-The `run` method implements a loop that calls the OpenAI API with a schema of available tools.
+The `run` method implements a loop that calls the OpenAI API with the available tool schemas.
 
-The main idea is to keep calling the large language model until it stops calling tools or until the `max_iterations` is reached. Setting `max_iterations` is optional, but it can be useful to **avoid infinite loops**.
+The core idea is to keep calling the LLM until it stops invoking tools or until `max_iterations` is reached. Setting a `max_iterations` value is advisable to **avoid infinite loops**.
 
-The tool calls, parameters and tool results are added to the `messages` list. The `messages` list is used to keep track of the **conversation history**, which is essential because the LLM needs to know the **context of the conversation** in order to generate relevant responses.
+Tool calls, parameters, and results are added to the messages list. Maintaining the **conversation history** is crucial so that the LLM retains context and generates relevant responses.
 
-My assumption is that the task is **accomplished when the LLM stops calling tools**.
-
-This is a simplification, but it works for most cases. In practice, you might want to add more sophisticated logic to determine when a task is accomplished.
+Here, the assumption is that a task is **accomplished when the LLM stops calling tools**—a useful simplification for many use cases.
 
 ```python
 from openai import OpenAI
@@ -115,21 +111,19 @@ class Agent:
 
 ### Tool Calling
 
-The `call_tool` method is used to call the tool with the parameters passed in the tool call message. The `tool_mapping` dictionary (constructed in the `__post_init__`) maps the tool name to its corresponding function.
-
-The function is called with the parameters identified by the large language model based on the function/tool schema.
+The `call_tool` method invokes a tool with the parameters provided by the LLM. The `tool_mapping` dictionary maps function names to actual implementations.
 
 ```python
 @dataclass
 class Agent:
     ...
-    def call_tool(tool: ChatCompletionMesssageToolCall) -> Any:
+    def call_tool(self, tool: ChatCompletionMesssageToolCall) -> Any:
         return self.tool_mapping[tool.function.name](
             **json.loads(tool.function.arguments)
         )
 ```
 
-The `Agent` classes uses helper methods to add tool call messages and tool result messages to the `messages` list.
+The `Agent` class also includes helper methods to record tool calls and results in the messages list:
 
 ```python
 from openai.types.chat import ChatCompletionMessageToolCall
@@ -174,9 +168,7 @@ class Agent:
 
 ### Running the Agent
 
-We can now run the agent with a query and see if it uses tools and stops when the task is accomplished.
-
-I'll add a simple `get_weather` tool that retreives weather data based on longitude and latitude. The code for this can be found at the end of this post.
+Now, let’s run the agent using a simple query. We’ll use a basic `get_weather` tool to retrieve weather data based on geographic coordinates. (The code for this tool is included in the appendix.)
 
 ```python
 agent = Agent(
@@ -187,7 +179,7 @@ agent = Agent(
 agent.run(query="What is the weather in Amsterdam?")
 ```
 
-This results in:
+This yields:
 
 ```
 The current weather in Amsterdam is as follows:
@@ -195,70 +187,13 @@ The current weather in Amsterdam is as follows:
 - Wind Speed: 11.2 km/h
 ```
 
-Looking at the messages we can see that the agent called the `get_weather` tool and passed the parameters to it. The result of the tool call was then added to the messages list.
-
-```json
-[
-    {
-        "role": "system",
-        "content": "You are a helpful assistant."
-    },
-    {
-        "role": "user",
-        "content": "Whats the weather in Amsterdam?"
-    },
-    {
-        "role": "assistant",
-        "content": null,
-        "tool_calls": [
-            {
-                "id": "call_NaBl8NWIHZRBU92bhfc5kCq1",
-                "type": "function",
-                "function": {
-                    "name": "get_weather",
-                    "arguments": {
-                        "latitude":52.3676,
-                        "longitude":4.9041
-                    }
-                }
-            }
-        ]
-    },
-    {
-        "role": "tool",
-        "name": "get_weather",
-        "tool_call_id": "call_NaBl8NWIHZRBU92bhfc5kCq1",
-        "content":
-            {
-                "latitude": 52.366,
-                "longitude": 4.901,
-                "current": {
-                    "time": "2025-05-08T09:45",
-                    "interval": 900,
-                    "temperature_2m": 15.2,
-                    "wind_speed_10m": 11.2
-                }
-            }
-        },
-    {
-        "role": "assistant",
-        "content": "The current weather in Amsterdam is as follows:\n- Temperature: 15.2\n- Wind Speed: 11.2 km/h\n\nIf you need more details or a forecast, let me know!"
-    }
-]
-
-```
-
-This is a super simple implementation of an agent that can call tools. Tools can be anything, including API requests to external services, database queries, or any other function that can be called with parameters.
-
-Tools can also be large language model calls; for example, you could add a reflection tool that reflects on the answer.
+The agent called the get_weather tool, passed the necessary parameters, and included the tool’s output in the final response.
 
 ## Appendix
 
-Some additional details to run the full example.
+### Tool Implementation
 
-### Tool
-
-Here is the simple `get_weather` tool that gets the weather data based on longitude and latitude. It uses the Open-Meteo API to get the weather data.
+Here is the simple `get_weather` function, which uses the Open-Meteo API:
 
 
 ```python
@@ -287,9 +222,9 @@ def get_weather(latitude: float, longitude: float) -> dict | str:
 
 ```
 
-### Tool/Function Schema Generation
+### Function Schema Generation
 
-The `function_schema`  function is used to create the schema for each tool. This is a helper function that takes a function and returns the function schema expected by OpenAI. You can also define this schema manually.
+The `function_schema` helper generates an OpenAI-compatible schema from a function’s docstring and type annotations:
 
 ```python
 from typing import Any, Callable
