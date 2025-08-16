@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>How I manage my dotfiles - Max Scheijen</title>
+  <title>Prompts I use as an AI Engineer - Max Scheijen</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../theme/css/main.css" type="text/css" />
   <link rel="stylesheet" href="../../theme/css/styles.css" type="text/css" />
@@ -30,35 +30,43 @@
   </header>
   <main>
         
-  <h1>How I manage my dotfiles</h1>
+  <h1>Prompts I use as an AI Engineer</h1>
   <div class="meta">
-    <p>Nov 28, 2024</p>
+    <p>May 21, 2025</p>
     <p></p>
   </div>
   <article>
-  <p>I store all my dotfiles in a dedicated git repository called <code>dotfiles</code> with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.</p>
-<p>I then use <code>stow</code> to create <strong>symlinks</strong> to place the dotfiles in the appropriate places.</p>
-<p>This creates symlinks from for example <code>~/dotfiles/.zshrc</code> to <code>~/.zshrc</code>.</p>
-<div class="highlight"><pre><span></span><code>stow<span class="w"> </span>zsh
-</code></pre></div>
+  <p>There are no "magic prompts". There are useful prompts.</p>
+<p>I created a command line tool. That allows me to make calls using this prompt.</p>
+<h2>Review my code</h2>
+<h2>Git Commit Message</h2>
+<p>Write an good commit message is hard. Nice that you wrote what has changed. But I can see that..., I need to know why it has changed.</p>
+<p>I inject my <code>git diff --cached</code> into this prompt. By running <code>dev git commit</code>.</p>
+<div class="highlight"><pre><span></span><code>Write a concise, informative commit message for these changes:
 
-<p>I organize them by tool.</p>
-<div class="highlight"><pre><span></span><code>dotfiles/
-├── zsh/
-│   └── .zshrc
-├── git/
-│   └── .gitconfig
-└── README.md
-</code></pre></div>
+- Review the whole context of the diff carefully to understand the effect the change would have on the rest of the code and explain that. Be specific about the effect.
+- Do not guess the intent.
+- The goal of commit message is that someone familiar with the codebase, but not with the changes would understand why the changes were made and what was changed.
+- The first line should be a short one sentence summary of the change.
+- Remember to mention the files that were changed and what was changed.
+- Explain the &#39;why&#39; behind the changes.
+- Use bullet points for multiple changes.
+- If there are no changes, or the input is blank - then return an empty string.
 
-<p>Setup a machine using <code>dotfiles.sh</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>zsh
-git<span class="w"> </span>clone<span class="w"> </span>git@github.com/maxscheijen/dotfiles<span class="w"> </span><span class="nv">$HOME</span>/dotfiles
-stow<span class="w"> </span>git<span class="w"> </span>zsh
-</code></pre></div>
+Think carefully about what would be most helpful to someone trying to understand the intent of this commit before you write your commit message.
+Your commit message will be used as an example to train other team members about the content of a good commit message.
 
-<p>...</p>
+The output should be formatted as the following:
+
+feat/doc/refactor/etc: Summary of changes.
+
+- change
+- change
+- etc
+
+What you write will be passed directly into `git commit -m &quot;[message]&quot;`.
+Write the commit message in markdown format.
+</code></pre></div>
   </article>
   </main>
     <footer>

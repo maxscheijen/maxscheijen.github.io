@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="index, follow" />
-  <title>How I manage my dotfiles - Max Scheijen</title>
+  <title>Stop using "git add ." - Max Scheijen</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="../../theme/css/main.css" type="text/css" />
   <link rel="stylesheet" href="../../theme/css/styles.css" type="text/css" />
@@ -30,35 +30,25 @@
   </header>
   <main>
         
-  <h1>How I manage my dotfiles</h1>
+  <h1>Stop using "git add ."</h1>
   <div class="meta">
-    <p>Nov 28, 2024</p>
+    <p>Aug 16, 2025</p>
     <p></p>
   </div>
   <article>
-  <p>I store all my dotfiles in a dedicated git repository called <code>dotfiles</code> with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.</p>
-<p>I then use <code>stow</code> to create <strong>symlinks</strong> to place the dotfiles in the appropriate places.</p>
-<p>This creates symlinks from for example <code>~/dotfiles/.zshrc</code> to <code>~/.zshrc</code>.</p>
-<div class="highlight"><pre><span></span><code>stow<span class="w"> </span>zsh
+  <p>We’ve all done it, <code>git add .</code>, adding untracked files to the staging area: <code>.env</code>, <code>TODO</code>, or who knows what, and then committing them.</p>
+<p>Stop doing that. Instead, use:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u
 </code></pre></div>
 
-<p>I organize them by tool.</p>
-<div class="highlight"><pre><span></span><code>dotfiles/
-├── zsh/
-│   └── .zshrc
-├── git/
-│   └── .gitconfig
-└── README.md
+<p>This stages only the files that are already tracked by Git.</p>
+<p>The <code>-u</code> (short for update) flag tells Git to stage only modifications and deletions of already tracked files. It will not stage new, untracked files.</p>
+<p>This makes it much harder to accidentally commit unwanted files, while still capturing all changes to the files that are already part of your repository.</p>
+<p>If you want to stage only modified files and leave deletions out, you can use:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u<span class="w"> </span>:/
 </code></pre></div>
 
-<p>Setup a machine using <code>dotfiles.sh</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>zsh
-git<span class="w"> </span>clone<span class="w"> </span>git@github.com/maxscheijen/dotfiles<span class="w"> </span><span class="nv">$HOME</span>/dotfiles
-stow<span class="w"> </span>git<span class="w"> </span>zsh
-</code></pre></div>
-
-<p>...</p>
+<p>And if you need finer control, consider git add <code>-p</code>, which lets you review and selectively stage changes hunk by hunk.</p>
   </article>
   </main>
     <footer>
