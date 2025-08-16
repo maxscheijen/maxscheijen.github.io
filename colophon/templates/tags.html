@@ -1,8 +1,0 @@
-{% block content %}
-<ul class="tags">
-<!--Sort tags alphabetically -->
-{% for tag, articles in tags %}
-    <li><a href="{{SITEURL}}/{{tag.url}}">{{ tag }}</a></li>
-{% endfor %}
-</ul>
-{% endblock %}
