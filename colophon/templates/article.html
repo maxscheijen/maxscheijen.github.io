@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - {{ AUTHOR }}{% endblock %}
+
+{% block content %}        
+  <h1>{{ article.title }}</h1>
+  <div class="meta">
+    <p>{{ article.date.strftime('%b %d, %Y') }}</p>
+    <p>{{ article.modified }}</p>
+  </div>
+  <article>
+  {{ article.content }}
+  </article>
+{% endblock %}
