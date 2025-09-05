@@ -39,41 +39,7 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u&lt;span class="w"&gt; &lt;/span&gt;:/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;And if you need finer control, consider git add &lt;code&gt;-p&lt;/code&gt;, which lets you review and selectively stage changes hunk by hunk.&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Prompts I use as an AI Engineer</title><link href="maxscheijen.github.io/posts/prompts-i-use-as-an-ai-engineer/" rel="alternate"/><published>2025-05-21T00:00:00+02:00</published><updated>2025-05-21T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-05-21:maxscheijen.github.io/posts/prompts-i-use-as-an-ai-engineer/</id><summary type="html">&lt;p&gt;There are no "magic prompts". There are useful prompts.&lt;/p&gt;
-&lt;p&gt;I created a command line tool. That allows me to make calls using this prompt.&lt;/p&gt;
-&lt;h2&gt;Review my code&lt;/h2&gt;
-&lt;h2&gt;Git Commit Message&lt;/h2&gt;
-&lt;p&gt;Write an good commit message is hard. Nice that you wrote what has changed. But I can see that..., I …&lt;/p&gt;</summary><content type="html">&lt;p&gt;There are no "magic prompts". There are useful prompts.&lt;/p&gt;
-&lt;p&gt;I created a command line tool. That allows me to make calls using this prompt.&lt;/p&gt;
-&lt;h2&gt;Review my code&lt;/h2&gt;
-&lt;h2&gt;Git Commit Message&lt;/h2&gt;
-&lt;p&gt;Write an good commit message is hard. Nice that you wrote what has changed. But I can see that..., I need to know why it has changed.&lt;/p&gt;
-&lt;p&gt;I inject my &lt;code&gt;git diff --cached&lt;/code&gt; into this prompt. By running &lt;code&gt;dev git commit&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;Write a concise, informative commit message for these changes:
-
-- Review the whole context of the diff carefully to understand the effect the change would have on the rest of the code and explain that. Be specific about the effect.
-- Do not guess the intent.
-- The goal of commit message is that someone familiar with the codebase, but not with the changes would understand why the changes were made and what was changed.
-- The first line should be a short one sentence summary of the change.
-- Remember to mention the files that were changed and what was changed.
-- Explain the &amp;#39;why&amp;#39; behind the changes.
-- Use bullet points for multiple changes.
-- If there are no changes, or the input is blank - then return an empty string.
-
-Think carefully about what would be most helpful to someone trying to understand the intent of this commit before you write your commit message.
-Your commit message will be used as an example to train other team members about the content of a good commit message.
-
-The output should be formatted as the following:
-
-feat/doc/refactor/etc: Summary of changes.
-
-- change
-- change
-- etc
-
-What you write will be passed directly into `git commit -m &amp;quot;[message]&amp;quot;`.
-Write the commit message in markdown format.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"/></entry><entry><title>Basic LLM Agent with Tool Calling</title><link href="maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/" rel="alternate"/><published>2025-05-08T00:00:00+02:00</published><updated>2025-05-08T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-05-08:maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/</id><summary type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks now allow you to build agents, often serving as abstractions for calling LLMs, parsing inputs, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is straightforward.&lt;/p&gt;
+&lt;p&gt;And if you need finer control, consider git add &lt;code&gt;-p&lt;/code&gt;, which lets you review and selectively stage changes hunk by hunk.&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Basic LLM Agent with Tool Calling</title><link href="maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/" rel="alternate"/><published>2025-05-08T00:00:00+02:00</published><updated>2025-05-08T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-05-08:maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/</id><summary type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks now allow you to build agents, often serving as abstractions for calling LLMs, parsing inputs, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is straightforward.&lt;/p&gt;
 &lt;p&gt;In this post …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks now allow you to build agents, often serving as abstractions for calling LLMs, parsing inputs, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is straightforward.&lt;/p&gt;
 &lt;p&gt;In this post, I’ll share a simple, bare-bones implementation of an agent that can call tools.&lt;/p&gt;
 &lt;h2&gt;Agent&lt;/h2&gt;
