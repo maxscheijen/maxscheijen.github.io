@@ -1,52 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&display=swap');
-
 :root {
   color-scheme: light dark;
 }
 
-html {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  max-width: 800px;
-  padding: 3em 1em;
-  line-height: 1.5;
-  font-size: 16px;
-  height: 100%;
-  margin: auto;
+body {
+  font-family: "Myriad Pro", "Helvetica Neue", Helvetica;
+  max-width: 600px;
+  padding: 3em 0;
+  padding-left: 15em;
+  font-size: 13px;
+  line-height: 20px;
 }
 
-header {
-  margin-bottom: 2em;
+
+.listpost {
+    line-height: 25px;
 }
 
-footer {
-  margin-top: 2em;
+h1, h2, h3 {
+  font-family: "Myriad Pro", "Helvetica Neue", Helvetica;
+  margin: 0;
+  padding: 5px 0;
 }
-
-.post {
-    display: flex;
-    margin: 0 0 .75em 0;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.meta {
-  color: #59636E;
-}
-
-time {
-  float: right;
-  margin: 0 2em 0 0;
-  width: 5em;
-}
-
-blockquote {
-  color: #59636E;
-  padding: 0 1em;
-  margin-inline-start: 0;
-  border-left: .25em solid #D1D9E0;
-}
-
 
 pre {
   background: #F8F8FF;
@@ -57,52 +31,9 @@ pre {
   font-size: 0.9em;
 }
 
-code {
-  background-color: #F0F1F2;
-  font-size: 0.8em;
-  font-family: SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-  padding: 0.2em 0.4em;
-  margin: 0;
-  border-radius: 6px;
-}
-
-pre code {
-    background: #F8F8FF;
-    padding: 0;
-    margin: 0;
-}
-
-h1, h2 {
-    border-bottom: 1px solid #DFE4E9;
-    padding-bottom: 0.3em;
-}
-
-header a, .post a {
-  color: #000000;
-  text-decoration: none;
-}
-
-.post a:hover {
-  text-decoration: underline;
-  text-underline-offset: .2rem;
-}
-
-
-footer a {
-  color: #000000;
-  text-decoration: underline;
-  text-underline-offset: .2rem;
-}
-
-a {
-  color: #0969DA;
-  text-decoration: underline;
-  text-underline-offset: .2rem;
-}
-
 
 @media (prefers-color-scheme: dark) {
-  html {
+  body {
     background: #0D1117;
     color: #F0F6FC;
   }
