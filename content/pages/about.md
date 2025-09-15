@@ -11,7 +11,7 @@ large language models (llms).
 
 I'm really passionate about weightlifting and I try to do it at least four times a week.
 
-## Contact me
+**Contact me**
 
 If you want to contact me you can try and reach trough one of these channels:
 

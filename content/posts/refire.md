@@ -5,7 +5,7 @@ date: 2025-09-15
 
 Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? 
 
-That’s exactly why I built [`refire`](https://github.com/maxscheijen/refire) — a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.
+That’s exactly why I built [`refire`](https://github.com/maxscheijen/refire), a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.
 
 
 ## Why refire?
