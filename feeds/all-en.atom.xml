@@ -1,5 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Max Scheijen</title><link href="maxscheijen.github.io/" rel="alternate"/><link href="maxscheijen.github.io/feeds/all-en.atom.xml" rel="self"/><id>maxscheijen.github.io/</id><updated>2025-08-30T00:00:00+02:00</updated><entry><title>vibeflip: a truly random coin flip</title><link href="maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/" rel="alternate"/><published>2025-08-30T00:00:00+02:00</published><updated>2025-08-30T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-30:maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/</id><summary type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;&lt;code&gt;vibesort&lt;/code&gt;&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Max Scheijen</title><link href="maxscheijen.github.io/" rel="alternate"/><link href="maxscheijen.github.io/feeds/all-en.atom.xml" rel="self"/><id>maxscheijen.github.io/</id><updated>2025-09-15T00:00:00+02:00</updated><entry><title>refire - A lightweight retrier</title><link href="maxscheijen.github.io/posts/refire-a-lightweight-retrier/" rel="alternate"/><published>2025-09-15T00:00:00+02:00</published><updated>2025-09-15T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-09-15:maxscheijen.github.io/posts/refire-a-lightweight-retrier/</id><summary type="html">&lt;p&gt;Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? &lt;/p&gt;
+&lt;p&gt;That’s exactly why I built …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? &lt;/p&gt;
+&lt;p&gt;That’s exactly why I built &lt;a href="https://github.com/maxscheijen/refire"&gt;&lt;code&gt;refire&lt;/code&gt;&lt;/a&gt; — a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.&lt;/p&gt;
+&lt;h2&gt;Why refire?&lt;/h2&gt;
+&lt;p&gt;When dealing with unreliable resources like APIs, databases, or external services, retrying operations is often the simplest way to build resilience. But manually implementing retries quickly leads to messy, repetitive code.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;refire&lt;/code&gt; makes retrying clean and declarative:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Retry on specific exceptions&lt;/li&gt;
+&lt;li&gt;Control number of attempts (or retry indefinitely)&lt;/li&gt;
+&lt;li&gt;Apply exponential backoff&lt;/li&gt;
+&lt;li&gt;Add jitter to prevent retry storms&lt;/li&gt;
+&lt;li&gt;Cap retries with a maximum delay&lt;/li&gt;
+&lt;li&gt;Log retry attempts automatically&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Installation&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;refire
+&lt;span class="c1"&gt;# or &lt;/span&gt;
+uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;refire
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Requires Python &lt;strong&gt;3.10+&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;Quick Start&lt;/h2&gt;
+&lt;p&gt;Here’s a simple example of using &lt;code&gt;refire&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;refire&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;refire&lt;/span&gt;
+
+
+&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backoff&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;jitter&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;flaky_function&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;0.7&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;ValueError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Unlucky!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Success!&amp;quot;&lt;/span&gt;
+
+
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;flaky_function&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The function will retry &lt;strong&gt;up to 5 times&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;The first retry waits &lt;strong&gt;1 second&lt;/strong&gt;, then doubles each time (backoff=2).&lt;/li&gt;
+&lt;li&gt;A random jitter between &lt;strong&gt;0 and 1 second&lt;/strong&gt; is added to the delay.&lt;/li&gt;
+&lt;li&gt;If all retries fail, the last exception is re-raised.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, you might see log output like:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;1.00&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;2.34&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.89&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Customizing Retry Policies&lt;/h2&gt;
+&lt;p&gt;You have full control over retry behavior:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Retry on specific exceptions:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exceptions&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;ConnectionError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ne"&gt;TimeoutError&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fetch_data&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Infinite retries until success:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;always_retry&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Cap the maximum delay&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backoff&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;capped_backoff&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Integrate with your own logger:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+
+&lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;myapp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;log_level&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;with_logging&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2&gt;Retrying on Custom Exceptions&lt;/h2&gt;
+&lt;p&gt;You can also define your own exceptions and configure refire to retry only when they occur:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TemporaryAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Raised when the API fails temporarily.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CriticalAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Raised when the API fails permanently (don’t retry).&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+
+&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exceptions&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;TemporaryAPIError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fetch_from_api&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;0.8&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;TemporaryAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Temporary failure, please retry.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;0.9&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="n"&gt;CriticalAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Critical failure, do not retry!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Fetched data!&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If a &lt;code&gt;TemporaryAPIError&lt;/code&gt; is raised, the function will retry up to &lt;strong&gt;3 times&lt;/strong&gt; with a &lt;strong&gt;2s delay&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;If a &lt;code&gt;CriticalAPIError&lt;/code&gt; is raised, it will &lt;strong&gt;not retry&lt;/strong&gt; and immediately propagate the exception.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This makes refire flexible: you can fine-tune retry behavior depending on whether an error is transient or permanent.&lt;/p&gt;
+&lt;h2&gt;When to Use (and When Not To)&lt;/h2&gt;
+&lt;p&gt;Use refire when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Making unreliable API calls&lt;/li&gt;
+&lt;li&gt;Accessing flaky external services&lt;/li&gt;
+&lt;li&gt;Running operations that often succeed on retry&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Don’t use refire when:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Failures are deterministic and retries won’t help&lt;/li&gt;
+&lt;li&gt;Retrying could cause unintended side effects (e.g., duplicate financial transactions)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Roadmap&lt;/h2&gt;
+&lt;p&gt;The current version (0.1.0) is lightweight and focused. Future plans include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Support for async functions&lt;/li&gt;
+&lt;li&gt;Custom retry policies (e.g., Fibonacci backoff)&lt;/li&gt;
+&lt;li&gt;Context-aware retries (timeouts, cancellation)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Try It Out&lt;/h2&gt;
+&lt;p&gt;The package is open-source under the &lt;strong&gt;Apache-2.0 license&lt;/strong&gt; and available here:&lt;/p&gt;
+&lt;p&gt;👉 GitHub – &lt;a href="https://github.com/maxscheijen/refire"&gt;maxscheijen/refire&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you want a &lt;strong&gt;clean, reusable way to add resilience&lt;/strong&gt; to your Python code, give refire a try — and let me know what you think!&lt;/p&gt;</content><category term="posts"/></entry><entry><title>vibeflip - A truly random coin flip</title><link href="maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/" rel="alternate"/><published>2025-08-30T00:00:00+02:00</published><updated>2025-08-30T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-30:maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/</id><summary type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;&lt;code&gt;vibesort&lt;/code&gt;&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
 &lt;p&gt;Which made me think of what other thinks are hard. A computer creating randomness. Can we maybe leverage LLMs?&lt;/p&gt;
 &lt;h2&gt;vibeflip&lt;/h2&gt;
 &lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;&lt;code&gt;vibeflip&lt;/code&gt;&lt;/a&gt;?&lt;/p&gt;
