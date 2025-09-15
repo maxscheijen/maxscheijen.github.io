@@ -1,5 +1,5 @@
 ---
-title: <code>vibeflip</code>: a truly random coin flip
+title: <code>vibeflip</code> - A truly random coin flip
 date: 2025-08-30
 ---
 
