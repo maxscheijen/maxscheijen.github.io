@@ -1,18 +1,18 @@
 ---
-title: <code>refire</code> - A lightweight retrier
+title: refire - A lightweight retrier
 date: 2025-09-15
 ---
 
 Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? 
 
-That’s exactly why I built [`refire`](https://github.com/maxscheijen/refire), a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.
+That’s exactly why I built [refire](https://github.com/maxscheijen/refire), a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.
 
 
 ## Why refire?
 
 When dealing with unreliable resources like APIs, databases, or external services, retrying operations is often the simplest way to build resilience. But manually implementing retries quickly leads to messy, repetitive code.
 
-`refire` makes retrying clean and declarative:
+refire makes retrying clean and declarative:
 
 - Retry on specific exceptions
 - Control number of attempts (or retry indefinitely)
@@ -159,6 +159,6 @@ The current version (0.1.0) is lightweight and focused. Future plans include:
 
 The package is open-source under the **Apache-2.0 license** and available here:
 
-👉 GitHub – [maxscheijen/refire](https://github.com/maxscheijen/refire)
+GitHub – [maxscheijen/refire](https://github.com/maxscheijen/refire)
 
 If you want a **clean, reusable way to add resilience** to your Python code, give refire a try — and let me know what you think!

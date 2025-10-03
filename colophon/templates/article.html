@@ -4,9 +4,10 @@
 
 {% block content %}        
   <h1>{{ article.title }}</h1>
+  <a href="/" class="by">{{ article.date.strftime('%b %d, %Y')}} - By Max Scheijen</a>
   <div class="meta">
-    <p>{{ article.date.strftime('%b %d, %Y') }}</p>
-    <p>{{ article.modified }}</p>
+    <!-- <p>{{ article.date.strftime('%b %d, %Y') }}</p> -->
+    <!-- <p>{{ article.modified }}</p> -->
   </div>
   <article>
   {{ article.content }}

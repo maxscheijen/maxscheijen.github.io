@@ -162,6 +162,8 @@ After deployment, you'll need to connect to your server using its Tailscale IP r
 ssh -i ~/.ssh/your_private_key root@100.x.y.z  # Replace with your Tailscale IP
 ```
 
+## Links
+
 - [https://tailscale.com/kb/1082/firewall-ports](https://tailscale.com/kb/1082/firewall-ports)
 - [https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean](https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean)
 - [https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup](https://docs.digitalocean.com/products/droplets/getting-started/recommended-droplet-setup)

@@ -4,20 +4,22 @@
 {% block content %}
 
 <article>
+  <div>
+    <h1>Max Scheijen</h1>  
+    <p>I'm a Data Scientist and ML/AI Engineer. I work a <a href="https://nn.nl" target="_blank">Nationale Nederlanden</a>, an insurance company in the Netherlands. Previously, worked at <a href="https://6gorillas.nl" target="_blank">6G</a> a data platform for healthcare. I've been coding and building models for years.</p>
+    <p>I like going to the gym and running.</p>
+  </div>
+  <div>
+    <p>Some of my writings:</p>
+    <ul>
+      <li><a href="{{ SITE }}/use">Things I Use</a></li>
+      <li><a href="{{ SITE }}/posts/basic-llm-agent-with-tool-calling">Build an Agent</a></li>
+      <li><a href="{{ SITE }}/posts/a-mcp-server">MCP Server</a></li>
+    </ul>
+  </div>
 
   <div>
-      <span><strong>Blog</strong></span>
-      <div class="listpost">
-      {% for article in dates[:10] %}
-        <div class="post">
-              <span class="meta">
-                <time>{{ article.date.strftime('%b %d, %Y') }}</time>
-              </span>
-              <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
-        </div>
-      {% endfor %}
-      </div>
-      <p style="margin-top: 10px;"><a style="color: #000000 !important;" href="{{ SITEURL }}/archives.html">All posts</a></p>
+      <p style="margin-top: 10px;">You can <a href="{{ SITEURL }}/archives">read my writing</a> or <a href="https://github.com/maxscheijen" target="_blank">code</a> or <a href="https://x.com/maxscheijen" target="_blank">follow me online</a>. </p>
   </div>
 </article>
 {% endblock %}

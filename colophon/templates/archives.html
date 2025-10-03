@@ -3,18 +3,17 @@
 {%block title %}{{ SITENAME }} - Blog{%endblock%}
 
 {% block content %}
-  <h2>Blog</h1>
+  <h1>Writing</h1>
+  <a href="/" class="by">By Max Scheijen</a>
+  <p>Here's a list of my writings:</p>
 
   <article>
-    <div class="listpost">
+    <ul class="listpost">
     {% for article in dates %}
-      <div class="post">
-            <span class="meta">
-              <time>{{ article.date.strftime('%b %d, %Y') }}</time>
-            </span>
+      <li class="post">
             <a class="title" href='{{ article.url }}'>{{ article.title }}</a>
-      </div>
+      </li>
     {% endfor %}
-    </div>
+    </ul>
   </article>
 {% endblock %}
