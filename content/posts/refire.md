@@ -59,7 +59,7 @@ In this example:
 
 So, you might see log output like:
 
-```
+```text
 WARNING:root:Caught ValueError: Unlucky!. Retrying in 1.00s (remaining=4)
 WARNING:root:Caught ValueError: Unlucky!. Retrying in 2.34s (remaining=3)
 WARNING:root:Caught ValueError: Unlucky!. Retrying in 4.89s (remaining=2)

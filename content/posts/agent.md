@@ -30,8 +30,7 @@ This is the basic structure of a simple agent:
 - A list of tools (e.g., functions) (optional)
 
 Let’s create a simple `Agent` class based on this structure:
-
-```python
+```python hl_lines="5 6"
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
