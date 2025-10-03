@@ -37,7 +37,7 @@
 <p>The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.</p>
 <p>For example, let's look at the <a href="https://github.com/folke/zen-mode.nvim">zen-mode</a> plugin:</p>
 <p>Your <code>lua/custom/plugin/zen-mode.lua</code> file would contain the plugin declaration:</p>
-<div class="highlight"><pre><span></span><code><span class="kr">return</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="kr">return</span> <span class="p">{</span>
   <span class="s2">&quot;folke/zen-mode.nvim&quot;</span><span class="p">,</span>
   <span class="n">config</span> <span class="o">=</span> <span class="kr">function</span><span class="p">()</span>
     <span class="c1">-- Load in the config for this plugin</span>
@@ -48,7 +48,7 @@
 </code></pre></div>
 
 <p>Then, the configuration itself goes in <code>lua/custom/zen-mode.lua</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">zen</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;zen-mode&quot;</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span> <span class="n">zen</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;zen-mode&quot;</span><span class="p">)</span>
 <span class="n">zen</span><span class="p">.</span><span class="n">setup</span><span class="p">({</span>
     <span class="n">window</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">width</span> <span class="o">=</span> <span class="mf">0.65</span><span class="p">,</span>

@@ -36,17 +36,17 @@
 <h2>Managing Python Packages using <code>uv</code></h2>
 <p><code>uv</code> is an extremely fast Python package and recently also became a full on package manager.</p>
 <p>You can install it using <code>curl</code>.</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 </code></pre></div>
 
 <p>You can then create a new a new Python project, or use an existing one by running the <code>uv init</code> command:</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>init<span class="w"> </span>&lt;project-name&gt;
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>init<span class="w"> </span>&lt;project-name&gt;
 <span class="c1"># or if already in project</span>
 uv<span class="w"> </span>init
 </code></pre></div>
 
 <p>This will create the following structure:</p>
-<div class="highlight"><pre><span></span><code>.
+<div class="codehilite"><pre><span></span><code>.
 ├──<span class="w"> </span>.python-version<span class="w">  </span><span class="c1"># project&#39;s default python version</span>
 ├──<span class="w"> </span>README.md
 ├──<span class="w"> </span>hello.py
@@ -54,11 +54,11 @@ uv<span class="w"> </span>init
 </code></pre></div>
 
 <p>Run <code>uv add</code> to add dependencies. This will create an virtual environment (<code>.venv</code>), if you didn't already have one and it then installs the dependencies. The installed dependency will be present in the <code>pyproject.toml</code>.</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>&lt;dependency&gt;
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>&lt;dependency&gt;
 </code></pre></div>
 
 <p>Your project will have the following structure:</p>
-<div class="highlight"><pre><span></span><code>.
+<div class="codehilite"><pre><span></span><code>.
 ├──<span class="w"> </span>.venv<span class="w">               </span><span class="c1"># project&#39;s virtual environment</span>
 ├──<span class="w"> </span>.python-version
 ├──<span class="w"> </span>README.md
@@ -72,11 +72,11 @@ uv<span class="w"> </span>init
 <p>And finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.</p>
 <h3>Linting &amp; formatting using <code>ruff</code></h3>
 <p>I used to use black, flake8 and isort for my linting and code formatting. However since <code>ruff</code> was released I haven't looked back.</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>ruff
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>ruff
 </code></pre></div>
 
 <p>Using ruff after black, isort and flake8 is delightful. <code>ruff</code> is a super fast linter (fixing issues and organizing imports) and code formatter. </p>
-<div class="highlight"><pre><span></span><code><span class="c1"># ruff linting</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ruff linting</span>
 uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>--fix<span class="w"> </span>--select<span class="w"> </span>I
 
 <span class="c1"># ruff formatting</span>
@@ -85,11 +85,11 @@ uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span
 
 <h3><code>pre-commit</code> hooks</h3>
 <p>pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>pre-commit
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>pre-commit
 </code></pre></div>
 
 <p>With the following <code>.pre-commit.yaml</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">repos</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">repos</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/pre-commit/pre-commit-hooks</span>
 <span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v4.6.0</span>
 <span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
@@ -118,16 +118,16 @@ uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span
 
 <h3>Testing using <code>pytest</code></h3>
 <p>I don't always write tests, but if I do, I'll most likely use pytest, and a pytest coverage plugin.</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>pytest<span class="w"> </span>pytest-cov
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--dev<span class="w"> </span>pytest<span class="w"> </span>pytest-cov
 </code></pre></div>
 
 <p>To run those test (with test coverage) against my python files I run the following.</p>
-<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>&lt;test-dir&gt;<span class="w"> </span>--cov<span class="w"> </span>&lt;source-dir&gt;
+<div class="codehilite"><pre><span></span><code>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>&lt;test-dir&gt;<span class="w"> </span>--cov<span class="w"> </span>&lt;source-dir&gt;
 </code></pre></div>
 
 <h2>CI with GitHub actions</h2>
 <p>I also like to run linting, formatting and tests in CI. Below is a GitHub Action at <code>.github/workflows/ci.yaml</code>. </p>
-<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
 <span class="nt">on</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">push</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span>

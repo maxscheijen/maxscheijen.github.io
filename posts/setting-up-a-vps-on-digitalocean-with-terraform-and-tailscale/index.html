@@ -35,12 +35,12 @@
   <p>In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.</p>
 <h2>Setting Up Terraform for DigitalOcean</h2>
 <p>First create a <code>secrets.auto.tfvars</code> file securely store your DigitalOcean access token and SSH key path.</p>
-<div class="highlight"><pre><span></span><code><span class="nv">do_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;digital_ocean_access_token&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">do_token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;digital_ocean_access_token&quot;</span>
 <span class="nv">pvt_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;~/.ssh/your_private_key&quot;</span>
 </code></pre></div>
 
 <p>Next, create a <code>provider.tf</code> file to configure the DigitalOcean provider in terraform. </p>
-<div class="highlight"><pre><span></span><code><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="nb">required_providers</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nb">digitalocean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="na">source</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;digitalocean/digitalocean&quot;</span>
@@ -68,12 +68,12 @@
 </code></pre></div>
 
 <p>Initialize your Terraform working directory:</p>
-<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>init
+<div class="codehilite"><pre><span></span><code>terraform<span class="w"> </span>init
 </code></pre></div>
 
 <h2>Creating the DigitalOcean Droplet</h2>
 <p>Create a  <code>droplet.tf</code> file to define your server configuration and provisioning. Add a SSH connection so that you're able to provision, and add the path the scripts used for provisioning.</p>
-<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;digitalocean_droplet&quot;</span><span class="w"> </span><span class="nv">&quot;droplet&quot;</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;digitalocean_droplet&quot;</span><span class="w"> </span><span class="nv">&quot;droplet&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="na">image</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ubuntu-20-04-x64&quot;</span>
 <span class="w">  </span><span class="na">name</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;droplet-1&quot;</span>
 <span class="w">  </span><span class="na">region</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ams3&quot;</span>
@@ -101,7 +101,7 @@
 <h2>Setting Up Provisioning Scripts</h2>
 <p>Create a <code>scripts</code> directory with the following two scripts files: </p>
 <p><code>./scripts/update.sh</code> will update the system packages, without the need for user interaction.</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
 sudo<span class="w"> </span>apt<span class="w"> </span>update
 <span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;openssh-server openssh-server/sshd_config boolean true&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>debconf-set-selections
 sudo<span class="w"> </span><span class="nv">DEBIAN_FRONTEND</span><span class="o">=</span>noninteractive<span class="w"> </span>apt<span class="w"> </span>upgrade<span class="w"> </span>-y
@@ -112,7 +112,7 @@ sudo<span class="w"> </span><span class="nv">DEBIAN_FRONTEND</span><span class="
 <blockquote>
 <p>Note that <code>tailscale up</code> will request to authenticate and add the machine to your account by visiting and url.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/bash</span>
 sudo<span class="w"> </span>curl<span class="w"> </span>-fssl<span class="w"> </span>https://tailscale.com/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Starting Tailscale...&quot;</span>
 sudo<span class="w"> </span>tailscale<span class="w"> </span>up
@@ -122,7 +122,7 @@ sudo<span class="w"> </span>tailscale<span class="w"> </span>up
 <h2>Configuring Security with Tailscale and Firewall</h2>
 <p>Create a <code>firewall.tf</code> to define your firewall rules. We want only allow the traffic from the tailscale network, and block all the other incoming traffic.</p>
 <p>Read more about what ports ports tailscale uses <a href="https://tailscale.com/kb/1082/firewall-ports">here</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;digitalocean_firewall&quot;</span><span class="w"> </span><span class="nv">&quot;firewall&quot;</span><span class="w"> </span><span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;digitalocean_firewall&quot;</span><span class="w"> </span><span class="nv">&quot;firewall&quot;</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tailscale&quot;</span>
 
 <span class="w">  </span><span class="na">droplet_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">digitalocean_droplet.droplet.id</span><span class="p">]</span>
@@ -157,13 +157,13 @@ sudo<span class="w"> </span>tailscale<span class="w"> </span>up
 
 <h2>Deploying Your Infrastructure</h2>
 <p>Run Terraform to create your infrastructure:</p>
-<div class="highlight"><pre><span></span><code>terraform<span class="w"> </span>plan<span class="w">    </span><span class="c1"># Preview the changes</span>
+<div class="codehilite"><pre><span></span><code>terraform<span class="w"> </span>plan<span class="w">    </span><span class="c1"># Preview the changes</span>
 terraform<span class="w"> </span>apply<span class="w">   </span><span class="c1"># Apply the changes</span>
 </code></pre></div>
 
 <h2>Connecting to Your Server</h2>
 <p>After deployment, you'll need to connect to your server using its Tailscale IP rather than its public IP. This provides an additional layer of security, as your SSH port is only accessible through the private Tailscale network.</p>
-<div class="highlight"><pre><span></span><code>ssh<span class="w"> </span>-i<span class="w"> </span>~/.ssh/your_private_key<span class="w"> </span>root@100.x.y.z<span class="w">  </span><span class="c1"># Replace with your Tailscale IP</span>
+<div class="codehilite"><pre><span></span><code>ssh<span class="w"> </span>-i<span class="w"> </span>~/.ssh/your_private_key<span class="w"> </span>root@100.x.y.z<span class="w">  </span><span class="c1"># Replace with your Tailscale IP</span>
 </code></pre></div>
 
 <h2>Links</h2>

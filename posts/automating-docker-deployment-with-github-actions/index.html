@@ -40,7 +40,7 @@
 <h3>1. Creating a Sample FastAPI Application</h3>
 <p>First, let's create a minimal web server using <a href="https://fastapi.tiangolo.com">FastAPI</a>. </p>
 <p>Create a <code>main.py</code> file:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
@@ -56,7 +56,7 @@
 </code></pre></div>
 
 <p>You can test this locally by running:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Install dependencies</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install dependencies</span>
 pip<span class="w"> </span>install<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
 
 <span class="c1"># Run server</span>
@@ -65,7 +65,7 @@ uvicorn<span class="w"> </span>main:app
 
 <h3>2. Containerizing the Application</h3>
 <p>We now want containerize the application. Create <code>Dockerfile</code> that packages the application:</p>
-<div class="highlight"><pre><span></span><code><span class="c"># Use a Python image</span>
+<div class="codehilite"><pre><span></span><code><span class="c"># Use a Python image</span>
 <span class="k">FROM</span><span class="w"> </span><span class="s">python:3.12</span><span class="w"> </span>
 
 <span class="c"># Install the project into `/app`</span>
@@ -84,7 +84,7 @@ uvicorn<span class="w"> </span>main:app
 
 <h3>3. Building and Publishing the Container</h3>
 <p>To build the Docker image and get the container into production you need to:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Build the image</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Build the image</span>
 docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>my-username/my-image<span class="w"> </span>.
 
 <span class="c1"># Run and test the container locally</span>
@@ -96,7 +96,7 @@ docker<span class="w"> </span>push<span class="w"> </span>my-username/my-image
 
 <h3>4. Setting Up Docker on Your Server</h3>
 <p>Here are the commands you'll need to setup Docker on a Debian-based server. Straight from the Docker <a href="https://docs.docker.com/engine/install/">documentation</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Remove old versions</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Remove old versions</span>
 <span class="k">for</span><span class="w"> </span>pkg<span class="w"> </span><span class="k">in</span><span class="w"> </span>docker.io<span class="w"> </span>docker-doc<span class="w"> </span>docker-compose<span class="w"> </span>podman-docker<span class="w"> </span>containerd<span class="w"> </span>runc<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>sudo<span class="w"> </span>apt-get<span class="w"> </span>remove<span class="w"> </span><span class="nv">$pkg</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
 
 <span class="c1"># Install prerequisites</span>
@@ -126,7 +126,7 @@ sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> <
 <blockquote>
 <p>Remember to log out and back in for the group changes to take effect.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="c1"># Pull the image</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Pull the image</span>
 docker<span class="w"> </span>pull<span class="w"> </span>my-username/my-image
 
 <span class="c1"># Run the container</span>
@@ -137,7 +137,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> 
 <p>Now let's automate everything we did manually. We'll use GitHub Actions for building and pushing images, and a custom script for automated deployments.</p>
 <h3>1. Setting Up GitHub Actions</h3>
 <p>Create <code>.github/workflows/deploy.yml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Push</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Image</span>
+<div class="codehilite"><pre><span></span><code><span class="n">name</span><span class="o">:</span><span class="w"> </span><span class="n">Build</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Push</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="n">Image</span>
 
 <span class="n">on</span><span class="o">:</span>
 <span class="w">  </span><span class="n">push</span><span class="o">:</span>
@@ -172,7 +172,7 @@ docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> 
 
 <h3>2. Automated Deployment Script</h3>
 <p>Create a <code>deploy.sh</code> script on your server:</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="nv">IMAGE</span><span class="o">=</span><span class="s2">&quot;my-username/my-image:latest&quot;</span>
 <span class="nv">CONTAINER_NAME</span><span class="o">=</span><span class="s2">&quot;my-container-name&quot;</span>
 
@@ -213,7 +213,7 @@ docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$IMAG
 
 <h3>3. Setting Up the Cron Job</h3>
 <p>To automatically check for image updates:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Make the deploy script executable</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Make the deploy script executable</span>
 chmod<span class="w"> </span>+x<span class="w"> </span>deploy.sh
 
 <span class="c1"># Add to crontab (runs every 15 minutes)</span>

@@ -34,14 +34,14 @@
   <article>
   <p>We’ve all done it, <code>git add .</code>, adding untracked files to the staging area: <code>.env</code>, <code>TODO</code>, or who knows what, and then committing them.</p>
 <p>Stop doing that. Instead, use:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u
 </code></pre></div>
 
 <p>This stages only the files that are already tracked by Git.</p>
 <p>The <code>-u</code> (short for update) flag tells Git to stage only modifications and deletions of already tracked files. It will not stage new, untracked files.</p>
 <p>This makes it much harder to accidentally commit unwanted files, while still capturing all changes to the files that are already part of your repository.</p>
 <p>If you want to stage only modified files and leave deletions out, you can use:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u<span class="w"> </span>:/
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>-u<span class="w"> </span>:/
 </code></pre></div>
 
 <p>And if you need finer control, consider git add <code>-p</code>, which lets you review and selectively stage changes hunk by hunk.</p>

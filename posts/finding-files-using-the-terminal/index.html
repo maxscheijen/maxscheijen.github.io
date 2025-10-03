@@ -34,18 +34,18 @@
   <article>
   <p>Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.</p>
 <p>One of the easiest ways to find files on your system based on their name is using <code>fd</code>.</p>
-<div class="highlight"><pre><span></span><code>fd<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
+<div class="codehilite"><pre><span></span><code>fd<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
 </code></pre></div>
 
 <p>This will return all the relevant files with your current directory. It will also ignore the patterns from <code>.gitignore</code> by default.</p>
 <p>Another nice tool to find files is <code>fzf</code> which is fuzzy finder.</p>
-<div class="highlight"><pre><span></span><code>fzf
+<div class="codehilite"><pre><span></span><code>fzf
 </code></pre></div>
 
 <p>Will open-up an search prompt in the current directory. If you use the neovim plugin telescope <code>find_files</code> functionality it should look familiar.</p>
 <h2>Search in file content</h2>
 <p>However if you also want to search the content of your files ripgrep is probably the right tool <code>rg</code> is probably the right tool.</p>
-<div class="highlight"><pre><span></span><code>rg<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
+<div class="codehilite"><pre><span></span><code>rg<span class="w"> </span><span class="o">[</span>PATTERN<span class="o">]</span>
 </code></pre></div>
 
 <p>These to types of file search will probably find you the correct file or content 90% of the time.</p>

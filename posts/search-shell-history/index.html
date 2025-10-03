@@ -36,25 +36,25 @@
 <p>Let's build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We'll use <code>fzf</code> as our fuzzy finder of choice.</p>
 <h2>Basic Implementation</h2>
 <p>The simplest approach is to pipe your history directly to <code>fzf</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf
+<div class="codehilite"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf
 </code></pre></div>
 
 <p>However, you'll quickly notice this gives us lots of duplicate commands, and each line includes some unnecessary numbers from the history format. Let's clean that up!</p>
 <p>To remove the leading whitespace, numbers, and timestamps, we can use <code>sed</code> combined with <code>sort</code> and <code>uniq</code> to get a clean, sorted list of unique commands:</p>
-<div class="highlight"><pre><span></span><code>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq
+<div class="codehilite"><pre><span></span><code>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq
 </code></pre></div>
 
 <p>Now we can combine these pieces:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf
+<div class="codehilite"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf
 </code></pre></div>
 
 <p>To actually execute the selected command, we just need to pipe it to <code>sh</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<div class="codehilite"><pre><span></span><code><span class="nb">history</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span><span class="p">|</span><span class="w"> </span>fzf<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
 </code></pre></div>
 
 <h2>Enhanced Script</h2>
 <p>While the one-liner works, let's make it more robust. Here's a script that handles both <code>bash</code> and <code>zsh</code> histories, and includes some error checking:</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="c1"># Check if fzf is installed</span>
 <span class="k">if</span><span class="w"> </span>!<span class="w"> </span><span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>fzf<span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
@@ -100,19 +100,19 @@ search_and_execute_history
 <ol>
 <li>Save the script as <code>hist</code> and make it executable:</li>
 </ol>
-<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>hist
+<div class="codehilite"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>hist
 </code></pre></div>
 
 <ol>
 <li>Move it to your scripts directory:</li>
 </ol>
-<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>hist<span class="w"> </span>~/.dotfiles/scripts/
+<div class="codehilite"><pre><span></span><code>mv<span class="w"> </span>hist<span class="w"> </span>~/.dotfiles/scripts/
 </code></pre></div>
 
 <ol>
 <li>Add the scripts directory to your PATH in your shell configuration:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>Now you can simply type <code>hist</code> anywhere in your terminal to fuzzy find through your command history!</p>

@@ -35,11 +35,11 @@
   <p>I store all my dotfiles in a dedicated git repository called <code>dotfiles</code> with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.</p>
 <p>I then use <code>stow</code> to create <strong>symlinks</strong> to place the dotfiles in the appropriate places.</p>
 <p>This creates symlinks from for example <code>~/dotfiles/.zshrc</code> to <code>~/.zshrc</code>.</p>
-<div class="highlight"><pre><span></span><code>stow<span class="w"> </span>zsh
+<div class="codehilite"><pre><span></span><code>stow<span class="w"> </span>zsh
 </code></pre></div>
 
 <p>I organize them by tool.</p>
-<div class="highlight"><pre><span></span><code>dotfiles/
+<div class="codehilite"><pre><span></span><code>dotfiles/
 ├── zsh/
 │   └── .zshrc
 ├── git/
@@ -48,7 +48,7 @@
 </code></pre></div>
 
 <p>Setup a machine using <code>dotfiles.sh</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git<span class="w"> </span>zsh
 git<span class="w"> </span>clone<span class="w"> </span>git@github.com/maxscheijen/dotfiles<span class="w"> </span><span class="nv">$HOME</span>/dotfiles
 stow<span class="w"> </span>git<span class="w"> </span>zsh

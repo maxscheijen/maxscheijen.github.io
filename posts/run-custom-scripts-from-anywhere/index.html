@@ -37,7 +37,7 @@
 <p>My first script would be for easier note taking.</p>
 <p>So I took his <a href="https://github.com/mischavandenburg/dotfiles/blob/main/scripts/blog">blog script</a> tweaked it a little, and wanted to make it executable from anywhere in my terminal.</p>
 <p><code>~/.dotfiles/scripts/note</code></p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="c1"># Get the filename</span>
 <span class="nb">read</span><span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;Enter a filename: &quot;</span><span class="w"> </span>filename
@@ -71,19 +71,19 @@ nvim<span class="w"> </span><span class="s1">&#39;+ normal 2GzzA&#39;</span><spa
 </code></pre></div>
 
 <p>I ensured that every script in <code>~/.dotfiles/scripts/</code> was executable by running</p>
-<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>~/.dotfiles/scripts/*
+<div class="codehilite"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>~/.dotfiles/scripts/*
 </code></pre></div>
 
 <p>After this I added the scripts directory to the PATH by adding the following line to my <code>~/.zshrc</code> file</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>Reload my <code>~/.zshrc</code> by running</p>
-<div class="highlight"><pre><span></span><code><span class="nb">exec</span><span class="w"> </span><span class="si">${</span><span class="nv">SHELL</span><span class="si">}</span><span class="w"> </span>-l
+<div class="codehilite"><pre><span></span><code><span class="nb">exec</span><span class="w"> </span><span class="si">${</span><span class="nv">SHELL</span><span class="si">}</span><span class="w"> </span>-l
 </code></pre></div>
 
 <p>And now I'm able to run</p>
-<div class="highlight"><pre><span></span><code>note
+<div class="codehilite"><pre><span></span><code>note
 </code></pre></div>
 
 <p>creating a note with formatting in a specific directory.</p>

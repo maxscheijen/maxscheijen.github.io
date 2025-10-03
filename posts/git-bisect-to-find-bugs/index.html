@@ -43,25 +43,25 @@
 <h2>Example</h2>
 <p>Lets say that you know that commit <code>A</code> doesn't contain the bug (all tests pass). But in last commit <code>E</code> the tests are not passing.</p>
 <p>However, we don't know in which commit between <code>A</code> and <code>E</code> the bug was introduced.</p>
-<div class="highlight"><pre><span></span><code>---------------------------------
+<div class="codehilite"><pre><span></span><code>---------------------------------
 |                               |
 A ---------- unknown ---------- E
 </code></pre></div>
 
 <p>To narrow down our search, we're going to select the middle commit between <code>A</code> and <code>E</code>, commit <code>C</code>.</p>
-<div class="highlight"><pre><span></span><code>---------------------------------
+<div class="codehilite"><pre><span></span><code>---------------------------------
 |                               |
 A -- unknown -- C -- unknown -- E
 </code></pre></div>
 
 <p>We run our tests against commit <code>C</code>. If this commit turns out to be passing than we know the faulty commit was introduced between <code>C</code> and <code>E</code> and the commits between <code>A</code> and <code>C</code> are good.</p>
-<div class="highlight"><pre><span></span><code>----------------------------------
+<div class="codehilite"><pre><span></span><code>----------------------------------
 |                                |
 A --- good --- C --- unknown --- E
 </code></pre></div>
 
 <p>However if the bug is still present in <code>C</code> and our tests fail, than we know for sure that the commits between <code>C</code> and <code>E</code> aren't good. </p>
-<div class="highlight"><pre><span></span><code>---------------------------------
+<div class="codehilite"><pre><span></span><code>---------------------------------
 |                               |
 A --- unknown --- C --- bad --- E
 </code></pre></div>
@@ -72,31 +72,31 @@ A --- unknown --- C --- bad --- E
 <ol>
 <li>Start bisect</li>
 </ol>
-<div class="highlight"><pre><span></span><code>git start
+<div class="codehilite"><pre><span></span><code>git start
 </code></pre></div>
 
 <ol>
 <li>Set the known bad commit, when no commit provided it uses the current one.</li>
 </ol>
-<div class="highlight"><pre><span></span><code>git bisect bad 
+<div class="codehilite"><pre><span></span><code>git bisect bad 
 </code></pre></div>
 
 <ol>
 <li>Set the known good commit, in this case at a tag.</li>
 </ol>
-<div class="highlight"><pre><span></span><code>git bisect good v1.0.0
+<div class="codehilite"><pre><span></span><code>git bisect good v1.0.0
 </code></pre></div>
 
 <ol>
 <li>Then we test our code.</li>
 </ol>
-<div class="highlight"><pre><span></span><code>python -m pytest
+<div class="codehilite"><pre><span></span><code>python -m pytest
 </code></pre></div>
 
 <ol>
 <li>Depending on test turnout.</li>
 </ol>
-<div class="highlight"><pre><span></span><code>git bisect &lt;good | bad&gt;
+<div class="codehilite"><pre><span></span><code>git bisect &lt;good | bad&gt;
 </code></pre></div>
 
 <ol>
@@ -104,11 +104,11 @@ A --- unknown --- C --- bad --- E
 </ol>
 <h2>Automatic <code>bisect</code></h2>
 <p>Repeat step 1 till 3 as before and then run.</p>
-<div class="highlight"><pre><span></span><code>git bisect run &lt;cmd&gt;
+<div class="codehilite"><pre><span></span><code>git bisect run &lt;cmd&gt;
 </code></pre></div>
 
 <p>Where <code>&lt;cmd&gt;</code> is the (test) command you want to run.</p>
-<div class="highlight"><pre><span></span><code>git bisect run python -m pytest 
+<div class="codehilite"><pre><span></span><code>git bisect run python -m pytest 
 </code></pre></div>
 
 <p>https://git-scm.com/docs/git-bisect</p>

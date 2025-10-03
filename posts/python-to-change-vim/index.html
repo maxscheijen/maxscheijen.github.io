@@ -37,7 +37,7 @@
 <h2>Script</h2>
 <p>So I wrote a basic python script that can lower case a string. </p>
 <p><code>~/.dotfiles/scripts/lower</code></p>
-<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/python3</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/python3</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
 
@@ -50,11 +50,11 @@
 </code></pre></div>
 
 <p>I then made the file executable</p>
-<div class="highlight"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>~/.dotfiles/scripts/lowercase
+<div class="codehilite"><pre><span></span><code>chmod<span class="w"> </span>+x<span class="w"> </span>~/.dotfiles/scripts/lowercase
 </code></pre></div>
 
 <p>and added the script to my path. I for example added the <code>~/.dotfiles/scripts</code> directory to my path (in <code>~/.zshrc</code>), allowing me to call the executables name from my shell.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.dotfiles/scripts:</span><span class="nv">$PATH</span><span class="s2">&quot;</span>
 </code></pre></div>
 
 <p>I can now hit <code>!!</code> in vim, and type the name of my script <code>lower</code> and hit enter.</p>

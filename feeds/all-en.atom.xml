@@ -14,7 +14,7 @@
 &lt;li&gt;Log retry attempts automatically&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;Installation&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;refire
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;refire
 &lt;span class="c1"&gt;# or &lt;/span&gt;
 uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;refire
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -22,7 +22,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;p&gt;Requires Python &lt;strong&gt;3.10+&lt;/strong&gt;.&lt;/p&gt;
 &lt;h2&gt;Quick Start&lt;/h2&gt;
 &lt;p&gt;Here’s a simple example of using &lt;code&gt;refire&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;refire&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;refire&lt;/span&gt;
 
 
@@ -44,34 +44,34 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;li&gt;If all retries fail, the last exception is re-raised.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;So, you might see log output like:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;1.00&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;2.34&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;WARNING&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;Caught&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ValueError&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unlucky&lt;/span&gt;&lt;span class="o"&gt;!.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Retrying&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.89&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remaining&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
-&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;WARNING:root:Caught ValueError: Unlucky!. Retrying in 1.00s (remaining=4)
+WARNING:root:Caught ValueError: Unlucky!. Retrying in 2.34s (remaining=3)
+WARNING:root:Caught ValueError: Unlucky!. Retrying in 4.89s (remaining=2)
+...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Customizing Retry Policies&lt;/h2&gt;
 &lt;p&gt;You have full control over retry behavior:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Retry on specific exceptions:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exceptions&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;ConnectionError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ne"&gt;TimeoutError&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;exceptions&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;ConnectionError&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ne"&gt;TimeoutError&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;fetch_data&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="o"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;Infinite retries until success:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tries&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;always_retry&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="o"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;Cap the maximum delay&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backoff&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@refire&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;backoff&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_delay&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;capped_backoff&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
     &lt;span class="o"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;Integrate with your own logger:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;logging&lt;/span&gt;
 
 &lt;span class="n"&gt;logger&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;logging&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getLogger&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;myapp&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -82,7 +82,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 
 &lt;h2&gt;Retrying on Custom Exceptions&lt;/h2&gt;
 &lt;p&gt;You can also define your own exceptions and configure refire to retry only when they occur:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TemporaryAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;TemporaryAPIError&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Raised when the API fails temporarily.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 
 
@@ -136,35 +136,35 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;h2&gt;vibeflip&lt;/h2&gt;
 &lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;vibeflip&lt;/a&gt;?&lt;/p&gt;
 &lt;p&gt;It's a python library that facilitates a truly random coin flip (&lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;) using a LLM.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;vibeflip&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;vibeflip&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;vibeflip&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;vibeflip&lt;/span&gt;
 
 &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;vibeflip&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# True or False&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;vibeflip
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;vibeflip
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Set your OpenAI API key as an environment variable.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;OPENAI_API_KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;your_api_key
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;OPENAI_API_KEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;your_api_key
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;/s&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Should you be using vim in 2025?</title><link href="maxscheijen.github.io/posts/should-you-be-using-vim-in-2025/" rel="alternate"/><published>2025-08-19T00:00:00+02:00</published><updated>2025-08-19T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-19:maxscheijen.github.io/posts/should-you-be-using-vim-in-2025/</id><content type="html">&lt;p&gt;Yes, probably, definitely.&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Stop using "git add ."</title><link href="maxscheijen.github.io/posts/stop-using-git-add/" rel="alternate"/><published>2025-08-16T00:00:00+02:00</published><updated>2025-08-16T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-16:maxscheijen.github.io/posts/stop-using-git-add/</id><summary type="html">&lt;p&gt;We’ve all done it, &lt;code&gt;git add .&lt;/code&gt;, adding untracked files to the staging area: &lt;code&gt;.env&lt;/code&gt;, &lt;code&gt;TODO&lt;/code&gt;, or who knows what, and then committing them.&lt;/p&gt;
 &lt;p&gt;Stop doing that. Instead, use:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This stages only the files that are already tracked by Git.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;-u&lt;/code&gt; (short for update) flag tells …&lt;/p&gt;</summary><content type="html">&lt;p&gt;We’ve all done it, &lt;code&gt;git add .&lt;/code&gt;, adding untracked files to the staging area: &lt;code&gt;.env&lt;/code&gt;, &lt;code&gt;TODO&lt;/code&gt;, or who knows what, and then committing them.&lt;/p&gt;
 &lt;p&gt;Stop doing that. Instead, use:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This stages only the files that are already tracked by Git.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;-u&lt;/code&gt; (short for update) flag tells Git to stage only modifications and deletions of already tracked files. It will not stage new, untracked files.&lt;/p&gt;
 &lt;p&gt;This makes it much harder to accidentally commit unwanted files, while still capturing all changes to the files that are already part of your repository.&lt;/p&gt;
 &lt;p&gt;If you want to stage only modified files and leave deletions out, you can use:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u&lt;span class="w"&gt; &lt;/span&gt;:/
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;-u&lt;span class="w"&gt; &lt;/span&gt;:/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And if you need finer control, consider git add &lt;code&gt;-p&lt;/code&gt;, which lets you review and selectively stage changes hunk by hunk.&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Basic LLM Agent with Tool Calling</title><link href="maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/" rel="alternate"/><published>2025-05-08T00:00:00+02:00</published><updated>2025-05-08T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-05-08:maxscheijen.github.io/posts/basic-llm-agent-with-tool-calling/</id><summary type="html">&lt;p&gt;Over the past few years, agents have become a popular topic in the AI community. Many frameworks now allow you to build agents, often serving as abstractions for calling LLMs, parsing inputs, using tools, and chaining calls. However, the basic concept behind a tool-calling agent is straightforward.&lt;/p&gt;
@@ -192,13 +192,13 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;li&gt;A list of tools (e.g., functions) (optional)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Let’s create a simple &lt;code&gt;Agent&lt;/code&gt; class based on this structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dataclasses&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;dataclass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;field&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;dataclasses&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;dataclass&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;field&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;
 
 
-&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
-&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-    &lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="hll"&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;gpt-4o-mini&amp;quot;&lt;/span&gt;
     &lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Callable&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default_factory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -207,7 +207,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;p&gt;In the &lt;code&gt;__post_init__&lt;/code&gt; method, we initialize the &lt;code&gt;messages&lt;/code&gt; list and the tool_mapping dictionary. The messages list stores the conversation history sent to the LLM. The &lt;code&gt;tool_mapping&lt;/code&gt; dictionary maps tool names to their corresponding functions.&lt;/p&gt;
 &lt;p&gt;The &lt;code&gt;tool_schema&lt;/code&gt; is a list of function schemas. The &lt;code&gt;function_schema&lt;/code&gt; function helps create schemas expected by the OpenAI API. Alternatively, you can define this schema manually.&lt;/p&gt;
 &lt;p&gt;You can also define this tool/function schema manually.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="o"&gt;...&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;__post_init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -224,7 +224,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;p&gt;The core idea is to keep calling the LLM until it stops invoking tools or until &lt;code&gt;max_iterations&lt;/code&gt; is reached. Setting a &lt;code&gt;max_iterations&lt;/code&gt; value is advisable to &lt;strong&gt;avoid infinite loops&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Tool calls, parameters, and results are added to the messages list. Maintaining the &lt;strong&gt;conversation history&lt;/strong&gt; is crucial so that the LLM retains context and generates relevant responses.&lt;/p&gt;
 &lt;p&gt;Here, the assumption is that a task is &lt;strong&gt;accomplished when the LLM stops calling tools&lt;/strong&gt;—a useful simplification for many use cases.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;OpenAI&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;OpenAI&lt;/span&gt;
 
 
 &lt;span class="nd"&gt;@dataclass&lt;/span&gt;
@@ -260,7 +260,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 
 &lt;h3&gt;Tool Calling&lt;/h3&gt;
 &lt;p&gt;The &lt;code&gt;call_tool&lt;/code&gt; method invokes a tool with the parameters provided by the LLM. The &lt;code&gt;tool_mapping&lt;/code&gt; dictionary maps function names to actual implementations.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nd"&gt;@dataclass&lt;/span&gt;
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="o"&gt;...&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call_tool&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMesssageToolCall&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -270,7 +270,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;Agent&lt;/code&gt; class also includes helper methods to record tool calls and results in the messages list:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai.types.chat&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMessageToolCall&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;openai.types.chat&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;ChatCompletionMessageToolCall&lt;/span&gt;
 
 
 &lt;span class="nd"&gt;@dataclass&lt;/span&gt;
@@ -311,7 +311,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 
 &lt;h3&gt;Running the Agent&lt;/h3&gt;
 &lt;p&gt;Now, let’s run the agent using a simple query. We’ll use a basic &lt;code&gt;get_weather&lt;/code&gt; tool to retrieve weather data based on geographic coordinates. (The code for this tool is included in the appendix.)&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;agent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Agent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
     &lt;span class="n"&gt;system_prompt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;You are a helpful assistant.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;gpt-4o-mini&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;get_weather&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
@@ -320,7 +320,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This yields:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;The current weather in Amsterdam is as follows:
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;The current weather in Amsterdam is as follows:
 - Temperature: 15.2°C
 - Wind Speed: 11.2 km/h
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -329,7 +329,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;h2&gt;Appendix&lt;/h2&gt;
 &lt;h3&gt;Tool Implementation&lt;/h3&gt;
 &lt;p&gt;Here is the simple &lt;code&gt;get_weather&lt;/code&gt; function, which uses the Open-Meteo API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;requests&lt;/span&gt;
 
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_weather&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;latitude&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;longitude&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -355,7 +355,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 
 &lt;h3&gt;Function Schema Generation&lt;/h3&gt;
 &lt;p&gt;The &lt;code&gt;function_schema&lt;/code&gt; helper generates an OpenAI-compatible schema from a function’s docstring and type annotations:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Callable&lt;/span&gt;
 
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;openai_type_mapping&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;param_type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -427,7 +427,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;p&gt;This project is a minimal MCP tool server that enables LLMs to retrieve live stock data from Yahoo Finance. It demonstrates how to wrap real-world APIs into standardized, discoverable MCP tools that LLMs can reason about and call.&lt;/p&gt;
 &lt;h3&gt;Wrapping Existing API&lt;/h3&gt;
 &lt;p&gt;The logic for retrieving stock prices resides in a small utility class. It uses the &lt;a href="https://github.com/ranaroussi/yfinance"&gt;&lt;code&gt;yfinance&lt;/code&gt;&lt;/a&gt; Python library under the hood:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;YahooFinance&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;YahooFinance&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
     &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Session&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verify&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nb"&gt;bool&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;session&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;session&lt;/span&gt; &lt;span class="ow"&gt;or&lt;/span&gt; &lt;span class="n"&gt;Session&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
         &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;session&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;verify&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;verify&lt;/span&gt;
@@ -455,7 +455,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;h2&gt;Generate Tool Schemas&lt;/h2&gt;
 &lt;p&gt;Tool schemas provide LLMs with the necessary context about what parameters a tool expects.&lt;/p&gt;
 &lt;p&gt;When using the &lt;code&gt;mcp.server.FastMCP&lt;/code&gt; class, tool schemas are generated automatically based on a function’s docstring. However, in the examples here, I’m using the lower-level &lt;code&gt;mcp.server.Server&lt;/code&gt; class. This approach offers greater control over the schema, allowing us to define schemas manually or build a custom docstring parser for methods and functions.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;inspect&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;inspect&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;typing&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Any&lt;/span&gt;
 
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;mcp.types&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Tool&lt;/span&gt;
@@ -524,7 +524,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;li&gt;&lt;code&gt;list_tools()&lt;/code&gt; informs the client of the available functions/tools.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;call_tool()&lt;/code&gt; handles tool invocations and their arguments&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;mcp.server&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;mcp.server&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Server&lt;/span&gt;
 
 
 &lt;span class="k"&gt;async&lt;/span&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;serve&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -554,12 +554,12 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;p&gt;First create a &lt;code&gt;secrets …&lt;/code&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this guide, I'll walk you through deploying a secure virtual private server (VPS) on DigitalOcean using Terraform for infrastructure as code and Tailscale for private networking. This approach combines the convenience of cloud infrastructure with enhanced security through private networking.&lt;/p&gt;
 &lt;h2&gt;Setting Up Terraform for DigitalOcean&lt;/h2&gt;
 &lt;p&gt;First create a &lt;code&gt;secrets.auto.tfvars&lt;/code&gt; file securely store your DigitalOcean access token and SSH key path.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;do_token&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;digital_ocean_access_token&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;do_token&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;digital_ocean_access_token&amp;quot;&lt;/span&gt;
 &lt;span class="nv"&gt;pvt_key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;~/.ssh/your_private_key&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Next, create a &lt;code&gt;provider.tf&lt;/code&gt; file to configure the DigitalOcean provider in terraform. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;terraform&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;terraform&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nb"&gt;required_providers&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nb"&gt;digitalocean&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="na"&gt;source&lt;/span&gt;&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;digitalocean/digitalocean&amp;quot;&lt;/span&gt;
@@ -587,12 +587,12 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Initialize your Terraform working directory:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;terraform&lt;span class="w"&gt; &lt;/span&gt;init
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;terraform&lt;span class="w"&gt; &lt;/span&gt;init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Creating the DigitalOcean Droplet&lt;/h2&gt;
 &lt;p&gt;Create a  &lt;code&gt;droplet.tf&lt;/code&gt; file to define your server configuration and provisioning. Add a SSH connection so that you're able to provision, and add the path the scripts used for provisioning.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;digitalocean_droplet&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;droplet&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;digitalocean_droplet&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;droplet&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ubuntu-20-04-x64&amp;quot;&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="w"&gt;     &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;droplet-1&amp;quot;&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;region&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ams3&amp;quot;&lt;/span&gt;
@@ -620,7 +620,7 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;h2&gt;Setting Up Provisioning Scripts&lt;/h2&gt;
 &lt;p&gt;Create a &lt;code&gt;scripts&lt;/code&gt; directory with the following two scripts files: &lt;/p&gt;
 &lt;p&gt;&lt;code&gt;./scripts/update.sh&lt;/code&gt; will update the system packages, without the need for user interaction.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/bash&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
 &lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;openssh-server openssh-server/sshd_config boolean true&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;debconf-set-selections
 sudo&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;DEBIAN_FRONTEND&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;noninteractive&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;upgrade&lt;span class="w"&gt; &lt;/span&gt;-y
@@ -631,7 +631,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;DEBIAN_FRONTEND&l
 &lt;blockquote&gt;
 &lt;p&gt;Note that &lt;code&gt;tailscale up&lt;/code&gt; will request to authenticate and add the machine to your account by visiting and url.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/bash&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-fssl&lt;span class="w"&gt; &lt;/span&gt;https://tailscale.com/install.sh&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sh
 &lt;span class="nb"&gt;echo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Starting Tailscale...&amp;quot;&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;tailscale&lt;span class="w"&gt; &lt;/span&gt;up
@@ -641,7 +641,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;tailscale&lt;span class="w"&gt; &lt;/spa
 &lt;h2&gt;Configuring Security with Tailscale and Firewall&lt;/h2&gt;
 &lt;p&gt;Create a &lt;code&gt;firewall.tf&lt;/code&gt; to define your firewall rules. We want only allow the traffic from the tailscale network, and block all the other incoming traffic.&lt;/p&gt;
 &lt;p&gt;Read more about what ports ports tailscale uses &lt;a href="https://tailscale.com/kb/1082/firewall-ports"&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;digitalocean_firewall&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;firewall&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;resource&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nc"&gt;&amp;quot;digitalocean_firewall&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;&amp;quot;firewall&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tailscale&amp;quot;&lt;/span&gt;
 
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="na"&gt;droplet_ids&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;digitalocean_droplet.droplet.id&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -676,13 +676,13 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;tailscale&lt;span class="w"&gt; &lt;/spa
 
 &lt;h2&gt;Deploying Your Infrastructure&lt;/h2&gt;
 &lt;p&gt;Run Terraform to create your infrastructure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;terraform&lt;span class="w"&gt; &lt;/span&gt;plan&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;# Preview the changes&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;terraform&lt;span class="w"&gt; &lt;/span&gt;plan&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="c1"&gt;# Preview the changes&lt;/span&gt;
 terraform&lt;span class="w"&gt; &lt;/span&gt;apply&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="c1"&gt;# Apply the changes&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Connecting to Your Server&lt;/h2&gt;
 &lt;p&gt;After deployment, you'll need to connect to your server using its Tailscale IP rather than its public IP. This provides an additional layer of security, as your SSH port is only accessible through the private Tailscale network.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/.ssh/your_private_key&lt;span class="w"&gt; &lt;/span&gt;root@100.x.y.z&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Replace with your Tailscale IP&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/.ssh/your_private_key&lt;span class="w"&gt; &lt;/span&gt;root@100.x.y.z&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Replace with your Tailscale IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Links&lt;/h2&gt;
@@ -700,7 +700,7 @@ terraform&lt;span class="w"&gt; &lt;/span&gt;apply&lt;span class="w"&gt;   &lt;/
 &lt;h3&gt;1. Creating a Sample FastAPI Application&lt;/h3&gt;
 &lt;p&gt;First, let's create a minimal web server using &lt;a href="https://fastapi.tiangolo.com"&gt;FastAPI&lt;/a&gt;. &lt;/p&gt;
 &lt;p&gt;Create a &lt;code&gt;main.py&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;
 
 &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 
@@ -716,7 +716,7 @@ terraform&lt;span class="w"&gt; &lt;/span&gt;apply&lt;span class="w"&gt;   &lt;/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can test this locally by running:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Install dependencies&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Install dependencies&lt;/span&gt;
 pip&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;fastapi&lt;span class="w"&gt; &lt;/span&gt;uvicorn
 
 &lt;span class="c1"&gt;# Run server&lt;/span&gt;
@@ -725,7 +725,7 @@ uvicorn&lt;span class="w"&gt; &lt;/span&gt;main:app
 
 &lt;h3&gt;2. Containerizing the Application&lt;/h3&gt;
 &lt;p&gt;We now want containerize the application. Create &lt;code&gt;Dockerfile&lt;/code&gt; that packages the application:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;# Use a Python image&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c"&gt;# Use a Python image&lt;/span&gt;
 &lt;span class="k"&gt;FROM&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;python:3.12&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;
 
 &lt;span class="c"&gt;# Install the project into `/app`&lt;/span&gt;
@@ -744,7 +744,7 @@ uvicorn&lt;span class="w"&gt; &lt;/span&gt;main:app
 
 &lt;h3&gt;3. Building and Publishing the Container&lt;/h3&gt;
 &lt;p&gt;To build the Docker image and get the container into production you need to:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Build the image&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Build the image&lt;/span&gt;
 docker&lt;span class="w"&gt; &lt;/span&gt;build&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;my-username/my-image&lt;span class="w"&gt; &lt;/span&gt;.
 
 &lt;span class="c1"&gt;# Run and test the container locally&lt;/span&gt;
@@ -756,7 +756,7 @@ docker&lt;span class="w"&gt; &lt;/span&gt;push&lt;span class="w"&gt; &lt;/span&g
 
 &lt;h3&gt;4. Setting Up Docker on Your Server&lt;/h3&gt;
 &lt;p&gt;Here are the commands you'll need to setup Docker on a Debian-based server. Straight from the Docker &lt;a href="https://docs.docker.com/engine/install/"&gt;documentation&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Remove old versions&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Remove old versions&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;pkg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;docker.io&lt;span class="w"&gt; &lt;/span&gt;docker-doc&lt;span class="w"&gt; &lt;/span&gt;docker-compose&lt;span class="w"&gt; &lt;/span&gt;podman-docker&lt;span class="w"&gt; &lt;/span&gt;containerd&lt;span class="w"&gt; &lt;/span&gt;runc&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;do&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;remove&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$pkg&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;done&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Install prerequisites&lt;/span&gt;
@@ -786,7 +786,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;usermod&lt;span class="w"&gt; &lt;/span&
 &lt;blockquote&gt;
 &lt;p&gt;Remember to log out and back in for the group changes to take effect.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Pull the image&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Pull the image&lt;/span&gt;
 docker&lt;span class="w"&gt; &lt;/span&gt;pull&lt;span class="w"&gt; &lt;/span&gt;my-username/my-image
 
 &lt;span class="c1"&gt;# Run the container&lt;/span&gt;
@@ -797,7 +797,7 @@ docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt
 &lt;p&gt;Now let's automate everything we did manually. We'll use GitHub Actions for building and pushing images, and a custom script for automated deployments.&lt;/p&gt;
 &lt;h3&gt;1. Setting Up GitHub Actions&lt;/h3&gt;
 &lt;p&gt;Create &lt;code&gt;.github/workflows/deploy.yml&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Build&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Push&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Build&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;and&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Push&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;
 
 &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="n"&gt;push&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
@@ -832,7 +832,7 @@ docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt
 
 &lt;h3&gt;2. Automated Deployment Script&lt;/h3&gt;
 &lt;p&gt;Create a &lt;code&gt;deploy.sh&lt;/code&gt; script on your server:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class="nv"&gt;IMAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;my-username/my-image:latest&amp;quot;&lt;/span&gt;
 &lt;span class="nv"&gt;CONTAINER_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;my-container-name&amp;quot;&lt;/span&gt;
 
@@ -873,7 +873,7 @@ docker&lt;span class="w"&gt; &lt;/span&gt;pull&lt;span class="w"&gt; &lt;/span&g
 
 &lt;h3&gt;3. Setting Up the Cron Job&lt;/h3&gt;
 &lt;p&gt;To automatically check for image updates:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Make the deploy script executable&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Make the deploy script executable&lt;/span&gt;
 chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;deploy.sh
 
 &lt;span class="c1"&gt;# Add to crontab (runs every 15 minutes)&lt;/span&gt;
@@ -892,7 +892,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;p&gt;The foundation of this …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Terminal multiplexers like &lt;code&gt;tmux&lt;/code&gt; are essential tools for developers, allowing us to manage multiple terminal sessions efficiently. While &lt;code&gt;tmux&lt;/code&gt; itself is powerful, we can enhance its functionality by combining it with &lt;code&gt;fzf&lt;/code&gt;, the fuzzy finder, to create a more intuitive session management workflow.&lt;/p&gt;
 &lt;h2&gt;The Basic Approach&lt;/h2&gt;
 &lt;p&gt;The foundation of this solution lies in combining &lt;code&gt;tmux&lt;/code&gt;'s session listing capability with &lt;code&gt;fzf&lt;/code&gt;'s search interface. Here's how we can list all sessions using &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;tmux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;tmux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This command breaks down into three parts:&lt;/p&gt;
@@ -903,7 +903,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;/ul&gt;
 &lt;h2&gt;Creating a Session Switcher&lt;/h2&gt;
 &lt;p&gt;To make this truly useful, we can create a script that not only lists sessions but also switches to the selected one. Here's the basic implementation:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;session&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;session&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;mux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="k"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-n&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$session&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;tmux&lt;span class="w"&gt; &lt;/span&gt;switch-client&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$session&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 &lt;span class="k"&gt;else&lt;/span&gt;
@@ -913,7 +913,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 
 &lt;h2&gt;Enhanced Version with Visual Indicators&lt;/h2&gt;
 &lt;p&gt;To make the interface more informative, we can add a colored indicator for the currently active session. Here's the improved version:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;session&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tmux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;session&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tmux&lt;span class="w"&gt; &lt;/span&gt;ls&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;-F:&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;
 &lt;span class="s1"&gt;    /attached/ {print $1 &amp;quot;\033[32m *\033[0m&amp;quot;}&lt;/span&gt;
 &lt;span class="s1"&gt;    !/attached/ {print $1} &lt;/span&gt;
 &lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;--ansi&lt;span class="k"&gt;)&lt;/span&gt;
@@ -928,7 +928,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;p&gt;This enhanced version uses green asterisks to highlight attached sessions, making it immediately clear which session is currently active.&lt;/p&gt;
 &lt;h2&gt;Integration with &lt;code&gt;tmux&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;To make this functionality easily accessible, add this line to your &lt;code&gt;.tmux.conf&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;bind-key&lt;span class="w"&gt; &lt;/span&gt;t&lt;span class="w"&gt; &lt;/span&gt;run-shell&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tmux neww &lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/path/to/script&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;bind-key&lt;span class="w"&gt; &lt;/span&gt;t&lt;span class="w"&gt; &lt;/span&gt;run-shell&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tmux neww &lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/path/to/script&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now you can trigger the session switcher using the &lt;code&gt;prefix + t&lt;/code&gt; key combination.&lt;/p&gt;
@@ -939,7 +939,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;p&gt;However, I really love FastAPI as a framework for building APIs. Let's explore how we can create an Azure Function leveraging FastAPI.&lt;/p&gt;
 &lt;h2&gt;Setup&lt;/h2&gt;
 &lt;p&gt;Let's start by setting up the following project structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;azure-function-fastapi
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;azure-function-fastapi
 ├── api
 │   └── __init__.py
 ├── function_app.py
@@ -956,7 +956,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;/ul&gt;
 &lt;h2&gt;Creating a FastAPI App&lt;/h2&gt;
 &lt;p&gt;Let's build our FastAPI app in &lt;code&gt;__init__.py&lt;/code&gt;. This can be done exactly as you would normally create a FastAPI application:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pydantic&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaseModel&lt;/span&gt;
 
 &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
@@ -973,15 +973,15 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 
 &lt;p&gt;This creates a parameterized route (&lt;code&gt;/hello/{name}&lt;/code&gt;) that dynamically accepts a value in the URL path and returns a JSON response (&lt;code&gt;User&lt;/code&gt;).&lt;/p&gt;
 &lt;p&gt;You can run this app from the root using:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uvicorn&lt;span class="w"&gt; &lt;/span&gt;api.__init__:app
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uvicorn&lt;span class="w"&gt; &lt;/span&gt;api.__init__:app
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Let's make a &lt;code&gt;GET&lt;/code&gt; request using &lt;code&gt;curl&lt;/code&gt; to our API:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;http://127.0.0.1:8000/hello/Max
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;http://127.0.0.1:8000/hello/Max
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Response&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Max&amp;quot;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -990,7 +990,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;h2&gt;Integrating in Azure Function&lt;/h2&gt;
 &lt;p&gt;Integrating the FastAPI app into an Azure Function is straightforward:&lt;/p&gt;
 &lt;p&gt;Add the following to &lt;code&gt;function_app.py&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;azure.functions&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;AsgiFunctionApp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AuthLevel&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;azure.functions&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;AsgiFunctionApp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;AuthLevel&lt;/span&gt;
 
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;api&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;app&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;fastapi_app&lt;/span&gt;
 
@@ -1002,7 +1002,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 
 &lt;p&gt;We simply import our FastAPI app and use it in &lt;code&gt;AsgiFunctionApp&lt;/code&gt;. It's that simple.&lt;/p&gt;
 &lt;p&gt;Next, set the function app settings in &lt;code&gt;host.json&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;version&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;2.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;logging&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;applicationInsights&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
@@ -1027,7 +1027,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Define the local settings in &lt;code&gt;local.settings.json&lt;/code&gt; for running the function app locally:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;IsEncrypted&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kc"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;Values&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;AzureWebJobsStorage&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1038,24 +1038,24 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can now start the function app locally:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;func&lt;span class="w"&gt; &lt;/span&gt;host&lt;span class="w"&gt; &lt;/span&gt;start
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;func&lt;span class="w"&gt; &lt;/span&gt;host&lt;span class="w"&gt; &lt;/span&gt;start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You now have a FastAPI app running in an Azure Function!&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Tip&lt;/strong&gt;: You can still run your FastAPI app without the azure function, which can be helpful during development:&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uvicorn&lt;span class="w"&gt; &lt;/span&gt;api.__init__:app&lt;span class="w"&gt; &lt;/span&gt;--reload
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uvicorn&lt;span class="w"&gt; &lt;/span&gt;api.__init__:app&lt;span class="w"&gt; &lt;/span&gt;--reload
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="posts"/></entry><entry><title>How I manage my dotfiles</title><link href="maxscheijen.github.io/posts/how-i-manage-my-dotfiles/" rel="alternate"/><published>2024-11-28T00:00:00+01:00</published><updated>2024-11-28T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-28:maxscheijen.github.io/posts/how-i-manage-my-dotfiles/</id><summary type="html">&lt;p&gt;I store all my dotfiles in a dedicated git repository called &lt;code&gt;dotfiles&lt;/code&gt; with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.&lt;/p&gt;
 &lt;p&gt;I then use &lt;code&gt;stow&lt;/code&gt; to create &lt;strong&gt;symlinks&lt;/strong&gt; to place the dotfiles in the appropriate places.&lt;/p&gt;
 &lt;p&gt;This creates symlinks from …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I store all my dotfiles in a dedicated git repository called &lt;code&gt;dotfiles&lt;/code&gt; with a remote on GitHub. This allows me to track changes, and clone and pull them to other machines.&lt;/p&gt;
 &lt;p&gt;I then use &lt;code&gt;stow&lt;/code&gt; to create &lt;strong&gt;symlinks&lt;/strong&gt; to place the dotfiles in the appropriate places.&lt;/p&gt;
 &lt;p&gt;This creates symlinks from for example &lt;code&gt;~/dotfiles/.zshrc&lt;/code&gt; to &lt;code&gt;~/.zshrc&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;stow&lt;span class="w"&gt; &lt;/span&gt;zsh
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;stow&lt;span class="w"&gt; &lt;/span&gt;zsh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I organize them by tool.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;dotfiles/
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;dotfiles/
 ├── zsh/
 │   └── .zshrc
 ├── git/
@@ -1064,7 +1064,7 @@ chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;d
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Setup a machine using &lt;code&gt;dotfiles.sh&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;zsh
 git&lt;span class="w"&gt; &lt;/span&gt;clone&lt;span class="w"&gt; &lt;/span&gt;git@github.com/maxscheijen/dotfiles&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;/dotfiles
 stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;zsh
@@ -1077,7 +1077,7 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;p&gt;The key is to put your plugin declarations (everything needed to load the plugin) in one file, and the actual configuration in another.&lt;/p&gt;
 &lt;p&gt;For example, let's look at the &lt;a href="https://github.com/folke/zen-mode.nvim"&gt;zen-mode&lt;/a&gt; plugin:&lt;/p&gt;
 &lt;p&gt;Your &lt;code&gt;lua/custom/plugin/zen-mode.lua&lt;/code&gt; file would contain the plugin declaration:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="s2"&gt;&amp;quot;folke/zen-mode.nvim&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
   &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
     &lt;span class="c1"&gt;-- Load in the config for this plugin&lt;/span&gt;
@@ -1088,7 +1088,7 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then, the configuration itself goes in &lt;code&gt;lua/custom/zen-mode.lua&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;local&lt;/span&gt; &lt;span class="n"&gt;zen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;zen-mode&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kd"&gt;local&lt;/span&gt; &lt;span class="n"&gt;zen&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;zen-mode&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;zen&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
     &lt;span class="n"&gt;window&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
         &lt;span class="n"&gt;width&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;0.65&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -1107,13 +1107,13 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;p&gt;[[neovim]] [[lua]] [[vim]]&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Supercharge Your Git History Navigation with Fuzzy Find</title><link href="maxscheijen.github.io/posts/supercharge-your-git-history-navigation-with-fuzzy-find/" rel="alternate"/><published>2024-11-11T00:00:00+01:00</published><updated>2024-11-11T00:00:00+01:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-11-11:maxscheijen.github.io/posts/supercharge-your-git-history-navigation-with-fuzzy-find/</id><summary type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Ever found yourself scrolling endlessly through &lt;code&gt;git log&lt;/code&gt; trying to find that one specific commit? Let's explore how to transform this tedious process into a smooth, interactive experience using &lt;code&gt;fzf&lt;/code&gt;, a powerful command-line fuzzy finder. This approach will not only make navigating Git history more efficient but also more enjoyable.&lt;/p&gt;
 &lt;h2&gt;Basic Setup: Your First Fuzzy Git log&lt;/h2&gt;
 &lt;p&gt;The simplest way to start is by piping your git log into &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This basic command already gives you an interactive interface where you can type to filter commits instantly. But we can do much better.&lt;/p&gt;
 &lt;h2&gt;Adding Rick Preview&lt;/h2&gt;
 &lt;p&gt;What if you could see the actual changes while browsing through commits? We can achieve this by adding a preview window:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;--preview&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;git show {1}&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;--preview&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;git show {1}&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The magic here is in the &lt;code&gt;--preview&lt;/code&gt; flag:&lt;/p&gt;
@@ -1123,7 +1123,7 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;/ul&gt;
 &lt;h2&gt;Quick Commit Hash Copying&lt;/h2&gt;
 &lt;p&gt;Often, you'll want to grab a commit hash to use it in another command. Let's enhance our command to automatically copy the selected commit hash to the clipboard:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;--preview&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;git show {1}&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;pbcopy
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;--oneline&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;--preview&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;git show {1}&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;awk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $1}&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;pbcopy
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This pipeline:&lt;/p&gt;
@@ -1135,7 +1135,7 @@ stow&lt;span class="w"&gt; &lt;/span&gt;git&lt;span class="w"&gt; &lt;/span&gt;z
 &lt;/ol&gt;
 &lt;h2&gt;Making It Beautiful: Adding Color and Context&lt;/h2&gt;
 &lt;p&gt;Let's enhance the visual experience by adding colors and more contextual information:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git&lt;span class="w"&gt; &lt;/span&gt;log&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;--color&lt;span class="o"&gt;=&lt;/span&gt;always&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;--date&lt;span class="o"&gt;=&lt;/span&gt;short&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;--pretty&lt;span class="o"&gt;=&lt;/span&gt;format:&lt;span class="s2"&gt;&amp;quot;%cd %C(auto)%h %d %s %C(green)%cr %C(bold blue)&amp;lt;%an&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
@@ -1164,7 +1164,7 @@ awk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $2
 &lt;li&gt;Gracefully handles clipboard operations across platforms.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;This script can then be added to your system's PATH for convenient access from any directory. See how to do so &lt;a href="{{&amp;lt; ref &amp;quot;posts/run-custom-scripts-anywhere.md&amp;quot; &amp;gt;}}"&gt;here&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Check if fzf is installed&lt;/span&gt;
 &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;command&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-v&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;/dev/null
@@ -1224,25 +1224,25 @@ awk&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{print $2
 &lt;p&gt;Let's build a simple tool that lets you fuzzy find through your command history, select a command, and execute it. We'll use &lt;code&gt;fzf&lt;/code&gt; as our fuzzy finder of choice.&lt;/p&gt;
 &lt;h2&gt;Basic Implementation&lt;/h2&gt;
 &lt;p&gt;The simplest approach is to pipe your history directly to &lt;code&gt;fzf&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;However, you'll quickly notice this gives us lots of duplicate commands, and each line includes some unnecessary numbers from the history format. Let's clean that up!&lt;/p&gt;
 &lt;p&gt;To remove the leading whitespace, numbers, and timestamps, we can use &lt;code&gt;sed&lt;/code&gt; combined with &lt;code&gt;sort&lt;/code&gt; and &lt;code&gt;uniq&lt;/code&gt; to get a clean, sorted list of unique commands:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now we can combine these pieces:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To actually execute the selected command, we just need to pipe it to &lt;code&gt;sh&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sh
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;history&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sed&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;s/^[[:space:]]*[0-9]*[[:space:]]*//; s/^: [0-9:]*;//&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sort&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;uniq&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Enhanced Script&lt;/h2&gt;
 &lt;p&gt;While the one-liner works, let's make it more robust. Here's a script that handles both &lt;code&gt;bash&lt;/code&gt; and &lt;code&gt;zsh&lt;/code&gt; histories, and includes some error checking:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Check if fzf is installed&lt;/span&gt;
 &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;!&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;command&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-v&lt;span class="w"&gt; &lt;/span&gt;fzf&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;/dev/null&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&amp;gt;&lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;
@@ -1288,19 +1288,19 @@ search_and_execute_history
 &lt;ol&gt;
 &lt;li&gt;Save the script as &lt;code&gt;hist&lt;/code&gt; and make it executable:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;hist
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;hist
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Move it to your scripts directory:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mv&lt;span class="w"&gt; &lt;/span&gt;hist&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mv&lt;span class="w"&gt; &lt;/span&gt;hist&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Add the scripts directory to your PATH in your shell configuration:&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now you can simply type &lt;code&gt;hist&lt;/code&gt; anywhere in your terminal to fuzzy find through your command history!&lt;/p&gt;</content><category term="posts"/></entry><entry><title>HTML Form and JSON for single endpoint in FastAPI</title><link href="maxscheijen.github.io/posts/html-form-and-json-for-single-endpoint-in-fastapi/" rel="alternate"/><published>2024-10-05T00:00:00+02:00</published><updated>2024-10-05T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-10-05:maxscheijen.github.io/posts/html-form-and-json-for-single-endpoint-in-fastapi/</id><summary type="html">&lt;p&gt;A common challenge when building a FastAPI application is handling different content types, like &lt;code&gt;JSON&lt;/code&gt; and &lt;code&gt;Form&lt;/code&gt; data. Any many cases your API needs to support both formats, especially when dealing with web forms and modern front-end applications that often send json payloads.&lt;/p&gt;
@@ -1319,7 +1319,7 @@ search_and_execute_history
 &lt;h3&gt;Validation&lt;/h3&gt;
 &lt;p&gt;We define a Pydantic model &lt;code&gt;User&lt;/code&gt; to enforce structure and validation on the incoming data. In this case, it expects a single field: &lt;code&gt;name&lt;/code&gt;. This model will automatically validate the incoming data whether it comes from a form or a json body.&lt;/p&gt;
 &lt;p&gt;You can extend this model by adding more fields as needed.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pydantic&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaseModel&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pydantic&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;BaseModel&lt;/span&gt;
 
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;User&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;BaseModel&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -1334,7 +1334,7 @@ search_and_execute_history
 &lt;li&gt;If the content type is unsupported, we raise a &lt;code&gt;ValueError&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Later on the &lt;code&gt;request_type&lt;/code&gt; function is injected into the route via FastAPI’s &lt;code&gt;Depends&lt;/code&gt; feature.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt;
 
 
 &lt;span class="k"&gt;async&lt;/span&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;request_type&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Request&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -1361,7 +1361,7 @@ search_and_execute_history
 &lt;p&gt;This is the main route for handling incoming requests. The &lt;code&gt;data&lt;/code&gt; returned by the &lt;code&gt;request_type&lt;/code&gt; function is validated against the &lt;code&gt;User&lt;/code&gt; model. If the validation succeeds, it means that the request body (whether JSON or form) is valid and contains the correct structure.&lt;/p&gt;
 &lt;p&gt;When the request’s content type is form data (&lt;code&gt;application/x-www-form-urlencoded&lt;/code&gt;), we return a simple HTML response. This can of course be extended to return more complex HTML content based on your needs.&lt;/p&gt;
 &lt;p&gt;For JSON requests, the validated data is returned as the response.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;json&lt;/span&gt;
 
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Depends&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;FastAPI&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastapi.responses&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;JSONResponse&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;HTMLResponse&lt;/span&gt;
@@ -1402,7 +1402,7 @@ search_and_execute_history
 &lt;p&gt;When the content type is unsupported, we catch the &lt;code&gt;ValueError&lt;/code&gt; and return a &lt;code&gt;415 Unsupported Media Type&lt;/code&gt; error with a descriptive message.&lt;/p&gt;
 &lt;h2&gt;Testing&lt;/h2&gt;
 &lt;p&gt;We can now make a request using a json body or a form to the same endpoint&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --header&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Content-Type: application/json&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --data&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;{&lt;/span&gt;
 &lt;span class="s1"&gt;    &amp;quot;name&amp;quot;: &amp;quot;John Doe&amp;quot;&lt;/span&gt;
@@ -1410,29 +1410,29 @@ search_and_execute_history
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will return the following json response.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;John Doe&amp;quot;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We can also make a request using a form&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --header&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Content-Type: application/x-www-form-urlencoded&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --data-urlencode&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;name=John Doe&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This results in a HTML string&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Hello, John Doe!&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Hello, John Doe!&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;When incorrect fields are specified this will result in a nice pydantic validation error response.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;--location&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://127.0.0.1:8000 &amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --header&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Content-Type: application/x-www-form-urlencoded&amp;#39;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="se"&gt;\&lt;/span&gt;
 --data-urlencode&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;user=John Doe&amp;#39;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The incorrect field &lt;code&gt;user&lt;/code&gt; is used this will result in the following response&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;[&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;type&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;missing&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nt"&gt;&amp;quot;loc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
@@ -1465,31 +1465,31 @@ search_and_execute_history
 &lt;h2&gt;Connect to VPS with SSH.&lt;/h2&gt;
 &lt;p&gt;Your VPS provider will either guide you through setting up or automatically configure an SSH key or password, a (root) user, and an IP address, enabling you to connect to your VPS via SSH.&lt;/p&gt;
 &lt;p&gt;You can use this setup to establish your initial connection to the VPS. In my case the &lt;code&gt;&amp;lt;user&amp;gt;&lt;/code&gt; was &lt;code&gt;root&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;user&amp;gt;@&amp;lt;ip&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;user&amp;gt;@&amp;lt;ip&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Updates&lt;/h2&gt;
 &lt;p&gt;The first step is to update the packages on your VPS, as they may be outdated and could pose security vulnerabilities.&lt;/p&gt;
 &lt;p&gt;To update packages on an Ubuntu machine, run the following commands:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
 sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;upgrade&lt;span class="w"&gt; &lt;/span&gt;-y
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;All packages should now be up to date. If any packages remain outdated, you may need to update them manually using the following command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;package-name&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;package-name&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;After updating the packages, you may need to reboot the machine. Use the following command to check if a reboot is required:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ls&lt;span class="w"&gt; &lt;/span&gt;/var/run/reboot-required
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ls&lt;span class="w"&gt; &lt;/span&gt;/var/run/reboot-required
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;if this file exists, a reboot is required, restart your VPS.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;reboot
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;reboot
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3&gt;Automatic Updates&lt;/h3&gt;
 &lt;p&gt;To ensure packages are automatically kept up to date, install the unattended-upgrades package.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# install unattended upgrades&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# install unattended upgrades&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;unattended-upgrades
 
 &lt;span class="c1"&gt;# start unattended upgrades&lt;/span&gt;
@@ -1506,54 +1506,54 @@ sudo vim /etc/apt.conf.d/50unattended-upgrades&lt;/code&gt;&lt;/p&gt;
 "${distro_id}:${distro_codename}-updates"&lt;/code&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;To check if unattended-upgrades is running, use the systemctl command.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;systemctl&lt;span class="w"&gt; &lt;/span&gt;status&lt;span class="w"&gt; &lt;/span&gt;unattended-upgrades
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;systemctl&lt;span class="w"&gt; &lt;/span&gt;status&lt;span class="w"&gt; &lt;/span&gt;unattended-upgrades
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Root and Users&lt;/h2&gt;
 &lt;p&gt;Your VPS provider will set you up with a user (likely root) and a password. It's good practice to change this password if it was generated by the provider.&lt;/p&gt;
 &lt;p&gt;To change the root password, use the passwd command while logged in as root.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;passwd
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;passwd
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It’s also good practice not to use the &lt;code&gt;root&lt;/code&gt; user for everyday tasks. Instead, create a non-root user using the &lt;code&gt;adduser&lt;/code&gt; command.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;adduser&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;adduser&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You’ll be prompted to enter a password and some additional information for the new user.&lt;/p&gt;
 &lt;p&gt;To grant this user &lt;code&gt;sudo&lt;/code&gt; (superuser) privileges, add them to the &lt;code&gt;sudo&lt;/code&gt; group.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;usermod&lt;span class="w"&gt; &lt;/span&gt;-aG&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;usermod&lt;span class="w"&gt; &lt;/span&gt;-aG&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To verify if the user has been successfully added to the sudo group:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;groups&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;groups&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This command should confirm that &lt;code&gt;&amp;lt;username&amp;gt;&lt;/code&gt; is part of the &lt;code&gt;sudo&lt;/code&gt; group:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;username&amp;gt; : &amp;lt;username&amp;gt; sudo users
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;lt;username&amp;gt; : &amp;lt;username&amp;gt; sudo users
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can now &lt;code&gt;exit&lt;/code&gt; and attempt to log in as &lt;code&gt;&amp;lt;username&amp;gt;&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;@&amp;lt;ip&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;@&amp;lt;ip&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You will be prompted to enter the password you just provided.&lt;/p&gt;
 &lt;h2&gt;Login with SSH&lt;/h2&gt;
 &lt;p&gt;Passwords can be less secure, so its recommend to use a SSH key for logging into your server.&lt;/p&gt;
 &lt;p&gt;First, generate an SSH key on your local machine if you don’t already have one:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-keygen&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;ed25519&lt;span class="w"&gt; &lt;/span&gt;-C&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;your_email@example.com&amp;gt;&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-keygen&lt;span class="w"&gt; &lt;/span&gt;-t&lt;span class="w"&gt; &lt;/span&gt;ed25519&lt;span class="w"&gt; &lt;/span&gt;-C&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;lt;your_email@example.com&amp;gt;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Look for the &lt;code&gt;.pub&lt;/code&gt; file in your &lt;code&gt;~/.ssh/ directory&lt;/code&gt;, such as &lt;code&gt;~/.ssh/id_ed25519.pub&lt;/code&gt;. This public key needs to be copied and added to your VPS.&lt;/p&gt;
 &lt;p&gt;On your VPS, create the &lt;code&gt;~/.ssh/&lt;/code&gt; directory if it doesn’t already exist:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;~/.ssh
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;~/.ssh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Create an &lt;code&gt;~/.ssh/authorized_keys&lt;/code&gt; file and add the &lt;strong&gt;public key (.pub)&lt;/strong&gt; you generated on your local machine to this file. Save the changes.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-copy-id&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;@&amp;lt;ip&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh-copy-id&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;username&amp;gt;@&amp;lt;ip&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code&gt;exit&lt;/code&gt; the ssh session on your vps and try to login again.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;user&amp;gt;@&amp;lt;ip&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;user&amp;gt;@&amp;lt;ip&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If everything is configured correctly, you should not be prompted for a password.&lt;/p&gt;
@@ -1561,11 +1561,11 @@ sudo vim /etc/apt.conf.d/50unattended-upgrades&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;For improved security, it’s best to disable both password authentication and root login.&lt;/p&gt;
 &lt;h3&gt;Disable Password Authentication&lt;/h3&gt;
 &lt;p&gt;Open the &lt;code&gt;sshd_config&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;vim&lt;span class="w"&gt; &lt;/span&gt;/etc/ssh/sshd_config
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;vim&lt;span class="w"&gt; &lt;/span&gt;/etc/ssh/sshd_config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Ensure the following settings are present or otherwise change them:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;PubkeyAuthentication&lt;span class="w"&gt; &lt;/span&gt;yes
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;PubkeyAuthentication&lt;span class="w"&gt; &lt;/span&gt;yes
 PasswordAuthentication&lt;span class="w"&gt; &lt;/span&gt;no
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -1573,25 +1573,25 @@ PasswordAuthentication&lt;span class="w"&gt; &lt;/span&gt;no
 &lt;p&gt;Depending on your VPS provider, there may be additional files that enable password authentication, such as &lt;code&gt;/etc/ssh/sshd_config.d/50-cloud-init.conf&lt;/code&gt;. Make sure to update these files as well.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Restart the SSH service for the changes to take effect:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;service&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;restart
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;service&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To verify that password authentication is disabled, try logging in as the root user:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@&amp;lt;ip&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;root@&amp;lt;ip&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You should receive a permission denied error if the configuration is correct.&lt;/p&gt;
 &lt;h3&gt;Disable Root Login&lt;/h3&gt;
 &lt;p&gt;Open the same &lt;code&gt;sshd_config&lt;/code&gt; file:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;vim&lt;span class="w"&gt; &lt;/span&gt;/etc/ssh/sshd_config
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;vim&lt;span class="w"&gt; &lt;/span&gt;/etc/ssh/sshd_config
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Locate and update the following line:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;PermitRootLogin&lt;span class="w"&gt; &lt;/span&gt;no
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;PermitRootLogin&lt;span class="w"&gt; &lt;/span&gt;no
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Restart the SSH service again:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;service&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;restart
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;service&lt;span class="w"&gt; &lt;/span&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;restart
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;Network and Firewall&lt;/h2&gt;
@@ -1603,7 +1603,7 @@ PasswordAuthentication&lt;span class="w"&gt; &lt;/span&gt;no
 &lt;/ul&gt;
 &lt;p&gt;Some VPS providers allow you to manage ports through their dashboard or UI. However, you can also use &lt;a href="https://manpages.ubuntu.com/manpages/bionic/en/man8/ufw.8.html"&gt;&lt;code&gt;ufw&lt;/code&gt;&lt;/a&gt; (Uncomplicated Firewall), which is simple to use and typically installed by default on Ubuntu.&lt;/p&gt;
 &lt;p&gt;Run the following commands to configure &lt;code&gt;ufw&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Disable all incoming connections by default&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# Disable all incoming connections by default&lt;/span&gt;
 sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;default&lt;span class="w"&gt; &lt;/span&gt;deny&lt;span class="w"&gt; &lt;/span&gt;incoming
 
 &lt;span class="c1"&gt;# Allow all outgoing connections by default&lt;/span&gt;
@@ -1631,17 +1631,17 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;ufw&lt;span class="w"&gt; &lt;/span&gt;&
 &lt;h2&gt;Managing Python Packages using &lt;code&gt;uv&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;uv&lt;/code&gt; is an extremely fast Python package and recently also became a full on package manager.&lt;/p&gt;
 &lt;p&gt;You can install it using &lt;code&gt;curl&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-LsSf&lt;span class="w"&gt; &lt;/span&gt;https://astral.sh/uv/install.sh&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sh
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-LsSf&lt;span class="w"&gt; &lt;/span&gt;https://astral.sh/uv/install.sh&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sh
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can then create a new a new Python project, or use an existing one by running the &lt;code&gt;uv init&lt;/code&gt; command:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;init&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;project-name&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;init&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;project-name&amp;gt;
 &lt;span class="c1"&gt;# or if already in project&lt;/span&gt;
 uv&lt;span class="w"&gt; &lt;/span&gt;init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will create the following structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.
 ├──&lt;span class="w"&gt; &lt;/span&gt;.python-version&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# project&amp;#39;s default python version&lt;/span&gt;
 ├──&lt;span class="w"&gt; &lt;/span&gt;README.md
 ├──&lt;span class="w"&gt; &lt;/span&gt;hello.py
@@ -1649,11 +1649,11 @@ uv&lt;span class="w"&gt; &lt;/span&gt;init
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Run &lt;code&gt;uv add&lt;/code&gt; to add dependencies. This will create an virtual environment (&lt;code&gt;.venv&lt;/code&gt;), if you didn't already have one and it then installs the dependencies. The installed dependency will be present in the &lt;code&gt;pyproject.toml&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;dependency&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;dependency&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Your project will have the following structure:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;.
 ├──&lt;span class="w"&gt; &lt;/span&gt;.venv&lt;span class="w"&gt;               &lt;/span&gt;&lt;span class="c1"&gt;# project&amp;#39;s virtual environment&lt;/span&gt;
 ├──&lt;span class="w"&gt; &lt;/span&gt;.python-version
 ├──&lt;span class="w"&gt; &lt;/span&gt;README.md
@@ -1667,11 +1667,11 @@ uv&lt;span class="w"&gt; &lt;/span&gt;init
 &lt;p&gt;And finally pre-commit hooks that run some checks (including formatting, linting and tests) before my commits.&lt;/p&gt;
 &lt;h3&gt;Linting &amp;amp; formatting using &lt;code&gt;ruff&lt;/code&gt;&lt;/h3&gt;
 &lt;p&gt;I used to use black, flake8 and isort for my linting and code formatting. However since &lt;code&gt;ruff&lt;/code&gt; was released I haven't looked back.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;ruff
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;ruff
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Using ruff after black, isort and flake8 is delightful. &lt;code&gt;ruff&lt;/code&gt; is a super fast linter (fixing issues and organizing imports) and code formatter. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# ruff linting&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# ruff linting&lt;/span&gt;
 uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;ruff&lt;span class="w"&gt; &lt;/span&gt;check&lt;span class="w"&gt; &lt;/span&gt;--fix&lt;span class="w"&gt; &lt;/span&gt;--select&lt;span class="w"&gt; &lt;/span&gt;I
 
 &lt;span class="c1"&gt;# ruff formatting&lt;/span&gt;
@@ -1680,11 +1680,11 @@ uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;ruf
 
 &lt;h3&gt;&lt;code&gt;pre-commit&lt;/code&gt; hooks&lt;/h3&gt;
 &lt;p&gt;pre-commit hooks run before your commits are made. These hooks can perform a variety of checks.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;pre-commit
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;pre-commit
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;With the following &lt;code&gt;.pre-commit.yaml&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;repos&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;repos&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt;   &lt;/span&gt;&lt;span class="nt"&gt;repo&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;https://github.com/pre-commit/pre-commit-hooks&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;rev&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;v4.6.0&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;hooks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -1713,16 +1713,16 @@ uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;ruf
 
 &lt;h3&gt;Testing using &lt;code&gt;pytest&lt;/code&gt;&lt;/h3&gt;
 &lt;p&gt;I don't always write tests, but if I do, I'll most likely use pytest, and a pytest coverage plugin.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;pytest&lt;span class="w"&gt; &lt;/span&gt;pytest-cov
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;--dev&lt;span class="w"&gt; &lt;/span&gt;pytest&lt;span class="w"&gt; &lt;/span&gt;pytest-cov
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To run those test (with test coverage) against my python files I run the following.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;pytest&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;test-dir&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;--cov&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;source-dir&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;pytest&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;test-dir&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;--cov&lt;span class="w"&gt; &lt;/span&gt;&amp;lt;source-dir&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;CI with GitHub actions&lt;/h2&gt;
 &lt;p&gt;I also like to run linting, formatting and tests in CI. Below is a GitHub Action at &lt;code&gt;.github/workflows/ci.yaml&lt;/code&gt;. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;CI&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;CI&lt;/span&gt;
 &lt;span class="nt"&gt;on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="nt"&gt;push&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nt"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
@@ -1771,25 +1771,25 @@ uv&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;ruf
 &lt;h2&gt;Example&lt;/h2&gt;
 &lt;p&gt;Lets say that you know that commit &lt;code&gt;A&lt;/code&gt; doesn't contain the bug (all tests pass). But in last commit &lt;code&gt;E&lt;/code&gt; the tests are not passing.&lt;/p&gt;
 &lt;p&gt;However, we don't know in which commit between &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;E&lt;/code&gt; the bug was introduced.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
 |                               |
 A ---------- unknown ---------- E
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;To narrow down our search, we're going to select the middle commit between &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;E&lt;/code&gt;, commit &lt;code&gt;C&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
 |                               |
 A -- unknown -- C -- unknown -- E
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We run our tests against commit &lt;code&gt;C&lt;/code&gt;. If this commit turns out to be passing than we know the faulty commit was introduced between &lt;code&gt;C&lt;/code&gt; and &lt;code&gt;E&lt;/code&gt; and the commits between &lt;code&gt;A&lt;/code&gt; and &lt;code&gt;C&lt;/code&gt; are good.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;----------------------------------
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;----------------------------------
 |                                |
 A --- good --- C --- unknown --- E
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;However if the bug is still present in &lt;code&gt;C&lt;/code&gt; and our tests fail, than we know for sure that the commits between &lt;code&gt;C&lt;/code&gt; and &lt;code&gt;E&lt;/code&gt; aren't good. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;---------------------------------
 |                               |
 A --- unknown --- C --- bad --- E
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -1800,31 +1800,31 @@ A --- unknown --- C --- bad --- E
 &lt;ol&gt;
 &lt;li&gt;Start bisect&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git start
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git start
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Set the known bad commit, when no commit provided it uses the current one.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect bad 
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect bad 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Set the known good commit, in this case at a tag.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect good v1.0.0
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect good v1.0.0
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Then we test our code.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python -m pytest
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;python -m pytest
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Depending on test turnout.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect &amp;lt;good | bad&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect &amp;lt;good | bad&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ol&gt;
@@ -1832,11 +1832,11 @@ A --- unknown --- C --- bad --- E
 &lt;/ol&gt;
 &lt;h2&gt;Automatic &lt;code&gt;bisect&lt;/code&gt;&lt;/h2&gt;
 &lt;p&gt;Repeat step 1 till 3 as before and then run.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect run &amp;lt;cmd&amp;gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect run &amp;lt;cmd&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Where &lt;code&gt;&amp;lt;cmd&amp;gt;&lt;/code&gt; is the (test) command you want to run.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect run python -m pytest 
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;git bisect run python -m pytest 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;https://git-scm.com/docs/git-bisect&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Python to Change VIM</title><link href="maxscheijen.github.io/posts/python-to-change-vim/" rel="alternate"/><published>2024-08-22T00:00:00+02:00</published><updated>2024-08-22T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-22:maxscheijen.github.io/posts/python-to-change-vim/</id><summary type="html">&lt;p&gt;The programming language I'm most familiar with is &lt;a href="https://python.org"&gt;python&lt;/a&gt;. I also started to learn vim recently. How can I combine the two?&lt;/p&gt;
@@ -1845,7 +1845,7 @@ A --- unknown --- C --- bad --- E
 &lt;h2&gt;Script&lt;/h2&gt;
 &lt;p&gt;So I wrote a basic python script that can lower case a string. &lt;/p&gt;
 &lt;p&gt;&lt;code&gt;~/.dotfiles/scripts/lower&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/python3&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/usr/bin/python3&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
 
 
@@ -1858,11 +1858,11 @@ A --- unknown --- C --- bad --- E
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I then made the file executable&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/lowercase
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/lowercase
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and added the script to my path. I for example added the &lt;code&gt;~/.dotfiles/scripts&lt;/code&gt; directory to my path (in &lt;code&gt;~/.zshrc&lt;/code&gt;), allowing me to call the executables name from my shell.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I can now hit &lt;code&gt;!!&lt;/code&gt; in vim, and type the name of my script &lt;code&gt;lower&lt;/code&gt; and hit enter.&lt;/p&gt;
@@ -1878,21 +1878,21 @@ A --- unknown --- C --- bad --- E
 &lt;h2&gt;Tailscale&lt;/h2&gt;
 &lt;p&gt;The Tailscale VPN allows me to access my Homelab, and the applications running on it, from anywhere in the world.&lt;/p&gt;
 &lt;p&gt;So on my Raspberry Pi I ran the following.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;apt-transport-https
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt-get&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;apt-transport-https
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Then we need to add the Tailscale singin key.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-fsSL&lt;span class="w"&gt; &lt;/span&gt;https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tee&lt;span class="w"&gt; &lt;/span&gt;/usr/share/keyrings/tailscale-archive-keyring.gpg&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;/dev/null
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;curl&lt;span class="w"&gt; &lt;/span&gt;-fsSL&lt;span class="w"&gt; &lt;/span&gt;https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tee&lt;span class="w"&gt; &lt;/span&gt;/usr/share/keyrings/tailscale-archive-keyring.gpg&lt;span class="w"&gt; &lt;/span&gt;&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;/dev/null
 curl&lt;span class="w"&gt; &lt;/span&gt;-fsSL&lt;span class="w"&gt; &lt;/span&gt;https://pkgs.tailscale.com/stable/raspbian/bullseye.tailscale-keyring.list&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tee&lt;span class="w"&gt; &lt;/span&gt;/etc/apt/sources.list.d/tailscale.list
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Install Tailscale.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
 sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;tailscale
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You can then run the following command to start Tailwind and authenticate.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tailscale&lt;span class="w"&gt; &lt;/span&gt;up
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;tailscale&lt;span class="w"&gt; &lt;/span&gt;up
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;In the &lt;a href="https://login.tailscale.com/admin/machines"&gt;Tailscale Dashboard&lt;/a&gt; you can see all your machines and there IP addresses.&lt;/p&gt;
@@ -1906,7 +1906,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;i
 &lt;h2&gt;Pattern&lt;/h2&gt;
 &lt;p&gt;In vim you can use &lt;code&gt;:substitute&lt;/code&gt; (&lt;code&gt;:s&lt;/code&gt;) to find and replace text.&lt;/p&gt;
 &lt;p&gt;It follows the following pattern:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;[range]s&lt;span class="sr"&gt;/{pattern}/&lt;/span&gt;{string}/[flags][count]
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;[range]s&lt;span class="sr"&gt;/{pattern}/&lt;/span&gt;{string}/[flags][count]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The command searches each line in &lt;code&gt;[range]&lt;/code&gt; for &lt;code&gt;{pattern}&lt;/code&gt; and replaces it with &lt;code&gt;{string}&lt;/code&gt;. Count is the number of times to repeat this action&lt;/p&gt;
@@ -1914,27 +1914,27 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;i
 &lt;h2&gt;Basics&lt;/h2&gt;
 &lt;p&gt;These are the command I'm currently using.&lt;/p&gt;
 &lt;p&gt;When I want to replace the first occurrence of “foo” with “bar” on current line. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Replace every occurrence of “foo” with bar on current line.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/&lt;span class="k"&gt;g&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/&lt;span class="k"&gt;g&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;One thing I do often is replace every occurrence of a pattern. The &lt;code&gt;%&lt;/code&gt; character will allow you to do this for the entire file. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;%s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/&lt;span class="k"&gt;g&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;%s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/&lt;span class="k"&gt;g&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;If confirmation for substitutions is important add &lt;code&gt;i&lt;/code&gt; to the end of the command.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/gc
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/gc
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code&gt;:s&lt;/code&gt; command searches for string matches. If you want to match whole words and not part of words, put replace between &lt;code&gt;\&amp;lt;\&amp;gt;&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/\&amp;lt;foor\&amp;gt;/&lt;/span&gt;bar/:&lt;span class="k"&gt;w&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/\&amp;lt;foor\&amp;gt;/&lt;/span&gt;bar/:&lt;span class="k"&gt;w&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;By adding a &lt;code&gt;i&lt;/code&gt; add the end, if you want to ignore character case.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/gi
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;:&lt;/span&gt;s&lt;span class="sr"&gt;/foo/&lt;/span&gt;bar/gi
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;https://linuxize.com/post/vim-find-replace/&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Run Custom Scripts From Anywhere</title><link href="maxscheijen.github.io/posts/run-custom-scripts-from-anywhere/" rel="alternate"/><published>2024-08-15T00:00:00+02:00</published><updated>2024-08-15T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-15:maxscheijen.github.io/posts/run-custom-scripts-from-anywhere/</id><summary type="html">&lt;p&gt;Lately I started to look into creating simple scripts that can automate some tasks for me. So I started looking into shell scripting.&lt;/p&gt;
@@ -1943,7 +1943,7 @@ sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;i
 &lt;p&gt;My first script would be for easier note taking.&lt;/p&gt;
 &lt;p&gt;So I took his &lt;a href="https://github.com/mischavandenburg/dotfiles/blob/main/scripts/blog"&gt;blog script&lt;/a&gt; tweaked it a little, and wanted to make it executable from anywhere in my terminal.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;~/.dotfiles/scripts/note&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 
 &lt;span class="c1"&gt;# Get the filename&lt;/span&gt;
 &lt;span class="nb"&gt;read&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Enter a filename: &amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;filename
@@ -1977,19 +1977,19 @@ nvim&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;+ normal
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I ensured that every script in &lt;code&gt;~/.dotfiles/scripts/&lt;/code&gt; was executable by running&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/*
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chmod&lt;span class="w"&gt; &lt;/span&gt;+x&lt;span class="w"&gt; &lt;/span&gt;~/.dotfiles/scripts/*
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;After this I added the scripts directory to the PATH by adding the following line to my &lt;code&gt;~/.zshrc&lt;/code&gt; file&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$HOME&lt;/span&gt;&lt;span class="s2"&gt;/.dotfiles/scripts:&lt;/span&gt;&lt;span class="nv"&gt;$PATH&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Reload my &lt;code&gt;~/.zshrc&lt;/code&gt; by running&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;exec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SHELL&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-l
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nb"&gt;exec&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SHELL&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-l
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And now I'm able to run&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;note
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;note
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;creating a note with formatting in a specific directory.&lt;/p&gt;
@@ -1997,23 +1997,23 @@ nvim&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;+ normal
 &lt;p&gt;https://github.com/mischavandenburg/dotfiles/tree/main/scripts&lt;/p&gt;
 &lt;p&gt;[[cli]] [[unix]] [[bash]]&lt;/p&gt;</content><category term="posts"/></entry><entry><title>Finding files using the terminal</title><link href="maxscheijen.github.io/posts/finding-files-using-the-terminal/" rel="alternate"/><published>2024-08-14T00:00:00+02:00</published><updated>2024-08-14T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2024-08-14:maxscheijen.github.io/posts/finding-files-using-the-terminal/</id><summary type="html">&lt;p&gt;Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.&lt;/p&gt;
 &lt;p&gt;One of the easiest ways to find files on your system based on their name is using &lt;code&gt;fd&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will return all …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Finding notes or files on your system can be hard. Where did you put that file? We can use command line tools to search for files.&lt;/p&gt;
 &lt;p&gt;One of the easiest ways to find files on your system based on their name is using &lt;code&gt;fd&lt;/code&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fd&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will return all the relevant files with your current directory. It will also ignore the patterns from &lt;code&gt;.gitignore&lt;/code&gt; by default.&lt;/p&gt;
 &lt;p&gt;Another nice tool to find files is &lt;code&gt;fzf&lt;/code&gt; which is fuzzy finder.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fzf
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;fzf
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Will open-up an search prompt in the current directory. If you use the neovim plugin telescope &lt;code&gt;find_files&lt;/code&gt; functionality it should look familiar.&lt;/p&gt;
 &lt;h2&gt;Search in file content&lt;/h2&gt;
 &lt;p&gt;However if you also want to search the content of your files ripgrep is probably the right tool &lt;code&gt;rg&lt;/code&gt; is probably the right tool.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;rg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;rg&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;PATTERN&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;These to types of file search will probably find you the correct file or content 90% of the time.&lt;/p&gt;

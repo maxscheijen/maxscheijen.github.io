@@ -46,7 +46,7 @@
 <li>Log retry attempts automatically</li>
 </ul>
 <h2>Installation</h2>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>refire
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>refire
 <span class="c1"># or </span>
 uv<span class="w"> </span>add<span class="w"> </span>refire
 </code></pre></div>
@@ -54,7 +54,7 @@ uv<span class="w"> </span>add<span class="w"> </span>refire
 <p>Requires Python <strong>3.10+</strong>.</p>
 <h2>Quick Start</h2>
 <p>Here’s a simple example of using <code>refire</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">refire</span> <span class="kn">import</span> <span class="n">refire</span>
 
 
@@ -76,34 +76,34 @@ uv<span class="w"> </span>add<span class="w"> </span>refire
 <li>If all retries fail, the last exception is re-raised.</li>
 </ul>
 <p>So, you might see log output like:</p>
-<div class="highlight"><pre><span></span><code><span class="n">WARNING</span><span class="o">:</span><span class="n">root</span><span class="o">:</span><span class="n">Caught</span><span class="w"> </span><span class="n">ValueError</span><span class="o">:</span><span class="w"> </span><span class="n">Unlucky</span><span class="o">!.</span><span class="w"> </span><span class="n">Retrying</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">1.00</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">remaining</span><span class="o">=</span><span class="mi">4</span><span class="o">)</span>
-<span class="n">WARNING</span><span class="o">:</span><span class="n">root</span><span class="o">:</span><span class="n">Caught</span><span class="w"> </span><span class="n">ValueError</span><span class="o">:</span><span class="w"> </span><span class="n">Unlucky</span><span class="o">!.</span><span class="w"> </span><span class="n">Retrying</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">2.34</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">remaining</span><span class="o">=</span><span class="mi">3</span><span class="o">)</span>
-<span class="n">WARNING</span><span class="o">:</span><span class="n">root</span><span class="o">:</span><span class="n">Caught</span><span class="w"> </span><span class="n">ValueError</span><span class="o">:</span><span class="w"> </span><span class="n">Unlucky</span><span class="o">!.</span><span class="w"> </span><span class="n">Retrying</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">4.89</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">remaining</span><span class="o">=</span><span class="mi">2</span><span class="o">)</span>
-<span class="o">...</span>
+<div class="codehilite"><pre><span></span><code>WARNING:root:Caught ValueError: Unlucky!. Retrying in 1.00s (remaining=4)
+WARNING:root:Caught ValueError: Unlucky!. Retrying in 2.34s (remaining=3)
+WARNING:root:Caught ValueError: Unlucky!. Retrying in 4.89s (remaining=2)
+...
 </code></pre></div>
 
 <h2>Customizing Retry Policies</h2>
 <p>You have full control over retry behavior:</p>
 <p><strong>Retry on specific exceptions:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">,</span> <span class="ne">TimeoutError</span><span class="p">),</span> <span class="n">tries</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">exceptions</span><span class="o">=</span><span class="p">(</span><span class="ne">ConnectionError</span><span class="p">,</span> <span class="ne">TimeoutError</span><span class="p">),</span> <span class="n">tries</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">():</span>
     <span class="o">...</span>
 </code></pre></div>
 
 <p><strong>Infinite retries until success:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">tries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">tries</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">always_retry</span><span class="p">():</span>
     <span class="o">...</span>
 </code></pre></div>
 
 <p><strong>Cap the maximum delay</strong></p>
-<div class="highlight"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">delay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backoff</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nd">@refire</span><span class="p">(</span><span class="n">delay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">backoff</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">capped_backoff</span><span class="p">():</span>
     <span class="o">...</span>
 </code></pre></div>
 
 <p><strong>Integrate with your own logger:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;myapp&quot;</span><span class="p">)</span>
 
@@ -114,7 +114,7 @@ uv<span class="w"> </span>add<span class="w"> </span>refire
 
 <h2>Retrying on Custom Exceptions</h2>
 <p>You can also define your own exceptions and configure refire to retry only when they occur:</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">TemporaryAPIError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">TemporaryAPIError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when the API fails temporarily.&quot;&quot;&quot;</span>
 
 

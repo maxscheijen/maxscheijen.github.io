@@ -38,7 +38,7 @@
 <h2>Pattern</h2>
 <p>In vim you can use <code>:substitute</code> (<code>:s</code>) to find and replace text.</p>
 <p>It follows the following pattern:</p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>[range]s<span class="sr">/{pattern}/</span>{string}/[flags][count]
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>[range]s<span class="sr">/{pattern}/</span>{string}/[flags][count]
 </code></pre></div>
 
 <p>The command searches each line in <code>[range]</code> for <code>{pattern}</code> and replaces it with <code>{string}</code>. Count is the number of times to repeat this action</p>
@@ -46,27 +46,27 @@
 <h2>Basics</h2>
 <p>These are the command I'm currently using.</p>
 <p>When I want to replace the first occurrence of “foo” with “bar” on current line. </p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar
 </code></pre></div>
 
 <p>Replace every occurrence of “foo” with bar on current line.</p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/<span class="k">g</span>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/<span class="k">g</span>
 </code></pre></div>
 
 <p>One thing I do often is replace every occurrence of a pattern. The <code>%</code> character will allow you to do this for the entire file. </p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>%s<span class="sr">/foo/</span>bar/<span class="k">g</span>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>%s<span class="sr">/foo/</span>bar/<span class="k">g</span>
 </code></pre></div>
 
 <p>If confirmation for substitutions is important add <code>i</code> to the end of the command.</p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/gc
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/gc
 </code></pre></div>
 
 <p>The <code>:s</code> command searches for string matches. If you want to match whole words and not part of words, put replace between <code>\&lt;\&gt;</code></p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>s<span class="sr">/\&lt;foor\&gt;/</span>bar/:<span class="k">w</span>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>s<span class="sr">/\&lt;foor\&gt;/</span>bar/:<span class="k">w</span>
 </code></pre></div>
 
 <p>By adding a <code>i</code> add the end, if you want to ignore character case.</p>
-<div class="highlight"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/gi
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>s<span class="sr">/foo/</span>bar/gi
 </code></pre></div>
 
 <p>https://linuxize.com/post/vim-find-replace/</p>

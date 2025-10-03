@@ -40,21 +40,21 @@
 <h2>Tailscale</h2>
 <p>The Tailscale VPN allows me to access my Homelab, and the applications running on it, from anywhere in the world.</p>
 <p>So on my Raspberry Pi I ran the following.</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>apt-transport-https
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>apt-transport-https
 </code></pre></div>
 
 <p>Then we need to add the Tailscale singin key.</p>
-<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/usr/share/keyrings/tailscale-archive-keyring.gpg<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://pkgs.tailscale.com/stable/raspbian/bullseye.noarmor.gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/usr/share/keyrings/tailscale-archive-keyring.gpg<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
 curl<span class="w"> </span>-fsSL<span class="w"> </span>https://pkgs.tailscale.com/stable/raspbian/bullseye.tailscale-keyring.list<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/tailscale.list
 </code></pre></div>
 
 <p>Install Tailscale.</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>tailscale
 </code></pre></div>
 
 <p>You can then run the following command to start Tailwind and authenticate.</p>
-<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>tailscale<span class="w"> </span>up
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>tailscale<span class="w"> </span>up
 </code></pre></div>
 
 <p>In the <a href="https://login.tailscale.com/admin/machines">Tailscale Dashboard</a> you can see all your machines and there IP addresses.</p>
