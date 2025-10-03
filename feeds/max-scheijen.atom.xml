@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Max Scheijen - Max Scheijen</title><link href="maxscheijen.github.io/" rel="alternate"/><link href="maxscheijen.github.io/feeds/max-scheijen.atom.xml" rel="self"/><id>maxscheijen.github.io/</id><updated>2025-09-15T00:00:00+02:00</updated><entry><title>refire - A lightweight retrier</title><link href="maxscheijen.github.io/posts/refire-a-lightweight-retrier/" rel="alternate"/><published>2025-09-15T00:00:00+02:00</published><updated>2025-09-15T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-09-15:maxscheijen.github.io/posts/refire-a-lightweight-retrier/</id><summary type="html">&lt;p&gt;Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? &lt;/p&gt;
 &lt;p&gt;That’s exactly why I built …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Failures happen. APIs timeout, flaky network calls fail, and sometimes random conditions causes your code to misbehave. Instead of writing repetitive retry logic in every function, wouldn’t it be better to have a clean, reusable decorator that takes care of retries for you? &lt;/p&gt;
-&lt;p&gt;That’s exactly why I built &lt;a href="https://github.com/maxscheijen/refire"&gt;&lt;code&gt;refire&lt;/code&gt;&lt;/a&gt;, a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.&lt;/p&gt;
+&lt;p&gt;That’s exactly why I built &lt;a href="https://github.com/maxscheijen/refire"&gt;refire&lt;/a&gt;, a simple (no dependencies) yet powerful Python package that helps you retry functions on failure with configurable retry policies, exponential backoff, and jitter.&lt;/p&gt;
 &lt;h2&gt;Why refire?&lt;/h2&gt;
 &lt;p&gt;When dealing with unreliable resources like APIs, databases, or external services, retrying operations is often the simplest way to build resilience. But manually implementing retries quickly leads to messy, repetitive code.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;refire&lt;/code&gt; makes retrying clean and declarative:&lt;/p&gt;
+&lt;p&gt;refire makes retrying clean and declarative:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Retry on specific exceptions&lt;/li&gt;
 &lt;li&gt;Control number of attempts (or retry indefinitely)&lt;/li&gt;
@@ -126,15 +126,15 @@ uv&lt;span class="w"&gt; &lt;/span&gt;add&lt;span class="w"&gt; &lt;/span&gt;ref
 &lt;/ul&gt;
 &lt;h2&gt;Try It Out&lt;/h2&gt;
 &lt;p&gt;The package is open-source under the &lt;strong&gt;Apache-2.0 license&lt;/strong&gt; and available here:&lt;/p&gt;
-&lt;p&gt;👉 GitHub – &lt;a href="https://github.com/maxscheijen/refire"&gt;maxscheijen/refire&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;If you want a &lt;strong&gt;clean, reusable way to add resilience&lt;/strong&gt; to your Python code, give refire a try — and let me know what you think!&lt;/p&gt;</content><category term="posts"/></entry><entry><title>vibeflip - A truly random coin flip</title><link href="maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/" rel="alternate"/><published>2025-08-30T00:00:00+02:00</published><updated>2025-08-30T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-30:maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/</id><summary type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;&lt;code&gt;vibesort&lt;/code&gt;&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
+&lt;p&gt;GitHub – &lt;a href="https://github.com/maxscheijen/refire"&gt;maxscheijen/refire&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you want a &lt;strong&gt;clean, reusable way to add resilience&lt;/strong&gt; to your Python code, give refire a try — and let me know what you think!&lt;/p&gt;</content><category term="posts"/></entry><entry><title>vibeflip - A truly random coin flip</title><link href="maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/" rel="alternate"/><published>2025-08-30T00:00:00+02:00</published><updated>2025-08-30T00:00:00+02:00</updated><author><name>Max Scheijen</name></author><id>tag:None,2025-08-30:maxscheijen.github.io/posts/vibeflip-a-truly-random-coin-flip/</id><summary type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;vibesort&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
 &lt;p&gt;Which made me think of what other thinks are hard. A computer creating randomness. Can we maybe leverage LLMs?&lt;/p&gt;
 &lt;h2&gt;vibeflip&lt;/h2&gt;
-&lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;&lt;code&gt;vibeflip&lt;/code&gt;&lt;/a&gt;?&lt;/p&gt;
-&lt;p&gt;It's a python library that facilitates a truly random coin flip …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;&lt;code&gt;vibesort&lt;/code&gt;&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
+&lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;vibeflip&lt;/a&gt;?&lt;/p&gt;
+&lt;p&gt;It's a python library that facilitates a truly random coin flip …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I got inspired by &lt;a href="https://github.com/abyesilyurt/vibesort"&gt;vibesort&lt;/a&gt;. What a nice way to sort a array of numbers. &lt;/p&gt;
 &lt;p&gt;Which made me think of what other thinks are hard. A computer creating randomness. Can we maybe leverage LLMs?&lt;/p&gt;
 &lt;h2&gt;vibeflip&lt;/h2&gt;
-&lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;&lt;code&gt;vibeflip&lt;/code&gt;&lt;/a&gt;?&lt;/p&gt;
+&lt;p&gt;So what is &lt;a href="https://github.com/maxscheijen/vibeflip"&gt;vibeflip&lt;/a&gt;?&lt;/p&gt;
 &lt;p&gt;It's a python library that facilitates a truly random coin flip (&lt;code&gt;true&lt;/code&gt; or &lt;code&gt;false&lt;/code&gt;) using a LLM.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;vibeflip&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;vibeflip&lt;/span&gt;
 
@@ -685,6 +685,7 @@ terraform&lt;span class="w"&gt; &lt;/span&gt;apply&lt;span class="w"&gt;   &lt;/
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ssh&lt;span class="w"&gt; &lt;/span&gt;-i&lt;span class="w"&gt; &lt;/span&gt;~/.ssh/your_private_key&lt;span class="w"&gt; &lt;/span&gt;root@100.x.y.z&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="c1"&gt;# Replace with your Tailscale IP&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2&gt;Links&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://tailscale.com/kb/1082/firewall-ports"&gt;https://tailscale.com/kb/1082/firewall-ports&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean"&gt;https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean&lt;/a&gt;&lt;/li&gt;
