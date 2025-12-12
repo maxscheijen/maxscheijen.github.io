@@ -19,16 +19,24 @@ Stuff I use on (almost) a daily basis:
 
 ### Software
 
-- TickTick
-- Safari
-- ghostty
+- AeroSpace
+- Ghostty
+- Ice 
+- itsycal
+- Mullvad VPN
 - neovim
-- aerospace
 - NetNewsWire
-- Tailscale
+- Obsidian
+- Ollama
 - Orbstack
+- Raycast
+- Safari
+- TablePlus
+- Tailscale
+- VLC
 
 ### Other
 
 - Hevy
 - Polar H10
+- WhatsApp
